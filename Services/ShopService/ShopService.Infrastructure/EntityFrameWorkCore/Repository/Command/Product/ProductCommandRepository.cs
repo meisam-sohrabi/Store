@@ -1,0 +1,38 @@
+﻿using Second.Domain.Entities;
+using Second.Infrastructure.EntityFrameWorkCore.AppDbContext;
+using Second.InfrastructureContract.Interfaces.Command.Product;
+
+namespace Second.Infrastructure.EntityFrameWorkCore.Repository.Command.Product
+{
+    public class ProductCommandRepository : IProductCommandRepository
+    {
+        private readonly ApplicationDbContext _context;
+
+        public ProductCommandRepository(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        #region Add
+        public void Add(ProductEntity product)
+        {
+            _context.Products.Add(product);
+        }
+        #endregion
+
+        #region Delete
+        public void Delete(ProductEntity product)
+        {
+            _context.Remove(product);
+        }
+        #endregion
+
+        #region Edit
+        public void Edit(ProductEntity product)
+        {
+            _context.Update(product);
+        }
+        #endregion
+
+    }
+}
