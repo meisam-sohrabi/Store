@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Second.Domain.Entities;
-namespace Second.InfrastructureContract.Interfaces.Command.Account
+using ShopService.Domain.Entities;
+namespace ShopService.InfrastructureContract.Interfaces.Command.Account
 {
     public interface IAccountCommandRepository
     {

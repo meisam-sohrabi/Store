@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace First.ApplicationContract.DTO.Base
+namespace ApiCallService.ApplicationContract.DTO.Base
 {
     public class BaseResponseDto<T>
     {

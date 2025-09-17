@@ -1,12 +1,10 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Second.Domain.Entities;
-using Second.Infrastructure.EntityFrameWorkCore.AppDbContext;
-using Second.Ioc.Config;
-using System.Security.Claims;
+using ShopService.Domain.Entities;
+using ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext;
+using ShopService.IocConfig;
 using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 

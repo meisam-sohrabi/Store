@@ -1,12 +1,12 @@
-﻿using First.ApplicationContract.DTO.Base;
-using First.ApplicationContract.DTO.Internal.Product;
-using First.InfrastructureContract.Interfaces.Internal.Product;
+﻿using ApiCallService.ApplicationContract.DTO.Base;
+using ApiCallService.ApplicationContract.DTO.Internal.Product;
+using ApiCallService.ApplicationContract.Interfaces.Internal.Product;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-namespace First.Application.Services.Internal.Product
+namespace ApiCallService.Application.Services.Internal.Product
 {
     public class ProductAppService : IProductApi
     {

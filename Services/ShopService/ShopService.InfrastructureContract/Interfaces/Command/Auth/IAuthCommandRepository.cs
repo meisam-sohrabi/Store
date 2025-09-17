@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Second.Domain.Entities;
+using ShopService.Domain.Entities;
 
-namespace Second.InfrastructureContract.Interfaces.Command.Auth
+namespace ShopService.InfrastructureContract.Interfaces.Command.Auth
 {
     public interface IAuthCommandRepository
     {

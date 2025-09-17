@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Second.Domain.Entities;
-using Second.InfrastructureContract.Interfaces.Query.Auth;
+using ShopService.Domain.Entities;
+using ShopService.InfrastructureContract.Interfaces.Query.Auth;
 
-namespace Second.Infrastructure.EntityFrameWorkCore.Repository.Query.Auth
+namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.Auth
 {
     public class AuthQueryRepository : IAuthQueryRepository
     {

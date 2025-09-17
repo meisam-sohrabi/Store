@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Second.Domain.Entities;
-using Second.Infrastructure.EntityFrameWorkCore.AppDbContext;
-using Second.InfrastructureContract.Interfaces.Query.Category;
+using ShopService.Domain.Entities;
+using ShopService.InfrastructureContract.Interfaces.Query.Category;
+using ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext;
 
-namespace Second.Infrastructure.EntityFrameWorkCore.Repository.Query.Category
+namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.Category
 {
     public class CategoryQueryRepository : ICategoryQueryRepository
     {

@@ -1,6 +1,6 @@
 ﻿namespace LogService
 {
-    public interface ILogService
+    public interface ILogAppService
     {
         Task LogAsync(string message, string appServiceName, string currentuser);
     }

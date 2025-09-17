@@ -1,4 +1,4 @@
-﻿namespace Second.ApplicationContract.DTO.Product
+﻿namespace ShopService.ApplicationContract.DTO.Product
 {
     public class ProductDto
     {

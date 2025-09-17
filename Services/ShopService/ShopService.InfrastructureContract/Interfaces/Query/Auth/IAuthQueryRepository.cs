@@ -1,6 +1,6 @@
-﻿using Second.Domain.Entities;
+﻿using ShopService.Domain.Entities;
 
-namespace Second.InfrastructureContract.Interfaces.Query.Auth
+namespace ShopService.InfrastructureContract.Interfaces.Query.Auth
 {
     public interface IAuthQueryRepository
     {

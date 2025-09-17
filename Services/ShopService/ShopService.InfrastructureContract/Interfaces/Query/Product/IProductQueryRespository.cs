@@ -1,6 +1,6 @@
-﻿using Second.Domain.Entities;
+﻿using ShopService.Domain.Entities;
 
-namespace Second.InfrastructureContract.Interfaces.Query.Product
+namespace ShopService.InfrastructureContract.Interfaces.Query.Product
 {
     public interface IProductQueryRespository
     {

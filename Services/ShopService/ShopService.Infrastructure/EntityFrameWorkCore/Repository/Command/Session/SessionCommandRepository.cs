@@ -1,8 +1,8 @@
-﻿using Second.Domain.Entities;
-using Second.Infrastructure.EntityFrameWorkCore.AppDbContext;
-using Second.InfrastructureContract.Interfaces.Command.Session;
+﻿using ShopService.Domain.Entities;
+using ShopService.InfrastructureContract.Interfaces.Command.Session;
+using ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext;
 
-namespace Second.Infrastructure.EntityFrameWorkCore.Repository.Command.Session
+namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Command.Session
 {
     public class SessionCommandRepository : ISessionCommandRepository
     {

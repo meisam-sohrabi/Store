@@ -1,12 +1,9 @@
-﻿using Second.ApplicationContract.DTO.Security;
-using Second.Domain.Entities;
+﻿using ShopService.Domain.Entities;
 
-namespace Second.InfrastructureContract.Interfaces.Query.Security
+namespace ShopService.InfrastructureContract.Interfaces.Query.Security
 {
     public interface IRefreshTokenQueryRepository
     {
-        Task<RefreshTokenEntity> GetRefreshToken(RefreshTokenRequestDto tokenRequestDto);
-        Task<RefreshTokenEntity> GetRefreshTokenByUserId(string userId);
-
+        IQueryable<RefreshTokenEntity> GetRefreshTokenQueryable();
     }
 }

@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Second.ApplicationContract.DTO.Security;
-using Second.Domain.Entities;
-using Second.Infrastructure.EntityFrameWorkCore.AppDbContext;
-using Second.InfrastructureContract.Interfaces.Query.Security;
+using ShopService.Domain.Entities;
+using ShopService.InfrastructureContract.Interfaces.Query.Security;
+using ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext;
 
-namespace Second.Infrastructure.EntityFrameWorkCore.Repository.Query.Security
+namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.Security
 {
     public class RefreshTokenQueryRepository : IRefreshTokenQueryRepository
     {
@@ -14,14 +13,10 @@ namespace Second.Infrastructure.EntityFrameWorkCore.Repository.Query.Security
         {
             _context = context;
         }
-        public async Task<RefreshTokenEntity> GetRefreshToken(RefreshTokenRequestDto refreshToken)
+        public  IQueryable<RefreshTokenEntity> GetRefreshTokenQueryable()
         {
-            return await _context.RefreshToken.FirstOrDefaultAsync(c => c.Token == refreshToken.RefreshToken);
+            return  _context.RefreshToken.AsQueryable();
         }
 
-        public async Task<RefreshTokenEntity> GetRefreshTokenByUserId(string userId)
-        {
-            return await _context.RefreshToken.FirstOrDefaultAsync(c => c.UserId == userId);
-        }
     }
 }

@@ -1,24 +1,20 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Second.Application.Services.Category;
-using Second.Application.Services.Permission;
-using Second.ApplicationContract.DTO.Base;
-using Second.ApplicationContract.DTO.Category;
-using Second.ApplicationContract.Interfaces;
-using System.Security.Claims;
-namespace Second.Api.Controllers
+using ShopService.Application.Services.Category;
+using ShopService.Application.Services.Permission;
+using ShopService.ApplicationContract.DTO.Base;
+using ShopService.ApplicationContract.DTO.Category;
+namespace ShopService.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
         private readonly CategoryAppService _categoryAppService;
-        private readonly IUserAppService _userAppService;
 
-        public CategoryController(CategoryAppService categoryAppService,IUserAppService userAppService)
+        public CategoryController(CategoryAppService categoryAppService)
         {
             _categoryAppService = categoryAppService;
-            _userAppService = userAppService;
         }
 
         [HttpPost("Create")]
@@ -26,7 +22,6 @@ namespace Second.Api.Controllers
         [Permission]
         public async Task<BaseResponseDto<CategoryDto>> Create([FromBody]CategoryDto categoryDto)
         {
-            _userAppService.GetCurrentUser(ClaimTypes.NameIdentifier);
             return await _categoryAppService.CreateCategory(categoryDto);
 
         }

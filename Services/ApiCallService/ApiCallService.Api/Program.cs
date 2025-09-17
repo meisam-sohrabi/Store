@@ -1,4 +1,4 @@
-using First.IocConfig;
+using ApiCallService.IocConfig;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;

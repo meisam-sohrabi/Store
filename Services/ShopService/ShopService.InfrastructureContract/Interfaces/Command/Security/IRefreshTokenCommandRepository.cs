@@ -1,6 +1,6 @@
-﻿using Second.Domain.Entities;
+﻿using ShopService.Domain.Entities;
 
-namespace Second.InfrastructureContract.Interfaces.Command.Security
+namespace ShopService.InfrastructureContract.Interfaces.Command.Security
 {
     public interface IRefreshTokenCommandRepository
     {

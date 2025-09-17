@@ -1,7 +1,7 @@
-﻿using First.ApplicationContract.DTO.Base;
-using First.ApplicationContract.DTO.Internal.Product;
+﻿using ApiCallService.ApplicationContract.DTO.Base;
+using ApiCallService.ApplicationContract.DTO.Internal.Product;
 
-namespace First.InfrastructureContract.Interfaces.Internal.Product
+namespace ApiCallService.ApplicationContract.Interfaces.Internal.Product
 {
     public interface IProductApi
     {

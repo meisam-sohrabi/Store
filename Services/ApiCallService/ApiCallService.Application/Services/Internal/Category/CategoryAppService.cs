@@ -1,12 +1,12 @@
-﻿using First.ApplicationContract.DTO.Base;
-using First.ApplicationContract.DTO.Internal.Category;
-using First.InfrastructureContract.Interfaces.Internal.Category;
+﻿using ApiCallService.ApplicationContract.DTO.Base;
+using ApiCallService.ApplicationContract.DTO.Internal.Category;
+using ApiCallService.ApplicationContract.Interfaces.Internal.Category;
 using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Http;
 using System.Net.Http.Headers;
-namespace First.Application.Services.Internal.Category
+namespace ApiCallService.Application.Services.Internal.Category
 {
     public class CategoryAppService : ICategoryApi
     {

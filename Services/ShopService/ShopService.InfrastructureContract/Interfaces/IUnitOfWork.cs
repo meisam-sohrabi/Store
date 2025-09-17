@@ -1,4 +1,4 @@
-﻿namespace Second.InfrastructureContract.Interfaces
+﻿namespace ShopService.InfrastructureContract.Interfaces
 {
     public interface IUnitOfWork
     {

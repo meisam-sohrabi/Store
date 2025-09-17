@@ -1,7 +1,7 @@
-﻿using Second.ApplicationContract.DTO.Category;
-using Second.ApplicationContract.DTO.Product;
+﻿using ShopService.ApplicationContract.DTO.Category;
+using ShopService.ApplicationContract.DTO.Product;
 
-namespace Second.ApplicationContract.DTO.CategoryWithProduct
+namespace ShopService.ApplicationContract.DTO.CategoryWithProduct
 {
     public class CategoryWithProductDto
     {

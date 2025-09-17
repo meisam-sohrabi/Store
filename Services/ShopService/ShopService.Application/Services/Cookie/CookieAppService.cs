@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Second.ApplicationContract.Interfaces;
+using ShopService.ApplicationContract.Interfaces;
 
-namespace Second.Application.Services.Cookie
+namespace ShopService.Application.Services.Cookie
 {
     public class CookieAppService : ICookieService
     {

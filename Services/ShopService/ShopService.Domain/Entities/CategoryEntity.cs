@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Second.Domain.Entities
+namespace ShopService.Domain.Entities
 {
     public class CategoryEntity: BaseEntity
     {

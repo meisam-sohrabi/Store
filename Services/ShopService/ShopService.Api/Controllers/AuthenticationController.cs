@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Second.Application.Services.Auth;
-using Second.ApplicationContract.DTO.Account;
-using Second.ApplicationContract.DTO.Base;
-using Second.ApplicationContract.DTO.Security;
+using ShopService.Application.Services.Auth;
+using ShopService.ApplicationContract.DTO.Account;
+using ShopService.ApplicationContract.DTO.Base;
+using ShopService.ApplicationContract.DTO.Security;
 
-namespace Second.Api.Controllers
+namespace ShopService.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]

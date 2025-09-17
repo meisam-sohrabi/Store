@@ -1,4 +1,4 @@
-﻿namespace Second.ApplicationContract.Interfaces
+﻿namespace ShopService.ApplicationContract.Interfaces
 {
     public interface IUserAppService
     {

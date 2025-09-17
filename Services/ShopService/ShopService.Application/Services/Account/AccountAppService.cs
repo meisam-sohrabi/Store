@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using Second.ApplicationContract.Interfaces;
-using Second.InfrastructureContract.Interfaces;
-using Second.InfrastructureContract.Interfaces.Command.Account;
-using Second.InfrastructureContract.Interfaces.Command.Security;
-using Second.InfrastructureContract.Interfaces.Query.Account;
-using Second.InfrastructureContract.Interfaces.Query.Security;
-namespace Second.Application.Services.Account
+using ShopService.ApplicationContract.Interfaces;
+using ShopService.InfrastructureContract.Interfaces;
+using ShopService.InfrastructureContract.Interfaces.Command.Account;
+using ShopService.InfrastructureContract.Interfaces.Command.Security;
+using ShopService.InfrastructureContract.Interfaces.Query.Account;
+using ShopService.InfrastructureContract.Interfaces.Query.Security;
+namespace ShopService.Application.Services.Account
 {
     public class AccountAppService
     {

@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
-using LogEngine;
+using LogService;
 using Microsoft.EntityFrameworkCore;
-using Second.ApplicationContract.DTO.Base;
-using Second.ApplicationContract.DTO.Category;
-using Second.Domain.Entities;
-using Second.InfrastructureContract.Interfaces;
-using Second.InfrastructureContract.Interfaces.Command.Category;
-using Second.InfrastructureContract.Interfaces.Query.Category;
+using ShopService.ApplicationContract.DTO.Base;
+using ShopService.ApplicationContract.DTO.Category;
+using ShopService.Domain.Entities;
+using ShopService.InfrastructureContract.Interfaces;
+using ShopService.InfrastructureContract.Interfaces.Command.Category;
+using ShopService.InfrastructureContract.Interfaces.Query.Category;
 using System.Net;
 
 using System.Text.Json;
-namespace Second.Application.Services.Category
+namespace ShopService.Application.Services.Category
 {
     public class CategoryAppService
     {
@@ -18,16 +18,16 @@ namespace Second.Application.Services.Category
         private readonly ICategoryCommandRepository _categoryCommandRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly ILogEngineAppService _logEngineAppService;
+        private readonly ILogAppService  _logAppService;
 
         public CategoryAppService(ICategoryQueryRepository categoryQueryRepository, ICategoryCommandRepository categoryCommandRepository, IUnitOfWork unitOfWork
-            ,IMapper mapper,ILogEngineAppService logEngineAppService)
+            ,IMapper mapper, ILogAppService logAppService)
         {
             _categoryQueryRepository = categoryQueryRepository;
             _categoryCommandRepository = categoryCommandRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _logEngineAppService = logEngineAppService;
+            _logAppService = logAppService;
         }
 
         #region Create
@@ -56,7 +56,7 @@ namespace Second.Application.Services.Category
                 output.Success = true;
             }
 
-            await _logEngineAppService.LogAsync(JsonSerializer.Serialize(mapped),"Category");
+            //await _logAppService.LogAsync(JsonSerializer.Serialize(mapped),"Category");
             output.StatusCode = output.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
             return output;
         }

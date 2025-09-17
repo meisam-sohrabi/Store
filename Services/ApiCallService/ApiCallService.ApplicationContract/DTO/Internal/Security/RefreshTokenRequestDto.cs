@@ -1,4 +1,4 @@
-﻿namespace First.ApplicationContract.DTO.Internal.Security
+﻿namespace ApiCallService.ApplicationContract.DTO.Internal.Security
 {
     public class RefreshTokenRequestDto
     {

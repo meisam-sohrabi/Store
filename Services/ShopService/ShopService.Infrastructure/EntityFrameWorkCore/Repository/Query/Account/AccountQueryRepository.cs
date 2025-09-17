@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Second.Domain.Entities;
-using Second.InfrastructureContract.Interfaces.Query.Account;
+using ShopService.Domain.Entities;
+using ShopService.InfrastructureContract.Interfaces.Query.Account;
 
-namespace Second.Infrastructure.EntityFrameWorkCore.Repository.Query.Account
+namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.Account
 {
     public class AccountQueryRepository : IAccountQueryRepository
     {

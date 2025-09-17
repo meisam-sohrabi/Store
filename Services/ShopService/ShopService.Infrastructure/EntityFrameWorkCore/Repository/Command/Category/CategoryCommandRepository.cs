@@ -1,8 +1,8 @@
-﻿using Second.Domain.Entities;
-using Second.Infrastructure.EntityFrameWorkCore.AppDbContext;
-using Second.InfrastructureContract.Interfaces.Command.Category;
+﻿using ShopService.Domain.Entities;
+using ShopService.InfrastructureContract.Interfaces.Command.Category;
+using ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext;
 
-namespace Second.Infrastructure.EntityFrameWorkCore.Repository.Command.Category
+namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Command.Category
 {
     public class CategoryCommandRepository : ICategoryCommandRepository
     {

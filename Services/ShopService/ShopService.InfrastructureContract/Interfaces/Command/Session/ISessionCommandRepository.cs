@@ -1,6 +1,6 @@
-﻿using Second.Domain.Entities;
+﻿using ShopService.Domain.Entities;
 
-namespace Second.InfrastructureContract.Interfaces.Command.Session
+namespace ShopService.InfrastructureContract.Interfaces.Command.Session
 {
     public interface ISessionCommandRepository
     {

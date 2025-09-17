@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Second.InfrastructureContract.Interfaces.Query.Account;
-using Second.InfrastructureContract.Interfaces.Query.PermisionManagement;
+using ShopService.InfrastructureContract.Interfaces.Query.Account;
+using ShopService.InfrastructureContract.Interfaces.Query.PermisionManagement;
 
-namespace Second.Infrastructure.EntityFrameWorkCore.Repository.Query.PermissionManagement
+namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.PermissionManagement
 {
     public class PermissionQueryRepository : IPermissionQueryRepository
     {

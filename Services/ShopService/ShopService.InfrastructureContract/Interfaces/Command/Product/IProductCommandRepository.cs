@@ -1,6 +1,6 @@
-﻿using Second.Domain.Entities;
+﻿using ShopService.Domain.Entities;
 
-namespace Second.InfrastructureContract.Interfaces.Command.Product
+namespace ShopService.InfrastructureContract.Interfaces.Command.Product
 {
     public interface IProductCommandRepository
     {

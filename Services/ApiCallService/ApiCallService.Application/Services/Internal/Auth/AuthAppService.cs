@@ -1,13 +1,13 @@
-﻿using First.ApplicationContract.DTO.Base;
-using First.ApplicationContract.DTO.Internal.Account;
-using First.ApplicationContract.DTO.Internal.Security;
-using First.InfrastructureContract.Interfaces.Internal.Authentication;
+﻿using ApiCallService.ApplicationContract.DTO.Base;
+using ApiCallService.ApplicationContract.DTO.Internal.Account;
+using ApiCallService.ApplicationContract.DTO.Internal.Security;
+using ApiCallService.ApplicationContract.Interfaces.Internal.Auth;
 using Microsoft.AspNetCore.Http;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
-namespace First.Application.Services.Internal.Account
+namespace ApiCallService.Application.Services.Internal.Auth
 {
     public class AuthAppService : IAuthentication
     {

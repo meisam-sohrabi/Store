@@ -1,4 +1,4 @@
-﻿namespace First.ApplicationContract.DTO.Internal.Category
+﻿namespace ApiCallService.ApplicationContract.DTO.Internal.Category
 {
     //public class CategoryDto
     //{

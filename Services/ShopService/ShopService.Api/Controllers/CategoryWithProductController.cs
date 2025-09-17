@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Second.Application.Services.CategoryWithProduct;
-using Second.ApplicationContract.DTO.Base;
-using Second.ApplicationContract.DTO.CategoryWithProduct;
+using ShopService.Application.Services.CategoryWithProduct;
+using ShopService.ApplicationContract.DTO.Base;
+using ShopService.ApplicationContract.DTO.CategoryWithProduct;
 
-namespace Second.Api.Controllers
+namespace ShopService.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]

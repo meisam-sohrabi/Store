@@ -1,8 +1,8 @@
-﻿using Second.Domain.Entities;
-using Second.Infrastructure.EntityFrameWorkCore.AppDbContext;
-using Second.InfrastructureContract.Interfaces.Query.Product;
+﻿using ShopService.Domain.Entities;
+using ShopService.InfrastructureContract.Interfaces.Query.Product;
+using ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext;
 
-namespace Second.Infrastructure.EntityFrameWorkCore.Repository.Query.Product
+namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.Product
 {
     public class ProductQueryRepository : IProductQueryRespository
     {

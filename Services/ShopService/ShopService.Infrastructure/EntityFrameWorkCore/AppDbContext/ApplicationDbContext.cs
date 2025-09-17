@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Second.Domain.Entities;
+using ShopService.Domain.Entities;
 
-namespace Second.Infrastructure.EntityFrameWorkCore.AppDbContext
+namespace ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext
 {
     public class ApplicationDbContext : IdentityDbContext<CustomUserEntity>
     {

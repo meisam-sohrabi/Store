@@ -1,6 +1,6 @@
-﻿using Second.Domain.Entities;
+﻿using ShopService.Domain.Entities;
 
-namespace Second.InfrastructureContract.Interfaces.Command.Category
+namespace ShopService.InfrastructureContract.Interfaces.Command.Category
 {
     public interface ICategoryCommandRepository
     {

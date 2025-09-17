@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using Second.ApplicationContract.DTO.Account;
-using Second.ApplicationContract.DTO.Category;
-using Second.ApplicationContract.DTO.Product;
-using Second.Domain.Entities;
+using ShopService.Domain.Entities;
+using ShopService.ApplicationContract.DTO.Account;
+using ShopService.ApplicationContract.DTO.Category;
+using ShopService.ApplicationContract.DTO.Product;
 
-namespace Second.ApplicationContract.Mapping
+namespace ShopService.Application.Services.Mapping
 {
     public class MappingApplication : Profile
     {

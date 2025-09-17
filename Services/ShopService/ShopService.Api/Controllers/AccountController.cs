@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Second.Application.Services.Account;
+using ShopService.Application.Services.Account;
 
-namespace Second.Api.Controllers
+namespace ShopService.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Second.Domain.Entities
+namespace ShopService.Domain.Entities
 {
     public class CustomUserEntity  : IdentityUser
     {

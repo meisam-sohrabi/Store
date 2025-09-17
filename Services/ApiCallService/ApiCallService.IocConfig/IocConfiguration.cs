@@ -1,14 +1,14 @@
-﻿using First.Application.Services.Internal.Account;
-using First.Application.Services.Internal.Category;
-using First.Application.Services.Internal.CategoryWithProduct;
-using First.Application.Services.Internal.Product;
-using First.InfrastructureContract.Interfaces.Internal.Authentication;
-using First.InfrastructureContract.Interfaces.Internal.Category;
-using First.InfrastructureContract.Interfaces.Internal.CategoryWithProduct;
-using First.InfrastructureContract.Interfaces.Internal.Product;
+﻿using ApiCallService.Application.Services.Internal.Auth;
+using ApiCallService.Application.Services.Internal.Category;
+using ApiCallService.Application.Services.Internal.CategoryWithProduct;
+using ApiCallService.Application.Services.Internal.Product;
+using ApiCallService.ApplicationContract.Interfaces.Internal.Auth;
+using ApiCallService.ApplicationContract.Interfaces.Internal.Category;
+using ApiCallService.ApplicationContract.Interfaces.Internal.CategoryWithProduct;
+using ApiCallService.ApplicationContract.Interfaces.Internal.Product;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace First.IocConfig
+namespace ApiCallService.IocConfig
 {
     public static class IocConfiguration
     {

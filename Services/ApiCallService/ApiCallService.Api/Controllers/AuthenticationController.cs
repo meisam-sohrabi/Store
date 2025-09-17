@@ -1,10 +1,10 @@
-﻿using First.ApplicationContract.DTO.Base;
-using First.ApplicationContract.DTO.Internal.Account;
-using First.ApplicationContract.DTO.Internal.Security;
-using First.InfrastructureContract.Interfaces.Internal.Authentication;
+﻿using ApiCallService.ApplicationContract.DTO.Base;
+using ApiCallService.ApplicationContract.DTO.Internal.Account;
+using ApiCallService.ApplicationContract.DTO.Internal.Security;
+using ApiCallService.ApplicationContract.Interfaces.Internal.Auth;
 using Microsoft.AspNetCore.Mvc;
 
-namespace First.Api.Controller
+namespace ApiCallService.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]

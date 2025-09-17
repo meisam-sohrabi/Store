@@ -1,4 +1,4 @@
-﻿namespace First.ApplicationContract.DTO.Internal.Product
+﻿namespace ApiCallService.ApplicationContract.DTO.Internal.Product
 {
     public class ProductDto
     {

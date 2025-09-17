@@ -1,4 +1,4 @@
-﻿namespace First.ApplicationContract.DTO.Internal.Account
+﻿namespace ApiCallService.ApplicationContract.DTO.Internal.Account
 {
     public class LoginDto
     {

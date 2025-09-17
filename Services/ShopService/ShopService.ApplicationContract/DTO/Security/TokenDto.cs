@@ -1,4 +1,4 @@
-﻿namespace Second.ApplicationContract.DTO.Security
+﻿namespace ShopService.ApplicationContract.DTO.Security
 {
     public class TokenDto
     {

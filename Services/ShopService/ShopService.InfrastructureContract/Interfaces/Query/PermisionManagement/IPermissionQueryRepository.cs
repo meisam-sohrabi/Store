@@ -1,4 +1,4 @@
-﻿namespace Second.InfrastructureContract.Interfaces.Query.PermisionManagement
+﻿namespace ShopService.InfrastructureContract.Interfaces.Query.PermisionManagement
 {
     public interface IPermissionQueryRepository
     {

@@ -1,8 +1,8 @@
-﻿using First.ApplicationContract.DTO.Base;
-using First.ApplicationContract.DTO.Internal.Account;
-using First.ApplicationContract.DTO.Internal.Security;
+﻿using ApiCallService.ApplicationContract.DTO.Base;
+using ApiCallService.ApplicationContract.DTO.Internal.Account;
+using ApiCallService.ApplicationContract.DTO.Internal.Security;
 
-namespace First.InfrastructureContract.Interfaces.Internal.Authentication
+namespace ApiCallService.ApplicationContract.Interfaces.Internal.Auth
 {
     public interface IAuthentication
     {

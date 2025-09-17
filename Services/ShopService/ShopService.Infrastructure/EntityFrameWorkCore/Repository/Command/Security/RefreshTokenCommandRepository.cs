@@ -1,8 +1,8 @@
-﻿using Second.Domain.Entities;
-using Second.Infrastructure.EntityFrameWorkCore.AppDbContext;
-using Second.InfrastructureContract.Interfaces.Command.Security;
+﻿using ShopService.Domain.Entities;
+using ShopService.InfrastructureContract.Interfaces.Command.Security;
+using ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext;
 
-namespace Second.Infrastructure.EntityFrameWorkCore.Repository.Command.Security
+namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Command.Security
 {
     public class RefreshTokenCommandRepository : IRefreshTokenCommandRepository
     {

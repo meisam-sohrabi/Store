@@ -1,4 +1,4 @@
-﻿namespace Second.ApplicationContract.DTO.Account
+﻿namespace ShopService.ApplicationContract.DTO.Account
 {
     public class ShowUserInfoDto
     {

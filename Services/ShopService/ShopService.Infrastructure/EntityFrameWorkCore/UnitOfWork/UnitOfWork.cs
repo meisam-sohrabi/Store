@@ -1,7 +1,7 @@
-﻿using Second.Infrastructure.EntityFrameWorkCore.AppDbContext;
-using Second.InfrastructureContract.Interfaces;
+﻿using ShopService.InfrastructureContract.Interfaces;
+using ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext;
 
-namespace Second.Infrastructure.EntityFrameWorkCore.UnitOfWork
+namespace ShopService.Infrastructure.EntityFrameWorkCore.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {

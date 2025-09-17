@@ -1,6 +1,6 @@
-﻿using Second.Domain.Entities;
+﻿using ShopService.Domain.Entities;
 
-namespace Second.InfrastructureContract.Interfaces.Query.Session
+namespace ShopService.InfrastructureContract.Interfaces.Query.Session
 {
     public interface ISessionQueryRepository
     {

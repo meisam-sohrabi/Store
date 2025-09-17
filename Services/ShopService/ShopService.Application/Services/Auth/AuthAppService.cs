@@ -3,26 +3,26 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using Second.ApplicationContract.DTO.Account;
-using Second.ApplicationContract.DTO.Base;
-using Second.ApplicationContract.DTO.Security;
-using Second.ApplicationContract.Interfaces;
-using Second.Domain.Entities;
-using Second.InfrastructureContract.Interfaces;
-using Second.InfrastructureContract.Interfaces.Command.Account;
-using Second.InfrastructureContract.Interfaces.Command.Auth;
-using Second.InfrastructureContract.Interfaces.Command.Security;
-using Second.InfrastructureContract.Interfaces.Command.Session;
-using Second.InfrastructureContract.Interfaces.Query.Account;
-using Second.InfrastructureContract.Interfaces.Query.Auth;
-using Second.InfrastructureContract.Interfaces.Query.Security;
-using Second.InfrastructureContract.Interfaces.Query.Session;
+using ShopService.ApplicationContract.DTO.Account;
+using ShopService.ApplicationContract.DTO.Base;
+using ShopService.ApplicationContract.DTO.Security;
+using ShopService.ApplicationContract.Interfaces;
+using ShopService.Domain.Entities;
+using ShopService.InfrastructureContract.Interfaces;
+using ShopService.InfrastructureContract.Interfaces.Command.Account;
+using ShopService.InfrastructureContract.Interfaces.Command.Auth;
+using ShopService.InfrastructureContract.Interfaces.Command.Security;
+using ShopService.InfrastructureContract.Interfaces.Command.Session;
+using ShopService.InfrastructureContract.Interfaces.Query.Account;
+using ShopService.InfrastructureContract.Interfaces.Query.Auth;
+using ShopService.InfrastructureContract.Interfaces.Query.Security;
+using ShopService.InfrastructureContract.Interfaces.Query.Session;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
 
-namespace Second.Application.Services.Auth
+namespace ShopService.Application.Services.Auth
 {
     public class AuthAppService
     {
@@ -133,7 +133,7 @@ namespace Second.Application.Services.Auth
                 return output;
             }
             var refreshToken = GenerateRefreshToken();
-            var refreshTokenExit = await _refreshTokenQueryRepository.GetRefreshTokenByUserId(currentUser.Id);
+            var refreshTokenExit = await _refreshTokenQueryRepository.GetRefreshTokenQueryable().FirstOrDefaultAsync(r=> r.UserId == currentUser.Id);
             string finalRefreshToken;
             if (refreshTokenExit == null)
             {
@@ -196,7 +196,7 @@ namespace Second.Application.Services.Auth
                 output.StatusCode = HttpStatusCode.BadRequest;
                 return output;
             }
-            var refreshTokenExist = await _refreshTokenQueryRepository.GetRefreshTokenByUserId(userId);
+            var refreshTokenExist = await _refreshTokenQueryRepository.GetRefreshTokenQueryable().FirstOrDefaultAsync(r=> r.UserId == userId);
             if (refreshTokenExist == null)
             {
                 output.Message = "رفرش توکن یافت نشد";
@@ -237,7 +237,7 @@ namespace Second.Application.Services.Auth
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
-            var refreshTokenExist = await _refreshTokenQueryRepository.GetRefreshToken(refreshToken);
+            var refreshTokenExist = await _refreshTokenQueryRepository.GetRefreshTokenQueryable().FirstOrDefaultAsync(r=> r.Token == refreshToken.RefreshToken);
             if (refreshTokenExist == null || refreshTokenExist.ExpiresAt < DateTime.Now)
             {
                 output.Message = "رفرش توکن نا معتبر";

@@ -1,7 +1,7 @@
-﻿using First.ApplicationContract.DTO.Internal.Category;
-using First.ApplicationContract.DTO.Internal.Product;
+﻿using ApiCallService.ApplicationContract.DTO.Internal.Category;
+using ApiCallService.ApplicationContract.DTO.Internal.Product;
 
-namespace First.ApplicationContract.DTO.Internal.CategoryWithProduct
+namespace ApiCallService.ApplicationContract.DTO.Internal.CategoryWithProduct
 {
     public class CategoryWithProductDto
     {

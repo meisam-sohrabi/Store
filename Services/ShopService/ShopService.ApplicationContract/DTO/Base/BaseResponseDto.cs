@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Second.ApplicationContract.DTO.Base
+namespace ShopService.ApplicationContract.DTO.Base
 {
     public class BaseResponseDto<T>
     {

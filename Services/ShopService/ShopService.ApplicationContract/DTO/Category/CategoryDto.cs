@@ -1,4 +1,4 @@
-﻿namespace Second.ApplicationContract.DTO.Category
+﻿namespace ShopService.ApplicationContract.DTO.Category
 {
     public class CategoryDto
     {

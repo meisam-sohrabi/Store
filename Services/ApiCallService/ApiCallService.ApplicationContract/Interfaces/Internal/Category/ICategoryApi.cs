@@ -1,7 +1,7 @@
-﻿using First.ApplicationContract.DTO.Base;
-using First.ApplicationContract.DTO.Internal.Category;
+﻿using ApiCallService.ApplicationContract.DTO.Base;
+using ApiCallService.ApplicationContract.DTO.Internal.Category;
 
-namespace First.InfrastructureContract.Interfaces.Internal.Category
+namespace ApiCallService.ApplicationContract.Interfaces.Internal.Category
 {
     public interface ICategoryApi
     {

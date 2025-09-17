@@ -1,6 +1,6 @@
-﻿using Second.Domain.Entities;
+﻿using ShopService.Domain.Entities;
 
-namespace Second.InfrastructureContract.Interfaces.Query.Category
+namespace ShopService.InfrastructureContract.Interfaces.Query.Category
 {
     public interface ICategoryQueryRepository
     {

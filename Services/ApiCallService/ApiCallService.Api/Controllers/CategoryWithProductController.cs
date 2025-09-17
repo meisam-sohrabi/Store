@@ -1,9 +1,9 @@
-﻿using First.ApplicationContract.DTO.Base;
-using First.ApplicationContract.DTO.Internal.CategoryWithProduct;
-using First.InfrastructureContract.Interfaces.Internal.CategoryWithProduct;
+﻿using ApiCallService.ApplicationContract.DTO.Base;
+using ApiCallService.ApplicationContract.DTO.Internal.CategoryWithProduct;
+using ApiCallService.ApplicationContract.Interfaces.Internal.CategoryWithProduct;
 using Microsoft.AspNetCore.Mvc;
 
-namespace First.Api.Controller
+namespace ApiCallService.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]

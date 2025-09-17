@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Second.ApplicationContract.DTO.Base;
-using Second.ApplicationContract.DTO.Product;
-using Second.Domain.Entities;
-using Second.InfrastructureContract.Interfaces;
-using Second.InfrastructureContract.Interfaces.Command.Product;
-using Second.InfrastructureContract.Interfaces.Query.Category;
-using Second.InfrastructureContract.Interfaces.Query.Product;
+using ShopService.ApplicationContract.DTO.Base;
+using ShopService.ApplicationContract.DTO.Product;
+using ShopService.Domain.Entities;
+using ShopService.InfrastructureContract.Interfaces;
+using ShopService.InfrastructureContract.Interfaces.Command.Product;
+using ShopService.InfrastructureContract.Interfaces.Query.Category;
+using ShopService.InfrastructureContract.Interfaces.Query.Product;
 using System.Net;
 
-namespace Second.Application.Services.Product
+namespace ShopService.Application.Services.Product
 {
     public class ProductAppService
     {

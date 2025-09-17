@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Second.InfrastructureContract.Interfaces.Query.Account;
+using ShopService.InfrastructureContract.Interfaces.Query.Account;
 
-namespace Second.Application.Services.Permission
+namespace ShopService.Application.Services.Permission
 {
     public class PermissionAttribute : Attribute, IAsyncAuthorizationFilter
     {
