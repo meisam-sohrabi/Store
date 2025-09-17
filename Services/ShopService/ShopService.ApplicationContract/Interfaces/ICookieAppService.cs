@@ -1,6 +1,6 @@
 ﻿namespace ShopService.ApplicationContract.Interfaces
 {
-    public interface ICookieService
+    public interface ICookieAppService
     {
         void SetCookie(string key, string valus, TimeSpan? expireTime = null);
         string GetCookie(string key);

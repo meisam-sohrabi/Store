@@ -10,35 +10,35 @@ namespace ApiCallService.Api.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        private readonly IAuthentication _authentication;
+        private readonly IAuthenticationAppService _authenticationAppService;
 
-        public AuthenticationController(IAuthentication authentication)
+        public AuthenticationController(IAuthenticationAppService authenticationAppService)
         {
-            _authentication = authentication;
+            _authenticationAppService = authenticationAppService;
         }
         [HttpPost("Register")]
         public async Task<BaseResponseDto<ShowUserInfoDto>> Register([FromBody] CreateUserDto createUserDto)
         {
-            return await _authentication.Register(createUserDto);
+            return await _authenticationAppService.Register(createUserDto);
         }
 
 
         [HttpPost("Login")]
         public async Task<BaseResponseDto<TokenDto>> Login([FromBody]LoginDto loginDto)
         {
-            return await _authentication.Login(loginDto);
+            return await _authenticationAppService.Login(loginDto);
         }
 
         [HttpPost("Refresh")]
         public async Task<BaseResponseDto<TokenDto>> RefreshToken([FromBody]RefreshTokenRequestDto refreshTokenDto)
         {
-            return await _authentication.RefreshTokenRequest(refreshTokenDto);
+            return await _authenticationAppService.RefreshTokenRequest(refreshTokenDto);
         }
 
         [HttpGet("Logout")]
         public async Task<BaseResponseDto<bool>> Logout()
         {
-            return await _authentication.Logout();
+            return await _authenticationAppService.Logout();
         }
     }
 }

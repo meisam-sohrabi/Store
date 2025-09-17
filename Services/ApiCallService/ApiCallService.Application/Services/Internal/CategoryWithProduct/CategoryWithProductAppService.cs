@@ -8,7 +8,7 @@ using System.Net.Http.Json;
 
 namespace ApiCallService.Application.Services.Internal.CategoryWithProduct
 {
-    public class CategoryWithProductAppService : ICategoryWithProductApi
+    public class CategoryWithProductAppService : ICategoryWithProductAppService
     {
         private readonly HttpClient _client;
         private readonly IHttpContextAccessor _httpContextAccessor;

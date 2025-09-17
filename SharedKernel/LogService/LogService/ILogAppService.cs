@@ -2,6 +2,6 @@
 {
     public interface ILogAppService
     {
-        Task LogAsync(string message, string appServiceName, string currentuser);
+        Task LogAsync(string message, string appServiceName, string currentuserId);
     }
 }

@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ShopService.Application.Services.Permission;
 using ShopService.Application.Services.Product;
+using ShopService.Application.Services.Transactions.Product;
 using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.Product;
+using ShopService.ApplicationContract.DTO.Transaction;
 
 namespace ShopService.Api.Controllers
 {
@@ -11,10 +14,12 @@ namespace ShopService.Api.Controllers
     public class ProductController : ControllerBase
     {
         private readonly ProductAppService _productAppService;
+        private readonly ProductTransactionAppService _productTransactionAppService;
 
-        public ProductController(ProductAppService productAppService)
+        public ProductController(ProductAppService productAppService,ProductTransactionAppService productTransactionAppService)
         {
             _productAppService = productAppService;
+            _productTransactionAppService = productTransactionAppService;
         }
 
         [HttpPost("Create")]
@@ -49,6 +54,14 @@ namespace ShopService.Api.Controllers
         public async Task<BaseResponseDto<ProductDto>> Delete([FromRoute]int id)
         {
             return await _productAppService.DeleteProduct(id);
+        }
+
+        [HttpPost("ProductTransaction")]
+        [Authorize(Roles = "admin")]
+        [Permission]
+        public async Task<BaseResponseDto<ProductTransactionDto>> ProductTransaction([FromBody]ProductTransactionDto productTransactionDto)
+        {
+            return await _productTransactionAppService.ProductTransaction(productTransactionDto);
         }
     }
 }

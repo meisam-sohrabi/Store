@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using System.Net.Http.Headers;
 namespace ApiCallService.Application.Services.Internal.Category
 {
-    public class CategoryAppService : ICategoryApi
+    public class CategoryAppService : ICategoryAppService
     {
         private readonly HttpClient _client;
         private readonly IHttpContextAccessor _httpContextAccessor;

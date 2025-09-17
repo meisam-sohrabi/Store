@@ -147,7 +147,7 @@ namespace ShopService.Application.Services.Product
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
-            var products = await _productQueryRespository.GetAllQueryAble()
+            var products = await _productQueryRespository.GetQueryAble()
                 .Select(c => new ProductDto { Name = c.Name, Description = c.Description, CategoryId = c.CategoryId })
                 .ToListAsync();
             if (products.Any())

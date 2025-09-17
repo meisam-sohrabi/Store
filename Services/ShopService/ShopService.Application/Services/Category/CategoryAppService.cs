@@ -3,6 +3,7 @@ using LogService;
 using Microsoft.EntityFrameworkCore;
 using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.Category;
+using ShopService.ApplicationContract.Interfaces;
 using ShopService.Domain.Entities;
 using ShopService.InfrastructureContract.Interfaces;
 using ShopService.InfrastructureContract.Interfaces.Command.Category;
@@ -19,15 +20,17 @@ namespace ShopService.Application.Services.Category
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILogAppService  _logAppService;
+        private readonly IUserAppService _userAppService;
 
         public CategoryAppService(ICategoryQueryRepository categoryQueryRepository, ICategoryCommandRepository categoryCommandRepository, IUnitOfWork unitOfWork
-            ,IMapper mapper, ILogAppService logAppService)
+            ,IMapper mapper, ILogAppService logAppService,IUserAppService userAppService)
         {
             _categoryQueryRepository = categoryQueryRepository;
             _categoryCommandRepository = categoryCommandRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _logAppService = logAppService;
+            _userAppService = userAppService;
         }
 
         #region Create
@@ -39,6 +42,7 @@ namespace ShopService.Application.Services.Category
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
+            var currentUserId = _userAppService.GetCurrentUser();
             var categoryExist = await GetCategoryByName(category.Name);
             if(categoryExist.Success)
             {
@@ -55,8 +59,7 @@ namespace ShopService.Application.Services.Category
                 output.Message = $"دسته بندی {category.Name} با موفقیت درج شد";
                 output.Success = true;
             }
-
-            //await _logAppService.LogAsync(JsonSerializer.Serialize(mapped),"Category");
+            await _logAppService.LogAsync(JsonSerializer.Serialize(mapped), "Category",currentUserId);
             output.StatusCode = output.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
             return output;
         }
@@ -141,7 +144,7 @@ namespace ShopService.Application.Services.Category
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
-            var categories = await _categoryQueryRepository.GetAllQueryAble()
+            var categories = await _categoryQueryRepository.GetQueryable()
                 .Select(c => new CategoryDto { Name = c.Name, IsActive = c.IsActive })
                 .ToListAsync();
             if (!categories.Any())

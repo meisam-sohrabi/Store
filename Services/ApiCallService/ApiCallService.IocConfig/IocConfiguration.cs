@@ -14,10 +14,10 @@ namespace ApiCallService.IocConfig
     {
         public static IServiceCollection ConfigureIoc(this IServiceCollection services)
         {
-            services.AddScoped<IProductApi,ProductAppService>();
-            services.AddScoped<ICategoryApi,CategoryAppService>();
-            services.AddScoped<IAuthentication,AuthAppService>();
-            services.AddScoped<ICategoryWithProductApi,CategoryWithProductAppService>();
+            services.AddScoped<IProductAppService,ProductAppService>();
+            services.AddScoped<ICategoryAppService,CategoryAppService>();
+            services.AddScoped<IAuthenticationAppService,AuthAppService>();
+            services.AddScoped<ICategoryWithProductAppService,CategoryWithProductAppService>();
             return services;
         }
     }

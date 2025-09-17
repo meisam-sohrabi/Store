@@ -3,6 +3,8 @@ using ShopService.Domain.Entities;
 using ShopService.ApplicationContract.DTO.Account;
 using ShopService.ApplicationContract.DTO.Category;
 using ShopService.ApplicationContract.DTO.Product;
+using ShopService.ApplicationContract.DTO.ProductBrand;
+using ShopService.ApplicationContract.DTO.ProductDetail;
 
 namespace ShopService.Application.Services.Mapping
 {
@@ -14,6 +16,8 @@ namespace ShopService.Application.Services.Mapping
             CreateMap<ProductDto, ProductEntity>();
             CreateMap<CustomUserEntity, CreateUserDto>();
             CreateMap<CustomUserEntity, ShowUserInfoDto >();
+            CreateMap<ProductBrandDto, ProductBrandEntity >();
+            CreateMap<ProductDetailDto, ProductDetailEntity >();
         }
     }
 }

@@ -9,9 +9,9 @@ namespace ApiCallService.Api.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly IProductApi _productApi;
+        private readonly IProductAppService _productApi;
 
-        public ProductController(IProductApi productApi)
+        public ProductController(IProductAppService productApi)
         {
             _productApi = productApi;
         }

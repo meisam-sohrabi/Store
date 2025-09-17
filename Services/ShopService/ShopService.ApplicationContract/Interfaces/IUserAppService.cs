@@ -2,6 +2,6 @@
 {
     public interface IUserAppService
     {
-        int GetCurrentUser();
+        string GetCurrentUser();
     }
 }

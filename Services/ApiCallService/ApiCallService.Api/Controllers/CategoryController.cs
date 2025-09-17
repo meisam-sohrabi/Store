@@ -9,41 +9,41 @@ namespace ApiCallService.Api.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        private readonly ICategoryApi _categoryApi;
+        private readonly ICategoryAppService _categoryAppService;
 
-        public CategoryController(ICategoryApi categoryApi)
+        public CategoryController(ICategoryAppService categoryAppService)
         {
-            _categoryApi = categoryApi;
+            _categoryAppService = categoryAppService;
         }
         [HttpPost("Create")]
         public async Task<BaseResponseDto<CategoryDto>> Create([FromBody] CategoryDto categoryDto)
         {
-            return await _categoryApi.CreateCategoryAsync(categoryDto);
+            return await _categoryAppService.CreateCategoryAsync(categoryDto);
 
         }
 
         [HttpPost("Edit/{id}")]
         public async Task<BaseResponseDto<CategoryDto>> Edit([FromRoute] int id, [FromBody] CategoryDto categoryDto)
         {
-            return await _categoryApi.EditCategoryAsync(id, categoryDto);
+            return await _categoryAppService.EditCategoryAsync(id, categoryDto);
         }
 
         [HttpGet("GetAll")]
         public async Task<BaseResponseDto<List<CategoryDto>>> GetAll()
         {
-            return await _categoryApi.GetAllCategoriesAsync();
+            return await _categoryAppService.GetAllCategoriesAsync();
         }
 
         [HttpGet("GetById/{id}")]
         public async Task<BaseResponseDto<CategoryDto>> GetById([FromRoute] int id)
         {
-            return await _categoryApi.GetCategoryByIdAsync(id);
+            return await _categoryAppService.GetCategoryByIdAsync(id);
         }
 
         [HttpDelete("Delete/{id}")]
         public async Task<BaseResponseDto<CategoryDto>> Delete([FromRoute] int id)
         {
-            return await _categoryApi.DeleteCategoryAsync(id);
+            return await _categoryAppService.DeleteCategoryAsync(id);
         }
     }
 }

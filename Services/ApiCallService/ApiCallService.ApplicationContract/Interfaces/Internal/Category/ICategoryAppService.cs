@@ -3,7 +3,7 @@ using ApiCallService.ApplicationContract.DTO.Internal.Category;
 
 namespace ApiCallService.ApplicationContract.Interfaces.Internal.Category
 {
-    public interface ICategoryApi
+    public interface ICategoryAppService
     {
         Task<BaseResponseDto<List<CategoryDto>>> GetAllCategoriesAsync();
         Task<BaseResponseDto<CategoryDto>> GetCategoryByIdAsync(int id);

@@ -3,7 +3,7 @@ using ShopService.ApplicationContract.Interfaces;
 
 namespace ShopService.Application.Services.Cookie
 {
-    public class CookieAppService : ICookieService
+    public class CookieAppService : ICookieAppService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 

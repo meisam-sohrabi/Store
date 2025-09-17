@@ -2,14 +2,14 @@
 {
     public class LogAppService : ILogAppService
     {
-        public async Task LogAsync(string message, string appServiceName, string currentuser)
+        public async Task LogAsync(string message, string appServiceName, string currentuserId)
         {
             var path = Path.Combine(AppContext.BaseDirectory, "Log");
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
-            var logMessage = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {message}{Environment.NewLine}";
+            var logMessage = $"time :[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] message: {message}{Environment.NewLine} user id: {currentuserId}";
             var fileName = appServiceName + "Log" + ".txt";
             if (File.Exists(Path.Combine(path, fileName)))
             {

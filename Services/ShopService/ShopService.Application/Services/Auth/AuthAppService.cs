@@ -29,7 +29,7 @@ namespace ShopService.Application.Services.Auth
         private readonly IAccountQueryRepository _accountQueryRepository;
         private readonly IConfiguration _configuration;
         private readonly IRefreshTokenQueryRepository _refreshTokenQueryRepository;
-        private readonly ICookieService _cookieService;
+        private readonly ICookieAppService _cookieService;
         private readonly IAuthCommandRepository _authCommandRepository;
         private readonly IMapper _mapper;
         private readonly IAccountCommandRepository _accountCommandRepository;
@@ -40,7 +40,7 @@ namespace ShopService.Application.Services.Auth
         private readonly ISessionQueryRepository _sessionQueryRepository;
 
         public AuthAppService(IAccountQueryRepository accountQueryRepository, IConfiguration configuration, IRefreshTokenQueryRepository refreshTokenQueryRepository
-            , ICookieService cookieService, IAuthCommandRepository authCommandRepository, IMapper mapper, IAccountCommandRepository accountCommandRepository
+            , ICookieAppService cookieService, IAuthCommandRepository authCommandRepository, IMapper mapper, IAccountCommandRepository accountCommandRepository
             , IAuthQueryRepository authQueryRepository, IRefreshTokenCommandRepository refreshTokenCommandRepository, IUnitOfWork unitOfWork
             , ISessionCommandRepository sessionCommandRepository, ISessionQueryRepository sessionQueryRepository)
         {

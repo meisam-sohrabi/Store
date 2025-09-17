@@ -13,12 +13,6 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.Produc
             _context = context;
         }
 
-        #region GetAll
-        public IQueryable<ProductEntity> GetAllQueryAble()
-        {
-            return _context.Products.AsQueryable();
-        }
-        #endregion
 
         #region Get
         public IQueryable<ProductEntity> GetQueryAble()

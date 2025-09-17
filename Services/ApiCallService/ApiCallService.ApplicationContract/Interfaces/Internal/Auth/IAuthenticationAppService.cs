@@ -4,7 +4,7 @@ using ApiCallService.ApplicationContract.DTO.Internal.Security;
 
 namespace ApiCallService.ApplicationContract.Interfaces.Internal.Auth
 {
-    public interface IAuthentication
+    public interface IAuthenticationAppService
     {
         Task<BaseResponseDto<ShowUserInfoDto>> Register(CreateUserDto createUserDto);
         Task<BaseResponseDto<TokenDto>> Login(LoginDto loginDto);

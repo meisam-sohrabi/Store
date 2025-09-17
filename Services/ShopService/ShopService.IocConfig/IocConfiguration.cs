@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using ShopService.Application.Services.Account;
 using ShopService.Application.Services.Auth;
 using ShopService.Application.Services.Category;
-using ShopService.Application.Services.CategoryWithProduct;
 using ShopService.Application.Services.Cookie;
 using ShopService.Application.Services.Product;
 using ShopService.ApplicationContract.Interfaces;
@@ -37,6 +36,16 @@ using ShopService.InfrastructureContract.Interfaces.Query.PermisionManagement;
 using ShopService.InfrastructureContract.Interfaces.Query.Product;
 using ShopService.InfrastructureContract.Interfaces.Query.Security;
 using ShopService.InfrastructureContract.Interfaces.Query.Session;
+using ShopService.Application.Services.User;
+using ShopService.InfrastructureContract.Interfaces.Command.ProductDetail;
+using ShopService.Infrastructure.EntityFrameWorkCore.Repository.Command.ProductDetail;
+using ShopService.InfrastructureContract.Interfaces.Command.ProductBrand;
+using ShopService.Infrastructure.EntityFrameWorkCore.Repository.Command.ProductBrand;
+using ShopService.Application.Services.Transactions.Product;
+using ShopService.InfrastructureContract.Interfaces.Query.ProductBrand;
+using ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.ProductBrand;
+using ShopService.InfrastructureContract.Interfaces.Query.ProductDetail;
+using ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.ProductDetail;
 namespace ShopService.IocConfig
 {
     public static class IocConfiguration
@@ -45,10 +54,15 @@ namespace ShopService.IocConfig
         {
             services.AddDbContext<ApplicationDbContext>();
             services.AddAutoMapper(typeof(MappingApplication).Assembly);
+            services.AddScoped<IUserAppService, UserAppService>();  
             services.AddScoped<ICategoryCommandRepository, CategoryCommandRepository>();
             services.AddScoped<ICategoryQueryRepository, CategoryQueryRepository>();
             services.AddScoped<IProductCommandRepository, ProductCommandRepository>();
             services.AddScoped<IProductQueryRespository, ProductQueryRepository>();
+            services.AddScoped<IProductDetailCommanRepository, ProductDetailCommandRepository>();
+            services.AddScoped<IProductBrandCommandRepository, ProductBrandCommandRepository>();
+            services.AddScoped<IProductBrandQueryRepository, ProductBrandQueryRepository>();
+            services.AddScoped<IProductDetailQueryRepository, ProductDetailQueryRepository>();
             services.AddScoped<IAccountCommandRepository, AccountCommandRepository>();
             services.AddScoped<IAccountQueryRepository, AccountQueryRepository>();
             services.AddScoped<IRefreshTokenCommandRepository, RefreshTokenCommandRepository>();
@@ -58,11 +72,11 @@ namespace ShopService.IocConfig
             services.AddScoped<IAuthQueryRepository, AuthQueryRepository>();
             services.AddScoped<ISessionCommandRepository,SessionCommandRepository>();
             services.AddScoped<ISessionQueryRepository,SessionQueryRepository>();
-            services.AddScoped<ICookieService, CookieAppService>();
+            services.AddScoped<ICookieAppService, CookieAppService>();
             services.AddScoped<ILogAppService, LogAppService>();
             services.AddScoped<CategoryAppService>();
             services.AddScoped<ProductAppService>();
-            services.AddScoped<CategoryWithProductAppService>();
+            services.AddScoped<ProductTransactionAppService>();
             services.AddScoped<AccountAppService>();
             services.AddScoped<AuthAppService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();

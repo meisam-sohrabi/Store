@@ -15,11 +15,11 @@ namespace ShopService.Application.Services.Account
         private readonly IRefreshTokenQueryRepository _refreshTokenQueryRepository;
         private readonly IRefreshTokenCommandRepository _refreshTokenCommandRepository;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ICookieService _cookieService;
+        private readonly ICookieAppService _cookieService;
 
         public AccountAppService(IAccountCommandRepository authenticationCommandRepository, IAccountQueryRepository authenticatoinQueryRepository,
             IMapper mapper , IRefreshTokenQueryRepository refreshTokenQueryRepository, IRefreshTokenCommandRepository refreshTokenCommandRepository
-            , IUnitOfWork unitOfWork, ICookieService cookieService)
+            , IUnitOfWork unitOfWork, ICookieAppService cookieService)
         {
             _authenticationCommandRepository = authenticationCommandRepository;
             _authenticatoinQueryRepository = authenticatoinQueryRepository;

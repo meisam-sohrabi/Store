@@ -21,6 +21,8 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext
         public DbSet<CategoryEntity> Categories { get; set; }
         public DbSet<RefreshTokenEntity> RefreshToken { get; set; }
         public DbSet<UserSessionEntity> UserSessions { get; set; }
+        public DbSet<ProductBrandEntity> ProductBrands { get; set; }
+        public DbSet<ProductDetailEntity> ProductDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,6 +30,8 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext
             modelBuilder.Entity<CategoryEntity>().ToTable("Categories");
             modelBuilder.Entity<RefreshTokenEntity>().ToTable("RefreshToken");
             modelBuilder.Entity<UserSessionEntity>().ToTable("UserSessions");
+            modelBuilder.Entity<ProductBrandEntity>().ToTable("ProductBrands");
+            modelBuilder.Entity<ProductDetailEntity>().ToTable("ProductDetails");
             modelBuilder.Entity<ProductEntity>(entity =>
             {
                 entity.HasKey(e => e.Id);
@@ -61,6 +65,21 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext
                 .WithMany(e=> e.Sessions)
                 .HasForeignKey(e=> e.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
+            });
+            modelBuilder.Entity<ProductBrandEntity>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(p=> p.Name).IsRequired().HasMaxLength(30);
+                entity.Property(p=> p.Description).HasMaxLength(350);
+                entity.HasMany(e=> e.Products).WithOne(p=> p.ProductBrand).HasForeignKey(p=>p.ProductBrandId).OnDelete(DeleteBehavior.Restrict);
+            });
+            modelBuilder.Entity<ProductDetailEntity>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(p=> p.Size).IsRequired().HasMaxLength(30);
+                entity.Property(p=> p.Description).HasMaxLength(350);
+                entity.Property(p => p.Price).HasPrecision(18, 2);
+                entity.HasOne(p=> p.Product).WithMany(p=> p.ProductDetails).HasForeignKey(e=> e.ProductId).OnDelete(DeleteBehavior.Cascade);
             });
             base.OnModelCreating(modelBuilder);
         }

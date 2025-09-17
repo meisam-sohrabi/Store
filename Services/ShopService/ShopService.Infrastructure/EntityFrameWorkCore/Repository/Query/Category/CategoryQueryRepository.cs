@@ -14,12 +14,6 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.Catego
             _context = context;
         }
 
-        #region GetAll
-        public IQueryable<CategoryEntity> GetAllQueryAble()
-        {
-            return _context.Categories.AsQueryable();
-        }
-        #endregion
 
         #region Get
         public IQueryable<CategoryEntity> GetQueryable()

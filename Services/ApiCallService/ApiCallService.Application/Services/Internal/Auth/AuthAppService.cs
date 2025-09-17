@@ -9,7 +9,7 @@ using System.Net.Http.Json;
 
 namespace ApiCallService.Application.Services.Internal.Auth
 {
-    public class AuthAppService : IAuthentication
+    public class AuthAppService : IAuthenticationAppService
     {
         private readonly HttpClient _client;
         private readonly IHttpContextAccessor _httpContextAccessor;
