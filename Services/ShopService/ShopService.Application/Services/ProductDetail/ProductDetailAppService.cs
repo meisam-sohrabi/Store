@@ -1,0 +1,179 @@
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using ShopService.ApplicationContract.DTO.Base;
+using ShopService.ApplicationContract.DTO.ProductDetail;
+using ShopService.Domain.Entities;
+using ShopService.InfrastructureContract.Interfaces;
+using ShopService.InfrastructureContract.Interfaces.Command.ProductDetail;
+using ShopService.InfrastructureContract.Interfaces.Query.ProductDetail;
+using System.Net;
+
+namespace ShopService.Application.Services.ProductDetail
+{
+    public class ProductDetailAppService
+    {
+        private readonly IProductDetailCommanRepository _productDetailCommanRepository;
+        private readonly IProductDetailQueryRepository _productDetailQueryRepository;
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
+
+        public ProductDetailAppService(IProductDetailCommanRepository productDetailCommanRepository,
+            IProductDetailQueryRepository productDetailQueryRepository, IMapper mapper, IUnitOfWork unitOfWork)
+        {
+            _productDetailCommanRepository = productDetailCommanRepository;
+            _productDetailQueryRepository = productDetailQueryRepository;
+            _mapper = mapper;
+            _unitOfWork = unitOfWork;
+        }
+
+        #region Create
+        public async Task<BaseResponseDto<ProductDetailDto>> CreateDetail(ProductDetailDto ProductDetailDto)
+        {
+            var output = new BaseResponseDto<ProductDetailDto>
+            {
+                Message = "خطا در درج جزئیات محصول",
+                Success = false,
+                StatusCode = HttpStatusCode.BadRequest
+            };
+            var mapped = _mapper.Map<ProductDetailEntity>(ProductDetailDto);
+            _productDetailCommanRepository.Add(mapped);
+            var affectedRows = await _unitOfWork.SaveChangesAsync();
+            if (affectedRows > 0)
+            {
+                output.Message = $"جزئیات محصول با موفقیت درج شد";
+                output.Success = true;
+            }
+            output.StatusCode = output.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
+            return output;
+        }
+        #endregion
+
+        #region Edit
+        public async Task<BaseResponseDto<ProductDetailDto>> EditDetail(int id, ProductDetailDto ProductDetailDto)
+        {
+            var output = new BaseResponseDto<ProductDetailDto>
+            {
+                Message = "خطا در به روز رسانی جزئیات محصول",
+                Success = false,
+                StatusCode = HttpStatusCode.BadRequest
+            };
+            var detailExist = await _productDetailQueryRepository.GetQueryable().FirstOrDefaultAsync(b => b.Id == id);
+            if (detailExist == null)
+            {
+                output.Message = "جزئیات محصول یافت نشد";
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.NotFound;
+                return output;
+            }
+            var mapped = _mapper.Map(ProductDetailDto, detailExist);
+            _productDetailCommanRepository.Edit(mapped);
+            var affectedRows = await _unitOfWork.SaveChangesAsync();
+            if (affectedRows > 0)
+            {
+                output.Message = "جزئیات محصول با موفقیت به روزرسانی شد";
+                output.Success = true;
+            }
+            output.StatusCode = output.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
+            return output;
+        }
+        #endregion
+
+        #region GetAll
+        public async Task<BaseResponseDto<List<ProductDetailDto>>> GetAllDetails()
+        {
+            var output = new BaseResponseDto<List<ProductDetailDto>>
+            {
+                Message = "خطا در بازیابی  جزئیات محصولات ",
+                Success = false,
+                StatusCode = HttpStatusCode.BadRequest
+            };
+            var details = await _productDetailQueryRepository.GetQueryable().Select(c => new ProductDetailDto
+            {
+                Size = c.Size,
+                Price = c.Price,
+                Description = c.Description
+            }).ToListAsync();
+            if (!details.Any())
+            {
+                output.Message = "جزئیات محصولات موردنظر وجود ندارد";
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.NotFound;
+                return output;
+            }
+            output.Message = "جزیئات محصولات با موفقیت دریافت شد";
+            output.Success = true;
+            output.StatusCode = output.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
+            output.Data = details;
+            return output;
+        }
+        #endregion
+
+        #region Get
+        public async Task<BaseResponseDto<ProductDetailDto>> GetDetail(int id)
+        {
+            var output = new BaseResponseDto<ProductDetailDto>
+            {
+                Message = "خطا در بازیابی دسته‌بندی",
+                Success = false,
+                StatusCode = HttpStatusCode.BadRequest
+            };
+            var detail = await _productDetailQueryRepository.GetQueryable()
+                .Where(c => c.Id == id)
+                .Select(c => new ProductDetailDto
+                {
+                    Size = c.Size,
+                    Price = c.Price,
+                    Description = c.Description
+                })
+                .FirstOrDefaultAsync();
+            if (detail == null)
+            {
+                output.Message = "جزئیات محصول موردنظر وجود ندارد";
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.NotFound;
+                return output;
+            }
+
+            output.Message = "جزئیات با موفقیت دریافت شد";
+            output.Success = true;
+            output.StatusCode = output.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
+            output.Data = detail;
+
+            return output;
+        }
+        #endregion
+
+        #region Delete
+        public async Task<BaseResponseDto<ProductDetailDto>> DeleteDetail(int id)
+        {
+            var output = new BaseResponseDto<ProductDetailDto>
+            {
+                Message = "خطا در حذف جزئیات محصول",
+                Success = false,
+                StatusCode = HttpStatusCode.BadRequest
+            };
+
+            var DeleteDetail = await _productDetailQueryRepository.GetQueryable()
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (DeleteDetail == null)
+            {
+                output.Message = "جزئیات محصول موردنظر یافت نشد";
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.NotFound;
+                return output;
+            }
+
+            _productDetailCommanRepository.Delete(DeleteDetail);
+            var affectedRows = await _unitOfWork.SaveChangesAsync();
+            if (affectedRows > 0)
+            {
+                output.Message = "جزئیات محصول با موفقیت حذف شد";
+                output.Success = true;
+            }
+            output.StatusCode = output.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
+            return output;
+        }
+        #endregion
+    }
+}

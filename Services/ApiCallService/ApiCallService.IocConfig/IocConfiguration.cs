@@ -1,7 +1,7 @@
 ﻿using ApiCallService.Application.Services.Internal.Auth;
 using ApiCallService.Application.Services.Internal.Category;
-using ApiCallService.Application.Services.Internal.CategoryWithProduct;
 using ApiCallService.Application.Services.Internal.Product;
+using ApiCallService.Application.Services.Internal.Transactions.Product;
 using ApiCallService.ApplicationContract.Interfaces.Internal.Auth;
 using ApiCallService.ApplicationContract.Interfaces.Internal.Category;
 using ApiCallService.ApplicationContract.Interfaces.Internal.CategoryWithProduct;
@@ -17,7 +17,7 @@ namespace ApiCallService.IocConfig
             services.AddScoped<IProductAppService,ProductAppService>();
             services.AddScoped<ICategoryAppService,CategoryAppService>();
             services.AddScoped<IAuthenticationAppService,AuthAppService>();
-            services.AddScoped<ICategoryWithProductAppService,CategoryWithProductAppService>();
+            services.AddScoped<IProductTransactionAppService,ProductTransactionsAppService>();
             return services;
         }
     }

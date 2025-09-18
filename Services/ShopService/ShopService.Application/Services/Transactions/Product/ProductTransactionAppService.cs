@@ -59,7 +59,7 @@ namespace ShopService.Application.Services.Transactions.Product
                     output.StatusCode = HttpStatusCode.Conflict;
                     return output;
                 }
-                var brandExist = await _productBrandQueryRepository.GetQueryAble()
+                var brandExist = await _productBrandQueryRepository.GetQueryable()
                     .AnyAsync(b => b.Name == productTransactionDto.ProductBrand.Name);
                 if (brandExist)
                 {

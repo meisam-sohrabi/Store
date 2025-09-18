@@ -12,7 +12,7 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.Produc
         {
             _context = context;
         }
-        public IQueryable<ProductDetailEntity> GetQueryAble()
+        public IQueryable<ProductDetailEntity> GetQueryable()
         {
             return _context.ProductDetails.AsQueryable();
         }

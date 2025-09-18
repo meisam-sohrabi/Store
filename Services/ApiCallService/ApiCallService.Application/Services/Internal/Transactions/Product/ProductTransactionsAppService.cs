@@ -1,28 +1,28 @@
 ﻿using ApiCallService.ApplicationContract.DTO.Base;
-using ApiCallService.ApplicationContract.DTO.Internal.CategoryWithProduct;
+using ApiCallService.ApplicationContract.DTO.Internal.Transaction;
 using ApiCallService.ApplicationContract.Interfaces.Internal.CategoryWithProduct;
 using Microsoft.AspNetCore.Http;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
-namespace ApiCallService.Application.Services.Internal.CategoryWithProduct
+namespace ApiCallService.Application.Services.Internal.Transactions.Product
 {
-    public class CategoryWithProductAppService : ICategoryWithProductAppService
+    public class ProductTransactionsAppService : IProductTransactionAppService
     {
         private readonly HttpClient _client;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CategoryWithProductAppService(HttpClient client,IHttpContextAccessor httpContextAccessor)
+        public ProductTransactionsAppService(HttpClient client, IHttpContextAccessor httpContextAccessor)
         {
             _client = client;
             _httpContextAccessor = httpContextAccessor;
         }
 
         #region Create
-        public async Task<BaseResponseDto<CategoryWithProductDto>> CreateCategoryWithProduct(CategoryWithProductDto categoryWithProductDto)
+        public async Task<BaseResponseDto<ProductTransactionDto>> CreateCategoryWithProduct(ProductTransactionDto productTransactionDto)
         {
-            var output = new BaseResponseDto<CategoryWithProductDto>
+            var output = new BaseResponseDto<ProductTransactionDto>
             {
                 Message = "خطا در درج دسته بندی و محصول",
                 Success = false,
@@ -33,14 +33,14 @@ namespace ApiCallService.Application.Services.Internal.CategoryWithProduct
             {
                 _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
-            var response = await _client.PostAsJsonAsync("https://localhost:44358/CategoryWithProduct/Create", categoryWithProductDto);
+            var response = await _client.PostAsJsonAsync("https://localhost:44358/Product/ProductTransaction", productTransactionDto);
             if (!response.IsSuccessStatusCode)
             {
                 output.Message = $"خطای سرور: {response.StatusCode}";
                 output.StatusCode = response.StatusCode;
                 output.Success = false;
             }
-            var content = await response.Content.ReadFromJsonAsync<BaseResponseDto<CategoryWithProductDto>>();
+            var content = await response.Content.ReadFromJsonAsync<BaseResponseDto<ProductTransactionDto>>();
             if (content != null)
             {
                 return content;

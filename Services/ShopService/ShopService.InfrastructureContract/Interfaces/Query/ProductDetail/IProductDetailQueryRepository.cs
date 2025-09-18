@@ -4,6 +4,6 @@ namespace ShopService.InfrastructureContract.Interfaces.Query.ProductDetail
 {
     public interface IProductDetailQueryRepository
     {
-        IQueryable<ProductDetailEntity> GetQueryAble();
+        IQueryable<ProductDetailEntity> GetQueryable();
     }
 }

@@ -46,6 +46,8 @@ using ShopService.InfrastructureContract.Interfaces.Query.ProductBrand;
 using ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.ProductBrand;
 using ShopService.InfrastructureContract.Interfaces.Query.ProductDetail;
 using ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.ProductDetail;
+using ShopService.Application.Services.ProductBrand;
+using ShopService.Application.Services.ProductDetail;
 namespace ShopService.IocConfig
 {
     public static class IocConfiguration
@@ -76,6 +78,8 @@ namespace ShopService.IocConfig
             services.AddScoped<ILogAppService, LogAppService>();
             services.AddScoped<CategoryAppService>();
             services.AddScoped<ProductAppService>();
+            services.AddScoped<ProductBrandAppService>();
+            services.AddScoped<ProductDetailAppService>();
             services.AddScoped<ProductTransactionAppService>();
             services.AddScoped<AccountAppService>();
             services.AddScoped<AuthAppService>();

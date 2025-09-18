@@ -28,7 +28,7 @@ namespace ShopService.Application.Services.Product
         }
 
         #region Create
-        public async Task<BaseResponseDto<ProductDto>> CreateProduct(ProductDto product)
+        public async Task<BaseResponseDto<ProductDto>> CreateProduct(ProductDto productDto)
         {
             var output = new BaseResponseDto<ProductDto>
             {
@@ -37,7 +37,7 @@ namespace ShopService.Application.Services.Product
                 StatusCode = HttpStatusCode.BadRequest
             };
             var categoryExist = await _categoryQueryRepository.GetQueryable()
-                .AnyAsync(c => c.Id == product.CategoryId);
+                .AnyAsync(c => c.Id == productDto.CategoryId);
             if (!categoryExist)
             {
                 output.Message = "دسته‌بندی موردنظر وجود ندارد";
@@ -45,12 +45,12 @@ namespace ShopService.Application.Services.Product
                 output.StatusCode = HttpStatusCode.NotFound;
                 return output;
             }
-            var mapped = _mapper.Map<ProductEntity>(product);
+            var mapped = _mapper.Map<ProductEntity>(productDto);
             _productCommandRepository.Add(mapped);
             var affectedRows = await _unitOfWork.SaveChangesAsync();
             if (affectedRows > 0)
             {
-                output.Message = $"محصول {product.Name} با موفقیت درج شد";
+                output.Message = $"محصول {productDto.Name} با موفقیت درج شد";
                 output.Success = true;
             }
             output.StatusCode = output.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
@@ -59,7 +59,7 @@ namespace ShopService.Application.Services.Product
         #endregion
 
         #region Edit
-        public async Task<BaseResponseDto<ProductDto>> EditProduct(int id, ProductDto product)
+        public async Task<BaseResponseDto<ProductDto>> EditProduct(int id, ProductDto productDto)
         {
             var output = new BaseResponseDto<ProductDto>
             {
@@ -69,7 +69,7 @@ namespace ShopService.Application.Services.Product
             };
 
             var categoryExist = await _categoryQueryRepository.GetQueryable()
-            .AnyAsync(c => c.Id == product.CategoryId);
+            .AnyAsync(c => c.Id == productDto.CategoryId);
 
             if (!categoryExist)
             {
@@ -91,7 +91,7 @@ namespace ShopService.Application.Services.Product
                 return output;
             }
 
-            var mapped = _mapper.Map(product, productexist);
+            var mapped = _mapper.Map(productDto, productexist);
             _productCommandRepository.Edit(mapped);
             var affectedRows = await _unitOfWork.SaveChangesAsync();
             if (affectedRows > 0)

@@ -9,9 +9,9 @@ namespace ApiCallService.Api.Controllers
     [ApiController]
     public class CategoryWithProductController : ControllerBase
     {
-        private readonly ICategoryWithProductAppService _categoryWithProductApi;
+        private readonly IProductTransactionAppService _categoryWithProductApi;
 
-        public CategoryWithProductController(ICategoryWithProductAppService categoryWithProductApi)
+        public CategoryWithProductController(IProductTransactionAppService categoryWithProductApi)
         {
             _categoryWithProductApi = categoryWithProductApi;
         }
