@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShopService.Application.Services.ProductBrand;
 using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.ProductBrand;
+using ShopService.ApplicationContract.Interfaces.ProductBrand;
 
 namespace ShopService.Api.Controllers
 {
@@ -10,9 +10,9 @@ namespace ShopService.Api.Controllers
     [ApiController]
     public class ProductBrandController : ControllerBase
     {
-        private readonly ProductBrandAppService _productBrandAppService;
+        private readonly IProductBrandAppService _productBrandAppService;
 
-        public ProductBrandController(ProductBrandAppService productBrandAppService)
+        public ProductBrandController(IProductBrandAppService productBrandAppService)
         {
             _productBrandAppService = productBrandAppService;
         }

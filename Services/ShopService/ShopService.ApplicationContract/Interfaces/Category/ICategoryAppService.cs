@@ -9,6 +9,6 @@ namespace ShopService.ApplicationContract.Interfaces.Category
         Task<BaseResponseDto<CategoryDto>> EditCategory(int id, CategoryDto categoryDto);
         Task<BaseResponseDto<CategoryDto>> DeleteCategory(int id);
         Task<BaseResponseDto<List<CategoryDto>>> GetAllCategories();
-        Task<BaseResponseDto<CategoryDto>> GetCategory(int id)
+        Task<BaseResponseDto<CategoryDto>> GetCategory(int id);
     }
 }

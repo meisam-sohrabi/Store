@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.ProductBrand;
+using ShopService.ApplicationContract.Interfaces.ProductBrand;
 using ShopService.Domain.Entities;
 using ShopService.InfrastructureContract.Interfaces;
 using ShopService.InfrastructureContract.Interfaces.Command.ProductBrand;
@@ -10,7 +11,7 @@ using System.Net;
 
 namespace ShopService.Application.Services.ProductBrand
 {
-    public class ProductBrandAppService
+    public class ProductBrandAppService : IProductBrandAppService
     {
         private readonly IProductBrandCommandRepository _productBrandCommandRepository;
         private readonly IProductBrandQueryRepository _productBrandQueryRepository;

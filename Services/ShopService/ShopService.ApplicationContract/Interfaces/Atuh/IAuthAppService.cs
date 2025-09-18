@@ -9,6 +9,6 @@ namespace ShopService.ApplicationContract.Interfaces.Atuh
         Task<BaseResponseDto<ShowUserInfoDto>> Register(CreateUserDto createUserDto);
         Task<BaseResponseDto<TokenDto>> Login(LoginDto loginDto);
         Task<BaseResponseDto<bool>> Logout();
-        Task<BaseResponseDto<TokenDto>> RefreshTokenRequest(RefreshTokenRequestDto refreshToken)
+        Task<BaseResponseDto<TokenDto>> RefreshTokenRequest(RefreshTokenRequestDto refreshToken);
     }
 }

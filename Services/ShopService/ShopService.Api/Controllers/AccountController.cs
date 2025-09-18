@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ShopService.Application.Services.Account;
+using ShopService.ApplicationContract.Interfaces.Account;
 
 namespace ShopService.Api.Controllers
 {
@@ -7,9 +7,9 @@ namespace ShopService.Api.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly AccountAppService _accountAppService;
+        private readonly IAccountAppService _accountAppService;
 
-        public AccountController(AccountAppService accountAppService)
+        public AccountController(IAccountAppService accountAppService)
         {
             _accountAppService = accountAppService;
         }

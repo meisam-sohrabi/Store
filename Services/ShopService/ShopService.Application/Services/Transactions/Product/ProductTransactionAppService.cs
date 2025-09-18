@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.Transaction;
+using ShopService.ApplicationContract.Interfaces.Transactions.Product;
 using ShopService.Domain.Entities;
 using ShopService.InfrastructureContract.Interfaces;
 using ShopService.InfrastructureContract.Interfaces.Command.Category;
@@ -14,7 +15,7 @@ using System.Net;
 
 namespace ShopService.Application.Services.Transactions.Product
 {
-    public class ProductTransactionAppService
+    public class ProductTransactionAppService : IProductTransactionAppService
     {
         private readonly ICategoryQueryRepository _categoryQueryRepository;
         private readonly ICategoryCommandRepository _categoryCommandRepository;
@@ -40,6 +41,8 @@ namespace ShopService.Application.Services.Transactions.Product
             _productDetailCommanRepository = productDetailCommanRepository;
             _productBrandQueryRepository = productBrandQueryRepository;
         }
+
+        // category and product we get the id then we create product and product detail
 
         public async Task<BaseResponseDto<ProductTransactionDto>> ProductTransaction(ProductTransactionDto productTransactionDto)
         {

@@ -48,6 +48,13 @@ using ShopService.InfrastructureContract.Interfaces.Query.ProductDetail;
 using ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.ProductDetail;
 using ShopService.Application.Services.ProductBrand;
 using ShopService.Application.Services.ProductDetail;
+using ShopService.ApplicationContract.Interfaces.Category;
+using ShopService.ApplicationContract.Interfaces.Product;
+using ShopService.ApplicationContract.Interfaces.ProductBrand;
+using ShopService.ApplicationContract.Interfaces.ProductDetail;
+using ShopService.ApplicationContract.Interfaces.Transactions.Product;
+using ShopService.ApplicationContract.Interfaces.Account;
+using ShopService.ApplicationContract.Interfaces.Atuh;
 namespace ShopService.IocConfig
 {
     public static class IocConfiguration
@@ -76,13 +83,13 @@ namespace ShopService.IocConfig
             services.AddScoped<ISessionQueryRepository,SessionQueryRepository>();
             services.AddScoped<ICookieAppService, CookieAppService>();
             services.AddScoped<ILogAppService, LogAppService>();
-            services.AddScoped<CategoryAppService>();
-            services.AddScoped<ProductAppService>();
-            services.AddScoped<ProductBrandAppService>();
-            services.AddScoped<ProductDetailAppService>();
-            services.AddScoped<ProductTransactionAppService>();
-            services.AddScoped<AccountAppService>();
-            services.AddScoped<AuthAppService>();
+            services.AddScoped<ICategoryAppService,CategoryAppService>();
+            services.AddScoped<IProductAppService,ProductAppService>();
+            services.AddScoped<IProductBrandAppService,ProductBrandAppService>();
+            services.AddScoped<IProductDetailAppService,ProductDetailAppService>();
+            services.AddScoped<IProductTransactionAppService,ProductTransactionAppService>();
+            services.AddScoped<IAccountAppService,AccountAppService>();
+            services.AddScoped<IAuthAppService,AuthAppService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             return services;
         }

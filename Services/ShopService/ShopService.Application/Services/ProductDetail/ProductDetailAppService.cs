@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.ProductDetail;
+using ShopService.ApplicationContract.Interfaces.ProductDetail;
 using ShopService.Domain.Entities;
 using ShopService.InfrastructureContract.Interfaces;
 using ShopService.InfrastructureContract.Interfaces.Command.ProductDetail;
@@ -10,7 +11,7 @@ using System.Net;
 
 namespace ShopService.Application.Services.ProductDetail
 {
-    public class ProductDetailAppService
+    public class ProductDetailAppService : IProductDetailAppService
     {
         private readonly IProductDetailCommanRepository _productDetailCommanRepository;
         private readonly IProductDetailQueryRepository _productDetailQueryRepository;

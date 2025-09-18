@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShopService.Application.Services.ProductDetail;
 using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.ProductDetail;
+using ShopService.ApplicationContract.Interfaces.ProductDetail;
 
 namespace ShopService.Api.Controllers
 {
@@ -10,9 +10,9 @@ namespace ShopService.Api.Controllers
     [ApiController]
     public class ProductDetailController : ControllerBase
     {
-        private readonly ProductDetailAppService _productDetailAppService;
+        private readonly IProductDetailAppService _productDetailAppService;
 
-        public ProductDetailController(ProductDetailAppService productDetailAppService)
+        public ProductDetailController(IProductDetailAppService productDetailAppService)
         {
             _productDetailAppService = productDetailAppService;
         }

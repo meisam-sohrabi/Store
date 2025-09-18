@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShopService.Application.Services.Auth;
 using ShopService.ApplicationContract.DTO.Account;
 using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.Security;
+using ShopService.ApplicationContract.Interfaces.Atuh;
 
 namespace ShopService.Api.Controllers
 {
@@ -11,9 +11,9 @@ namespace ShopService.Api.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        private readonly AuthAppService _authAppService;
+        private readonly IAuthAppService _authAppService;
 
-        public AuthenticationController(AuthAppService authAppService)
+        public AuthenticationController(IAuthAppService authAppService)
         {
             _authAppService = authAppService;
         }
@@ -33,7 +33,7 @@ namespace ShopService.Api.Controllers
 
         [HttpPost("Refresh")]
         [Authorize]
-        public async Task<BaseResponseDto<TokenDto>> RefreshToken([FromBody]RefreshTokenRequestDto refreshToken)
+        public async Task<BaseResponseDto<TokenDto>> RefreshToken([FromBody] RefreshTokenRequestDto refreshToken)
         {
             return await _authAppService.RefreshTokenRequest(refreshToken);
         }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ShopService.ApplicationContract.Interfaces;
+using ShopService.ApplicationContract.Interfaces.Account;
 using ShopService.InfrastructureContract.Interfaces;
 using ShopService.InfrastructureContract.Interfaces.Command.Account;
 using ShopService.InfrastructureContract.Interfaces.Command.Security;
@@ -7,7 +8,7 @@ using ShopService.InfrastructureContract.Interfaces.Query.Account;
 using ShopService.InfrastructureContract.Interfaces.Query.Security;
 namespace ShopService.Application.Services.Account
 {
-    public class AccountAppService
+    public class AccountAppService : IAccountAppService
     {
         private readonly IAccountCommandRepository _authenticationCommandRepository;
         private readonly IAccountQueryRepository _authenticatoinQueryRepository;
