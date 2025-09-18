@@ -27,7 +27,7 @@ namespace ShopService.Application.Services.ProductDetail
         }
 
         #region Create
-        public async Task<BaseResponseDto<ProductDetailDto>> CreateDetail(ProductDetailDto ProductDetailDto)
+        public async Task<BaseResponseDto<ProductDetailDto>> CreateProductDetail(ProductDetailDto ProductDetailDto)
         {
             var output = new BaseResponseDto<ProductDetailDto>
             {
@@ -49,7 +49,7 @@ namespace ShopService.Application.Services.ProductDetail
         #endregion
 
         #region Edit
-        public async Task<BaseResponseDto<ProductDetailDto>> EditDetail(int id, ProductDetailDto ProductDetailDto)
+        public async Task<BaseResponseDto<ProductDetailDto>> EditProductDetail(int id, ProductDetailDto ProductDetailDto)
         {
             var output = new BaseResponseDto<ProductDetailDto>
             {
@@ -79,7 +79,7 @@ namespace ShopService.Application.Services.ProductDetail
         #endregion
 
         #region GetAll
-        public async Task<BaseResponseDto<List<ProductDetailDto>>> GetAllDetails()
+        public async Task<BaseResponseDto<List<ProductDetailDto>>> GetAllProductDetails()
         {
             var output = new BaseResponseDto<List<ProductDetailDto>>
             {
@@ -109,11 +109,11 @@ namespace ShopService.Application.Services.ProductDetail
         #endregion
 
         #region Get
-        public async Task<BaseResponseDto<ProductDetailDto>> GetDetail(int id)
+        public async Task<BaseResponseDto<ProductDetailDto>> GetProductDetail(int id)
         {
             var output = new BaseResponseDto<ProductDetailDto>
             {
-                Message = "خطا در بازیابی دسته‌بندی",
+                Message = "خطا در بازیابی جزئیات محصول",
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
@@ -144,7 +144,7 @@ namespace ShopService.Application.Services.ProductDetail
         #endregion
 
         #region Delete
-        public async Task<BaseResponseDto<ProductDetailDto>> DeleteDetail(int id)
+        public async Task<BaseResponseDto<ProductDetailDto>> DeleteProductDetail(int id)
         {
             var output = new BaseResponseDto<ProductDetailDto>
             {

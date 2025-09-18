@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.Category;
 using ShopService.ApplicationContract.Interfaces;
+using ShopService.ApplicationContract.Interfaces.Category;
 using ShopService.Domain.Entities;
 using ShopService.InfrastructureContract.Interfaces;
 using ShopService.InfrastructureContract.Interfaces.Command.Category;
@@ -13,7 +14,7 @@ using System.Net;
 using System.Text.Json;
 namespace ShopService.Application.Services.Category
 {
-    public class CategoryAppService
+    public class CategoryAppService : ICategoryAppService
     {
         private readonly ICategoryQueryRepository _categoryQueryRepository;
         private readonly ICategoryCommandRepository _categoryCommandRepository;
@@ -59,7 +60,7 @@ namespace ShopService.Application.Services.Category
                 output.Message = $"دسته بندی {categoryDto.Name} با موفقیت درج شد";
                 output.Success = true;
             }
-            await _logAppService.LogAsync(JsonSerializer.Serialize(mapped), "Category",currentUserId);
+            await _logAppService.LogAsync(JsonSerializer.Serialize(mapped), "Category", currentUserId);
             output.StatusCode = output.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
             return output;
         }
@@ -74,16 +75,16 @@ namespace ShopService.Application.Services.Category
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
-            var categoryexist = await _categoryQueryRepository.GetQueryable()
+            var categoryExist = await _categoryQueryRepository.GetQueryable()
                 .FirstOrDefaultAsync(c => c.Id == id);
-            if (categoryexist == null)
+            if (categoryExist == null)
             {
                 output.Message = "دسته بندی یافت نشد";
                 output.Success = false;
                 output.StatusCode = HttpStatusCode.NotFound;
                 return output;
             }
-            var mapped = _mapper.Map(categoryDto, categoryexist);
+            var mapped = _mapper.Map(categoryDto, categoryExist);
             _categoryCommandRepository.Edit(mapped);
             var affectedRows = await _unitOfWork.SaveChangesAsync();
             if (affectedRows > 0)
@@ -105,17 +106,17 @@ namespace ShopService.Application.Services.Category
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
-            var categoryexist = await _categoryQueryRepository.GetQueryable()
+            var categoryExist = await _categoryQueryRepository.GetQueryable()
                 .FirstOrDefaultAsync(c => c.Id == id);
 
-            if (categoryexist == null)
+            if (categoryExist == null)
             {
                 output.Message = "دسته‌بندی موردنظر وجود ندارد";
                 output.Success = false;
                 output.StatusCode = HttpStatusCode.NotFound;
                 return output;
             }
-            if (categoryexist.Products.Any())
+            if (categoryExist.Products.Any())
             {
                 output.Message = "دسته بندی مورد نظر دارای محصولات می باشد امکان حذف وجود ندارد";
                 output.Success = false;
@@ -123,7 +124,7 @@ namespace ShopService.Application.Services.Category
                 return output;
             }
 
-            _categoryCommandRepository.Delete(categoryexist);
+            _categoryCommandRepository.Delete(categoryExist);
             var affectedRows = await _unitOfWork.SaveChangesAsync();
             if (affectedRows > 0)
             {

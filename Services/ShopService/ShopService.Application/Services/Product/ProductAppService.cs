@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.Product;
+using ShopService.ApplicationContract.Interfaces.Product;
 using ShopService.Domain.Entities;
 using ShopService.InfrastructureContract.Interfaces;
 using ShopService.InfrastructureContract.Interfaces.Command.Product;
@@ -11,7 +12,7 @@ using System.Net;
 
 namespace ShopService.Application.Services.Product
 {
-    public class ProductAppService
+    public class ProductAppService : IProductAppService
     {
         private readonly IProductQueryRespository _productQueryRespository;
         private readonly IProductCommandRepository _productCommandRepository;
@@ -79,10 +80,10 @@ namespace ShopService.Application.Services.Product
                 return output;
             }
 
-            var productexist = await _productQueryRespository.GetQueryAble()
+            var productExist = await _productQueryRespository.GetQueryAble()
                 .FirstOrDefaultAsync(c => c.Id == id);
 
-            if (productexist == null)
+            if (productExist == null)
             {
                 output.Message = "محصول موردنظر یافت نشد";
                 output.Success = false;
@@ -91,7 +92,7 @@ namespace ShopService.Application.Services.Product
                 return output;
             }
 
-            var mapped = _mapper.Map(productDto, productexist);
+            var mapped = _mapper.Map(productDto, productExist);
             _productCommandRepository.Edit(mapped);
             var affectedRows = await _unitOfWork.SaveChangesAsync();
             if (affectedRows > 0)
@@ -115,10 +116,10 @@ namespace ShopService.Application.Services.Product
                 StatusCode = HttpStatusCode.BadRequest
             };
 
-            var productexist = await _productQueryRespository.GetQueryAble()
+            var productExist = await _productQueryRespository.GetQueryAble()
                 .FirstOrDefaultAsync(c => c.Id == id);
 
-            if (productexist == null)
+            if (productExist == null)
             {
                 output.Message = "محصول موردنظر یافت نشد";
                 output.Success = false;
@@ -126,7 +127,7 @@ namespace ShopService.Application.Services.Product
                 return output;
             }
 
-            _productCommandRepository.Delete(productexist);
+            _productCommandRepository.Delete(productExist);
             var affectedRows = await _unitOfWork.SaveChangesAsync();
             if (affectedRows > 0)
             {
@@ -183,6 +184,10 @@ namespace ShopService.Application.Services.Product
             output.StatusCode = output.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
             return output;
         }
+        #endregion
+
+        #region Search
+        // To Do (advance search using join with string search)
         #endregion
 
     }

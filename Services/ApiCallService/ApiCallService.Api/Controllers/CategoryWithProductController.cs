@@ -1,5 +1,5 @@
 ﻿using ApiCallService.ApplicationContract.DTO.Base;
-using ApiCallService.ApplicationContract.DTO.Internal.CategoryWithProduct;
+using ApiCallService.ApplicationContract.DTO.Internal.Transaction;
 using ApiCallService.ApplicationContract.Interfaces.Internal.CategoryWithProduct;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,9 +17,9 @@ namespace ApiCallService.Api.Controllers
         }
 
         [HttpPost("Create")]
-        public async Task<BaseResponseDto<CategoryWithProductDto>> Create(CategoryWithProductDto categoryWithProductDto)
+        public async Task<BaseResponseDto<ProductTransactionDto>> Create(ProductTransactionDto productTransactionDto)
         {
-            return await _categoryWithProductApi.CreateCategoryWithProduct(categoryWithProductDto);
+            return await _categoryWithProductApi.ProductTransaction(productTransactionDto);
         }
     }
 }

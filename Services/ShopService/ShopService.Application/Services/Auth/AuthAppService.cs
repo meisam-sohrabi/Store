@@ -7,6 +7,7 @@ using ShopService.ApplicationContract.DTO.Account;
 using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.Security;
 using ShopService.ApplicationContract.Interfaces;
+using ShopService.ApplicationContract.Interfaces.Atuh;
 using ShopService.Domain.Entities;
 using ShopService.InfrastructureContract.Interfaces;
 using ShopService.InfrastructureContract.Interfaces.Command.Account;
@@ -24,7 +25,7 @@ using System.Text;
 
 namespace ShopService.Application.Services.Auth
 {
-    public class AuthAppService
+    public class AuthAppService : IAuthAppService
     {
         private readonly IAccountQueryRepository _accountQueryRepository;
         private readonly IConfiguration _configuration;

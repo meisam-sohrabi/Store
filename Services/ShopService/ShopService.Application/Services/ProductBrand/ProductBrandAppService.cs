@@ -27,11 +27,11 @@ namespace ShopService.Application.Services.ProductBrand
         }
 
         #region Create
-        public async Task<BaseResponseDto<ProductBrandDto>> CreateBrand(ProductBrandDto productBrandDto)
+        public async Task<BaseResponseDto<ProductBrandDto>> CreateProductBrand(ProductBrandDto productBrandDto)
         {
             var output = new BaseResponseDto<ProductBrandDto>
             {
-                Message = "خطا در درج برند محصول",
+                Message = "خطا در درج برند برند محصول",
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
@@ -57,7 +57,7 @@ namespace ShopService.Application.Services.ProductBrand
         #endregion
 
         #region Edit
-        public async Task<BaseResponseDto<ProductBrandDto>> EditBrand(int id,ProductBrandDto productBrandDto)
+        public async Task<BaseResponseDto<ProductBrandDto>> EditProductBrand(int id,ProductBrandDto productBrandDto)
         {
             var output = new BaseResponseDto<ProductBrandDto>
             {
@@ -87,7 +87,7 @@ namespace ShopService.Application.Services.ProductBrand
         #endregion
 
         #region GetAll
-        public async Task<BaseResponseDto<List<ProductBrandDto>>> GetAllBrands()
+        public async Task<BaseResponseDto<List<ProductBrandDto>>> GetAllProductBrands()
         {
             var output = new BaseResponseDto<List<ProductBrandDto>>
             {
@@ -116,7 +116,7 @@ namespace ShopService.Application.Services.ProductBrand
         #endregion
 
         #region Get
-        public async Task<BaseResponseDto<ProductBrandDto>> GetBrand(int id)
+        public async Task<BaseResponseDto<ProductBrandDto>> GetProductBrand(int id)
         {
             var output = new BaseResponseDto<ProductBrandDto>
             {
@@ -146,7 +146,7 @@ namespace ShopService.Application.Services.ProductBrand
         #endregion
 
         #region Delete
-        public async Task<BaseResponseDto<ProductBrandDto>> DeleteBrand(int id)
+        public async Task<BaseResponseDto<ProductBrandDto>> DeleteProductBrand(int id)
         {
             var output = new BaseResponseDto<ProductBrandDto>
             {

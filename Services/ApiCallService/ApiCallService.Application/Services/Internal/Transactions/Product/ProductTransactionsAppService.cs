@@ -20,7 +20,7 @@ namespace ApiCallService.Application.Services.Internal.Transactions.Product
         }
 
         #region Create
-        public async Task<BaseResponseDto<ProductTransactionDto>> CreateCategoryWithProduct(ProductTransactionDto productTransactionDto)
+        public async Task<BaseResponseDto<ProductTransactionDto>> ProductTransaction (ProductTransactionDto productTransactionDto)
         {
             var output = new BaseResponseDto<ProductTransactionDto>
             {
