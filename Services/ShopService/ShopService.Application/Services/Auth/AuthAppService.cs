@@ -223,7 +223,7 @@ namespace ShopService.Application.Services.Auth
             await _unitOfWork.SaveChangesAsync();
             DeleteCookie("AccessToken", "RefreshToken", "UserId");
 
-            output.Message = "کاربر با موفقیت لاگ اوت کرد";
+            output.Message = "کاربر با موفقیت خارج شد";
             output.StatusCode = HttpStatusCode.OK;
             output.Success = true;
             output.Data = true;

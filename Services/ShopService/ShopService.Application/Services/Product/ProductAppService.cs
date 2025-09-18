@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.Product;
+using ShopService.ApplicationContract.DTO.Search;
 using ShopService.ApplicationContract.Interfaces.Product;
 using ShopService.Domain.Entities;
 using ShopService.InfrastructureContract.Interfaces;
@@ -188,6 +189,12 @@ namespace ShopService.Application.Services.Product
 
         #region Search
         // To Do (advance search using join with string search)
+        public async Task<BaseResponseDto<SearchResponseDto>> AdvanceSearchProduct(SearchRequstDto searchRequstDto)
+        {
+            var category = await _categoryQueryRepository.GetQueryable().
+            var searchProduct = await _productQueryRespository.GetQueryAble()
+                .Where(c=> c.Name.Contains(searchRequstDto.Search) || c.Description.Contains(searchRequstDto.Search)).Join()
+        }
         #endregion
 
     }
