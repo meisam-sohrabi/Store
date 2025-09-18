@@ -37,7 +37,7 @@ namespace ShopService.Application.Services.ProductBrand
                 StatusCode = HttpStatusCode.BadRequest
             };
             var brand = await _productBrandQueryRepository.GetQueryable().AnyAsync(b => b.Name == productBrandDto.Name);
-            if (!brand)
+            if (brand)
             {
                 output.Message = "برند محصول از قبل ثبت شده است";
                 output.Success = false;

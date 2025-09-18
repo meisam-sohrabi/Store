@@ -18,7 +18,6 @@ namespace ApiCallService.Api.Controllers
         }
 
         [HttpPost("Create")]
-        [Authorize(Roles = "admin")]
         public async Task<BaseResponseDto<ProductDetailDto>> Create([FromBody] ProductDetailDto productDetailDto)
         {
             return await _productDetailAppService.CreateProductDetailAsync(productDetailDto);
@@ -26,7 +25,6 @@ namespace ApiCallService.Api.Controllers
         }
 
         [HttpPost("Edit/{id}")]
-        [Authorize(Roles = "admin")]
         public async Task<BaseResponseDto<ProductDetailDto>> Edit([FromRoute] int id, [FromBody] ProductDetailDto productDetailDto)
         {
             return await _productDetailAppService.EditProductDetailAsync(id, productDetailDto);
@@ -45,7 +43,6 @@ namespace ApiCallService.Api.Controllers
         }
 
         [HttpDelete("Delete/{id}")]
-        [Authorize(Roles = "admin")]
         public async Task<BaseResponseDto<ProductDetailDto>> Delete([FromRoute] int id)
         {
             return await _productDetailAppService.DeleteProductDetailAsync(id);

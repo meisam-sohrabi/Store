@@ -39,11 +39,13 @@ namespace ShopService.Application.Services.Auth
         private readonly IUnitOfWork _unitOfWork;
         private readonly ISessionCommandRepository _sessionCommandRepository;
         private readonly ISessionQueryRepository _sessionQueryRepository;
+        private readonly IUserAppService _userAppService;
 
         public AuthAppService(IAccountQueryRepository accountQueryRepository, IConfiguration configuration, IRefreshTokenQueryRepository refreshTokenQueryRepository
             , ICookieAppService cookieService, IAuthCommandRepository authCommandRepository, IMapper mapper, IAccountCommandRepository accountCommandRepository
             , IAuthQueryRepository authQueryRepository, IRefreshTokenCommandRepository refreshTokenCommandRepository, IUnitOfWork unitOfWork
-            , ISessionCommandRepository sessionCommandRepository, ISessionQueryRepository sessionQueryRepository)
+            , ISessionCommandRepository sessionCommandRepository, ISessionQueryRepository sessionQueryRepository
+            ,IUserAppService userAppService)
         {
             _accountQueryRepository = accountQueryRepository;
             _configuration = configuration;
@@ -57,6 +59,7 @@ namespace ShopService.Application.Services.Auth
             _unitOfWork = unitOfWork;
             _sessionCommandRepository = sessionCommandRepository;
             _sessionQueryRepository = sessionQueryRepository;
+            _userAppService = userAppService;
         }
 
         #region Register
@@ -189,8 +192,9 @@ namespace ShopService.Application.Services.Auth
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
-            var userId = _cookieService.GetCookie("UserId");
-            if(userId == null)
+            //var userId = _cookieService.GetCookie("UserId"); // cookie just used in category creation
+            var userId = _userAppService.GetCurrentUser(); // from httpcontext
+            if (userId == null)
             {
                 output.Message = "خطا در دریافت ایدی یوزر";
                 output.Success = false;
