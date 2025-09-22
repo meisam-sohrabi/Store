@@ -6,6 +6,7 @@ using ShopService.ApplicationContract.Interfaces.ProductBrand;
 using ShopService.Domain.Entities;
 using ShopService.InfrastructureContract.Interfaces;
 using ShopService.InfrastructureContract.Interfaces.Command.ProductBrand;
+using ShopService.InfrastructureContract.Interfaces.Query.Product;
 using ShopService.InfrastructureContract.Interfaces.Query.ProductBrand;
 using System.Net;
 
@@ -17,14 +18,17 @@ namespace ShopService.Application.Services.ProductBrand
         private readonly IProductBrandQueryRepository _productBrandQueryRepository;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IProductQueryRespository _productQueryRespository;
 
         public ProductBrandAppService(IProductBrandCommandRepository productBrandCommandRepository,
-            IProductBrandQueryRepository productBrandQueryRepository, IMapper mapper, IUnitOfWork unitOfWork)
+            IProductBrandQueryRepository productBrandQueryRepository, IMapper mapper, IUnitOfWork unitOfWork
+            ,IProductQueryRespository productQueryRespository)
         {
             _productBrandCommandRepository = productBrandCommandRepository;
             _productBrandQueryRepository = productBrandQueryRepository;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _productQueryRespository = productQueryRespository;
         }
 
         #region Create
@@ -58,7 +62,7 @@ namespace ShopService.Application.Services.ProductBrand
         #endregion
 
         #region Edit
-        public async Task<BaseResponseDto<ProductBrandDto>> EditProductBrand(int id,ProductBrandDto productBrandDto)
+        public async Task<BaseResponseDto<ProductBrandDto>> EditProductBrand(int id, ProductBrandDto productBrandDto)
         {
             var output = new BaseResponseDto<ProductBrandDto>
             {
@@ -66,8 +70,8 @@ namespace ShopService.Application.Services.ProductBrand
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
-            var brandExist = await _productBrandQueryRepository.GetQueryable().FirstOrDefaultAsync(b=> b.Id == id);
-            if(brandExist == null)
+            var brandExist = await _productBrandQueryRepository.GetQueryable().FirstOrDefaultAsync(b => b.Id == id);
+            if (brandExist == null)
             {
                 output.Message = "برند محصول یافت نشد";
                 output.Success = false;
@@ -75,14 +79,14 @@ namespace ShopService.Application.Services.ProductBrand
                 return output;
             }
             var mapped = _mapper.Map(productBrandDto, brandExist);
-             _productBrandCommandRepository.Edit(mapped);
+            _productBrandCommandRepository.Edit(mapped);
             var affectedRows = await _unitOfWork.SaveChangesAsync();
             if (affectedRows > 0)
             {
                 output.Message = "برند محصول با موفقیت به روزرسانی شد";
                 output.Success = true;
             }
-            output.StatusCode = output.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
+            output.StatusCode = output.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
             return output;
         }
         #endregion
@@ -110,7 +114,7 @@ namespace ShopService.Application.Services.ProductBrand
             }
             output.Message = "برند محصولات  با موفقیت دریافت شد";
             output.Success = true;
-            output.StatusCode = output.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
+            output.StatusCode = output.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
             output.Data = details;
             return output;
         }
@@ -139,7 +143,7 @@ namespace ShopService.Application.Services.ProductBrand
 
             output.Message = "برند محصول با موفقیت دریافت شد";
             output.Success = true;
-            output.StatusCode = output.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
+            output.StatusCode = output.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
             output.Data = brand;
 
             return output;
@@ -151,7 +155,7 @@ namespace ShopService.Application.Services.ProductBrand
         {
             var output = new BaseResponseDto<ProductBrandDto>
             {
-                Message = "خطا در حذف برند محصول",
+                Message = "خطا در حذف برند ",
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
@@ -166,15 +170,21 @@ namespace ShopService.Application.Services.ProductBrand
                 output.StatusCode = HttpStatusCode.NotFound;
                 return output;
             }
-
+            if (await _productQueryRespository.GetQueryable().AnyAsync(p=> p.ProductBrandId == id))
+            {
+                output.Message = "این برند محصولات فعال داره و نمی‌تونه حذف بشه";
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.BadRequest;
+                return output;
+            }
             _productBrandCommandRepository.Delete(brandExist);
             var affectedRows = await _unitOfWork.SaveChangesAsync();
             if (affectedRows > 0)
             {
-                output.Message = "برند محصول با موفقیت حذف شد";
+                output.Message = "برند  با موفقیت حذف شد";
                 output.Success = true;
             }
-            output.StatusCode = output.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
+            output.StatusCode = output.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
             return output;
         }
         #endregion

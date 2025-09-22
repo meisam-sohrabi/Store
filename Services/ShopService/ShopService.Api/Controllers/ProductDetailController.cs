@@ -19,7 +19,7 @@ namespace ShopService.Api.Controllers
 
         [HttpPost("Create")]
         [Authorize(Roles = "admin")]
-        public async Task<BaseResponseDto<ProductDetailDto>> Create([FromBody] ProductDetailDto productDetailDto)
+        public async Task<BaseResponseDto<ProductDetailResponseDto>> Create([FromBody] ProductDetailRequestDto productDetailDto)
         {
             return await _productDetailAppService.CreateProductDetail(productDetailDto);
 
@@ -27,26 +27,26 @@ namespace ShopService.Api.Controllers
 
         [HttpPost("Edit/{id}")]
         [Authorize(Roles = "admin")]
-        public async Task<BaseResponseDto<ProductDetailDto>> Edit([FromRoute] int id, [FromBody] ProductDetailDto productDetailDto)
+        public async Task<BaseResponseDto<ProductDetailResponseDto>> Edit([FromRoute] int id, [FromBody] ProductDetailRequestDto productDetailDto)
         {
             return await _productDetailAppService.EditProductDetail(id, productDetailDto);
         }
 
         [HttpGet("GetAll")]
-        public async Task<BaseResponseDto<List<ProductDetailDto>>> GetAll()
+        public async Task<BaseResponseDto<List<ProductDetailResponseDto>>> GetAll()
         {
             return await _productDetailAppService.GetAllProductDetails();
         }
 
         [HttpGet("GetById/{id}")]
-        public async Task<BaseResponseDto<ProductDetailDto>> GetById([FromRoute] int id)
+        public async Task<BaseResponseDto<ProductDetailResponseDto>> GetById([FromRoute] int id)
         {
             return await _productDetailAppService.GetProductDetail(id);
         }
 
         [HttpDelete("Delete/{id}")]
         [Authorize(Roles = "admin")]
-        public async Task<BaseResponseDto<ProductDetailDto>> Delete([FromRoute] int id)
+        public async Task<BaseResponseDto<ProductDetailResponseDto>> Delete([FromRoute] int id)
         {
             return await _productDetailAppService.DeleteProductDetail(id);
         }

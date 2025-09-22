@@ -6,10 +6,10 @@ using ApiCallService.Application.Services.Internal.ProductDetail;
 using ApiCallService.Application.Services.Internal.Transactions.Product;
 using ApiCallService.ApplicationContract.Interfaces.Internal.Auth;
 using ApiCallService.ApplicationContract.Interfaces.Internal.Category;
-using ApiCallService.ApplicationContract.Interfaces.Internal.CategoryWithProduct;
 using ApiCallService.ApplicationContract.Interfaces.Internal.Product;
 using ApiCallService.ApplicationContract.Interfaces.Internal.ProductBrand;
 using ApiCallService.ApplicationContract.Interfaces.Internal.ProductDetail;
+using ApiCallService.ApplicationContract.Interfaces.Internal.Transactions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ApiCallService.IocConfig

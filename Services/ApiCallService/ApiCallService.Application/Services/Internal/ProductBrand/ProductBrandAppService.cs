@@ -45,9 +45,7 @@ namespace ApiCallService.Application.Services.Internal.ProductBrand
             var content = await response.Content.ReadFromJsonAsync<BaseResponseDto<ProductBrandDto>>();
             if (content != null)
             {
-                output.Message = content.Message;
-                output.Success = content.Success;
-                output.StatusCode = content.Success ? content.StatusCode : content.StatusCode;
+                return content;
             }
             return output;
         }
@@ -78,9 +76,7 @@ namespace ApiCallService.Application.Services.Internal.ProductBrand
             var content = await response.Content.ReadFromJsonAsync<BaseResponseDto<ProductBrandDto>>();
             if (content != null)
             {
-                output.Message = content.Message;
-                output.Success = content.Success;
-                output.StatusCode = content.Success ? content.StatusCode : content.StatusCode;
+                return content;
             }
             return output;
         }
@@ -112,10 +108,7 @@ namespace ApiCallService.Application.Services.Internal.ProductBrand
             var deserialize = JsonConvert.DeserializeObject<BaseResponseDto<List<ProductBrandDto>>>(content);
             if (deserialize != null)
             {
-                output.Message = deserialize.Message;
-                output.Success = deserialize.Success;
-                output.StatusCode = deserialize.Success ? deserialize.StatusCode : deserialize.StatusCode;
-                output.Data = deserialize.Data;
+                return deserialize;
             }
             return output;
         }
@@ -146,10 +139,7 @@ namespace ApiCallService.Application.Services.Internal.ProductBrand
             var deserialize = JsonConvert.DeserializeObject<BaseResponseDto<ProductBrandDto>>(content);
             if (deserialize != null)
             {
-                output.Message = deserialize.Message;
-                output.Success = deserialize.Success;
-                output.StatusCode = deserialize.Success ? deserialize.StatusCode : deserialize.StatusCode;
-                output.Data = deserialize.Data;
+                   return deserialize;
             }
             return output;
 
@@ -181,9 +171,7 @@ namespace ApiCallService.Application.Services.Internal.ProductBrand
             var content = await response.Content.ReadFromJsonAsync<BaseResponseDto<ProductBrandDto>>();
             if (content != null)
             {
-                output.Message = content.Message;
-                output.Success = content.Success;
-                output.StatusCode = content.Success ? content.StatusCode : content.StatusCode;
+                return content;
             }
             return output;
         }

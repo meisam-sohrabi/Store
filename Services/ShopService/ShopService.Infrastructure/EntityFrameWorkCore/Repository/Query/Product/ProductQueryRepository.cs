@@ -15,7 +15,7 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.Produc
 
 
         #region Get
-        public IQueryable<ProductEntity> GetQueryAble()
+        public IQueryable<ProductEntity> GetQueryable()
         {
             return _context.Products.AsQueryable();
         }

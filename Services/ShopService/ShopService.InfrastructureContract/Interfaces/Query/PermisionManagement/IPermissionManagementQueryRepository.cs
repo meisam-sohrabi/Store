@@ -1,6 +1,6 @@
 ﻿namespace ShopService.InfrastructureContract.Interfaces.Query.PermisionManagement
 {
-    public interface IPermissionQueryRepository
+    public interface IPermissionManagementQueryRepository
     {
         Task<bool> UserExist(string id);
     }

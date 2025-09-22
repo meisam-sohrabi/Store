@@ -23,6 +23,7 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext
         public DbSet<UserSessionEntity> UserSessions { get; set; }
         public DbSet<ProductBrandEntity> ProductBrands { get; set; }
         public DbSet<ProductDetailEntity> ProductDetails { get; set; }
+        public DbSet<PermissionEntity> Permissions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,6 +33,7 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext
             modelBuilder.Entity<UserSessionEntity>().ToTable("UserSessions");
             modelBuilder.Entity<ProductBrandEntity>().ToTable("ProductBrands");
             modelBuilder.Entity<ProductDetailEntity>().ToTable("ProductDetails");
+            modelBuilder.Entity<PermissionEntity>().ToTable("Permissions");
             modelBuilder.Entity<ProductEntity>(entity =>
             {
                 entity.HasKey(e => e.Id);
@@ -46,7 +48,7 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext
             {
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Name).IsRequired().HasMaxLength(50);
-            });
+            }); // category can be unique 
             modelBuilder.Entity<CustomUserEntity>(entity =>
             {
                 entity.HasKey(e => e.Id);
@@ -72,7 +74,7 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext
                 entity.Property(p=> p.Name).IsRequired().HasMaxLength(30);
                 entity.Property(p=> p.Description).HasMaxLength(350);
                 entity.HasMany(e=> e.Products).WithOne(p=> p.ProductBrand).HasForeignKey(p=>p.ProductBrandId).OnDelete(DeleteBehavior.Restrict);
-            });
+            });// ProductBrand can be unique 
             modelBuilder.Entity<ProductDetailEntity>(entity =>
             {
                 entity.HasKey(e => e.Id);
@@ -81,6 +83,24 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext
                 entity.Property(p => p.Price).HasPrecision(18, 2);
                 entity.HasOne(p=> p.Product).WithMany(p=> p.ProductDetails).HasForeignKey(e=> e.ProductId).OnDelete(DeleteBehavior.Cascade);
             });
+            modelBuilder.Entity<PermissionEntity>(entity =>
+            {
+                entity.HasKey(p=> p.Id);
+                entity.Property(p => p.Resource).IsRequired();
+                entity.Property(p => p.Action).IsRequired();
+                entity.HasMany(p => p.Users).WithMany(u => u.Permissions).UsingEntity(j => j.ToTable("UserPermissions"));
+            });// Permission can be unique 
+
+
+
+
+
+
+
+
+
+
+
             base.OnModelCreating(modelBuilder);
         }
     }

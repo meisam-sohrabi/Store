@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ShopService.InfrastructureContract.Interfaces.Query.Account;
 
-namespace ShopService.Application.Services.Permission
+namespace ShopService.Application.Services.PermissionAttribute
 {
     public class PermissionAttribute : Attribute, IAsyncAuthorizationFilter
     {
@@ -20,7 +20,7 @@ namespace ShopService.Application.Services.Permission
             }
 
             var loadService = context.HttpContext.RequestServices.GetRequiredService<IAccountQueryRepository>();
-            var userExist = await loadService.GetQueryableUsers().AnyAsync(e => e.Id == userId);
+            var userExist = await loadService.GetQueryable().AnyAsync(e => e.Id == userId);
             if (!userExist)
             {
                 context.Result = new ForbidResult();

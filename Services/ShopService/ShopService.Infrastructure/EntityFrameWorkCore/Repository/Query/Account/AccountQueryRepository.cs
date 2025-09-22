@@ -16,7 +16,7 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.Accoun
         }
 
 
-        public  IQueryable<CustomUserEntity> GetQueryableUsers()
+        public  IQueryable<CustomUserEntity> GetQueryable()
         {
             return  _userManager.Users.AsQueryable();
         }
@@ -32,14 +32,6 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.Accoun
         }
 
 
-        public async Task<bool> RoleExist(string role)
-        {
-           return await _roleManager.RoleExistsAsync(role);
-        }
 
-        public async Task<IList<string>> Roles(CustomUserEntity user)
-        {
-            return await _userManager.GetRolesAsync(user);
-        }
     }
 }

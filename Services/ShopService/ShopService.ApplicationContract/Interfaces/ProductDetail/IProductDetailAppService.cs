@@ -5,11 +5,11 @@ namespace ShopService.ApplicationContract.Interfaces.ProductDetail
 {
     public interface IProductDetailAppService
     {
-        Task<BaseResponseDto<ProductDetailDto>> CreateProductDetail(ProductDetailDto ProductDetailDto);
+        Task<BaseResponseDto<ProductDetailResponseDto>> CreateProductDetail(ProductDetailRequestDto ProductDetailDto);
 
-        Task<BaseResponseDto<ProductDetailDto>> EditProductDetail(int id, ProductDetailDto ProductDetailDto);
-        Task<BaseResponseDto<List<ProductDetailDto>>> GetAllProductDetails();
-        Task<BaseResponseDto<ProductDetailDto>> GetProductDetail(int id);
-        Task<BaseResponseDto<ProductDetailDto>> DeleteProductDetail(int id);
+        Task<BaseResponseDto<ProductDetailResponseDto>> EditProductDetail(int id, ProductDetailRequestDto ProductDetailDto);
+        Task<BaseResponseDto<List<ProductDetailResponseDto>>> GetAllProductDetails();
+        Task<BaseResponseDto<ProductDetailResponseDto>> GetProductDetail(int id);
+        Task<BaseResponseDto<ProductDetailResponseDto>> DeleteProductDetail(int id);
     }
 }

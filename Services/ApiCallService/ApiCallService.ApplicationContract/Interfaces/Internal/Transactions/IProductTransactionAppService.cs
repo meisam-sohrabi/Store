@@ -1,7 +1,7 @@
 ﻿using ApiCallService.ApplicationContract.DTO.Base;
 using ApiCallService.ApplicationContract.DTO.Internal.Transaction;
 
-namespace ApiCallService.ApplicationContract.Interfaces.Internal.CategoryWithProduct
+namespace ApiCallService.ApplicationContract.Interfaces.Internal.Transactions
 {
     public interface IProductTransactionAppService
     {

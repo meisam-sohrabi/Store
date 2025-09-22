@@ -5,11 +5,11 @@ namespace ApiCallService.ApplicationContract.Interfaces.Internal.Product
 {
     public interface IProductAppService
     {
-        Task<BaseResponseDto<List<ProductDto>>> GetAllProductsAsync();
-        Task<BaseResponseDto<ProductDto>> GetProductByIdAsync(int id);
-        Task<BaseResponseDto<ProductDto>> CreateProductAsync(ProductDto productDto);
-        Task<BaseResponseDto<ProductDto>> EditProductAsync(int id, ProductDto productDto);
-        Task<BaseResponseDto<ProductDto>> DeleteProductAsync(int id);
+        Task<BaseResponseDto<List<ProductResponseDto>>> GetAllProductsAsync();
+        Task<BaseResponseDto<ProductResponseDto>> GetProductByIdAsync(int id);
+        Task<BaseResponseDto<ProductResponseDto>> CreateProductAsync(ProductRequestDto productDto);
+        Task<BaseResponseDto<ProductResponseDto>> EditProductAsync(int id, ProductRequestDto productDto);
+        Task<BaseResponseDto<ProductResponseDto>> DeleteProductAsync(int id);
 
     }
 }

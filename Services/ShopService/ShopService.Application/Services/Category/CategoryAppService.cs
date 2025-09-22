@@ -92,7 +92,7 @@ namespace ShopService.Application.Services.Category
                 output.Message = "دسته بندی با موفقیت به روزرسانی شد";
                 output.Success = true;
             }
-            output.StatusCode = output.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
+            output.StatusCode = output.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
             return output;
         }
         #endregion
@@ -116,7 +116,7 @@ namespace ShopService.Application.Services.Category
                 output.StatusCode = HttpStatusCode.NotFound;
                 return output;
             }
-            if (categoryExist.Products.Any())
+            if (await _categoryQueryRepository.GetQueryable().AnyAsync(c=> c.Id == id))
             {
                 output.Message = "دسته بندی مورد نظر دارای محصولات می باشد امکان حذف وجود ندارد";
                 output.Success = false;
@@ -131,7 +131,7 @@ namespace ShopService.Application.Services.Category
                 output.Message = "دسته‌بندی با موفقیت حذف شد";
                 output.Success = true;
             }
-            output.StatusCode = output.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
+            output.StatusCode = output.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
             return output;
         }
         #endregion
@@ -157,7 +157,7 @@ namespace ShopService.Application.Services.Category
             }
             output.Message = "دسته‌بندی ها با موفقیت دریافت شد";
             output.Success = true;
-            output.StatusCode = output.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
+            output.StatusCode = output.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
             output.Data = categories;
             return output;
         }
@@ -186,7 +186,7 @@ namespace ShopService.Application.Services.Category
 
             output.Message = "دسته‌بندی با موفقیت دریافت شد";
             output.Success = true;
-            output.StatusCode = output.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
+            output.StatusCode = output.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
             output.Data = category;
 
             return output;

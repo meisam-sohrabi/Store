@@ -1,6 +1,6 @@
 ﻿namespace ShopService.ApplicationContract.DTO.ProductDetail
 {
-    public class ProductDetailDto
+    public class ProductDetailResponseDto
     {
         public string Size { get; set; }
         public decimal Price { get; set; }

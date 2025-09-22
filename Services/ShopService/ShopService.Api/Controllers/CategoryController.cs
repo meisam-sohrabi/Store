@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopService.Application.Services.Permission;
+using ShopService.Application.Services.PermissionAttribute;
 using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.Category;
 using ShopService.ApplicationContract.Interfaces.Category;
@@ -34,6 +35,7 @@ namespace ShopService.Api.Controllers
         }
 
         [HttpGet("GetAll")]
+        [Authorize]
         public async Task<BaseResponseDto<List<CategoryDto>>> GetAll()
         {
             return await _categoryAppService.GetAllCategories();

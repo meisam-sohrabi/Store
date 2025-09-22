@@ -1,15 +1,14 @@
-﻿using ShopService.ApplicationContract.DTO.Category;
-using ShopService.ApplicationContract.DTO.Product;
-using ShopService.ApplicationContract.DTO.ProductBrand;
+﻿using ShopService.ApplicationContract.DTO.Product;
 using ShopService.ApplicationContract.DTO.ProductDetail;
 
 namespace ShopService.ApplicationContract.DTO.Transaction
 {
     public class ProductTransactionDto
     {
-        public CategoryDto Category { get; set; }
-        public ProductDto Product { get; set; }
-        public ProductBrandDto ProductBrand { get; set; }
-        public ProductDetailDto ProductDetail { get; set; }
+        public ProductRequestDto Product { get; set; }
+        public ProductDetailRequestDto ProductDetail { get; set; }
+        public int CategoryId { get; set; }
+        public int ProductBrandId { get; set; }
+
     }
 }

@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopService.Application.Services.Permission;
+using ShopService.Application.Services.PermissionAttribute;
 using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.Product;
+using ShopService.ApplicationContract.DTO.Search;
 using ShopService.ApplicationContract.DTO.Transaction;
 using ShopService.ApplicationContract.Interfaces.Product;
 using ShopService.ApplicationContract.Interfaces.Transactions.Product;
@@ -24,7 +26,7 @@ namespace ShopService.Api.Controllers
 
         [HttpPost("Create")]
         [Authorize(Roles = "admin")]
-        public async Task<BaseResponseDto<ProductDto>> Create([FromBody] ProductDto productDto)
+        public async Task<BaseResponseDto<ProductResponseDto>> Create([FromBody] ProductRequestDto productDto)
         {
             return await _productAppService.CreateProduct(productDto);
 
@@ -32,26 +34,26 @@ namespace ShopService.Api.Controllers
 
         [HttpPost("Edit/{id}")]
         [Authorize(Roles = "admin")]
-        public async Task<BaseResponseDto<ProductDto>> Edit([FromRoute] int id, [FromBody] ProductDto productDto)
+        public async Task<BaseResponseDto<ProductResponseDto>> Edit([FromRoute] int id, [FromBody] ProductRequestDto productDto)
         {
             return await _productAppService.EditProduct(id, productDto);
         }
 
         [HttpGet("GetAll")]
-        public async Task<BaseResponseDto<List<ProductDto>>> GetAll()
+        public async Task<BaseResponseDto<List<ProductResponseDto>>> GetAll()
         {
             return await _productAppService.GetAllProduct();
         }
 
         [HttpGet("GetById/{id}")]
-        public async Task<BaseResponseDto<ProductDto>> GetById([FromRoute] int id)
+        public async Task<BaseResponseDto<ProductResponseDto>> GetById([FromRoute] int id)
         {
             return await _productAppService.GetProduct(id);
         }
 
         [HttpDelete("Delete/{id}")]
         [Authorize(Roles = "admin")]
-        public async Task<BaseResponseDto<ProductDto>> Delete([FromRoute] int id)
+        public async Task<BaseResponseDto<ProductResponseDto>> Delete([FromRoute] int id)
         {
             return await _productAppService.DeleteProduct(id);
         }
@@ -62,6 +64,12 @@ namespace ShopService.Api.Controllers
         public async Task<BaseResponseDto<ProductTransactionDto>> ProductTransaction([FromBody] ProductTransactionDto productTransactionDto)
         {
             return await _productTransactionAppService.ProductTransaction(productTransactionDto);
+        }
+
+        [HttpPost("Search")]
+        public async Task<BaseResponseDto<List<SearchResponseDto>>> Search([FromBody] SearchRequstDto search)
+        {
+            return await _productAppService.AdvanceSearchProduct(search);
         }
     }
 }

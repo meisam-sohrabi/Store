@@ -5,6 +5,9 @@ using ShopService.ApplicationContract.DTO.Category;
 using ShopService.ApplicationContract.DTO.Product;
 using ShopService.ApplicationContract.DTO.ProductBrand;
 using ShopService.ApplicationContract.DTO.ProductDetail;
+using ShopService.ApplicationContract.DTO.Permission;
+using ShopService.ApplicationContract.DTO.Role;
+using Microsoft.AspNetCore.Identity;
 
 namespace ShopService.Application.Services.Mapping
 {
@@ -13,11 +16,14 @@ namespace ShopService.Application.Services.Mapping
         public MappingApplication()
         {
             CreateMap<CategoryDto, CategoryEntity>();
-            CreateMap<ProductDto, ProductEntity>();
+            CreateMap<ProductRequestDto, ProductEntity>();
             CreateMap<CustomUserEntity, CreateUserDto>();
             CreateMap<CustomUserEntity, ShowUserInfoDto >();
             CreateMap<ProductBrandDto, ProductBrandEntity >();
-            CreateMap<ProductDetailDto, ProductDetailEntity >();
+            CreateMap<ProductDetailRequestDto, ProductDetailEntity >();
+            CreateMap<PermissionDto, PermissionEntity >();
+            CreateMap<PermissionEntity, PermissionDto>();
+            CreateMap<RoleDto, IdentityRole>();
         }
     }
 }

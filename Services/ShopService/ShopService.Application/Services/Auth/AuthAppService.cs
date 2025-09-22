@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -10,12 +9,13 @@ using ShopService.ApplicationContract.Interfaces;
 using ShopService.ApplicationContract.Interfaces.Atuh;
 using ShopService.Domain.Entities;
 using ShopService.InfrastructureContract.Interfaces;
-using ShopService.InfrastructureContract.Interfaces.Command.Account;
 using ShopService.InfrastructureContract.Interfaces.Command.Auth;
+using ShopService.InfrastructureContract.Interfaces.Command.Role;
 using ShopService.InfrastructureContract.Interfaces.Command.Security;
 using ShopService.InfrastructureContract.Interfaces.Command.Session;
 using ShopService.InfrastructureContract.Interfaces.Query.Account;
 using ShopService.InfrastructureContract.Interfaces.Query.Auth;
+using ShopService.InfrastructureContract.Interfaces.Query.Role;
 using ShopService.InfrastructureContract.Interfaces.Query.Security;
 using ShopService.InfrastructureContract.Interfaces.Query.Session;
 using System.IdentityModel.Tokens.Jwt;
@@ -28,38 +28,40 @@ namespace ShopService.Application.Services.Auth
     public class AuthAppService : IAuthAppService
     {
         private readonly IAccountQueryRepository _accountQueryRepository;
+        private readonly IRoleQueryRepository _roleQueryRepository;
         private readonly IConfiguration _configuration;
         private readonly IRefreshTokenQueryRepository _refreshTokenQueryRepository;
         private readonly ICookieAppService _cookieService;
         private readonly IAuthCommandRepository _authCommandRepository;
         private readonly IMapper _mapper;
-        private readonly IAccountCommandRepository _accountCommandRepository;
         private readonly IAuthQueryRepository _authQueryRepository;
         private readonly IRefreshTokenCommandRepository _refreshTokenCommandRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ISessionCommandRepository _sessionCommandRepository;
         private readonly ISessionQueryRepository _sessionQueryRepository;
         private readonly IUserAppService _userAppService;
+        private readonly IRoleCommandRepository _roleCommandRepository;
 
-        public AuthAppService(IAccountQueryRepository accountQueryRepository, IConfiguration configuration, IRefreshTokenQueryRepository refreshTokenQueryRepository
-            , ICookieAppService cookieService, IAuthCommandRepository authCommandRepository, IMapper mapper, IAccountCommandRepository accountCommandRepository
+        public AuthAppService(IRoleQueryRepository roleQueryRepository, IConfiguration configuration, IRefreshTokenQueryRepository refreshTokenQueryRepository
+            , ICookieAppService cookieService, IAuthCommandRepository authCommandRepository, IMapper mapper
             , IAuthQueryRepository authQueryRepository, IRefreshTokenCommandRepository refreshTokenCommandRepository, IUnitOfWork unitOfWork
             , ISessionCommandRepository sessionCommandRepository, ISessionQueryRepository sessionQueryRepository
-            ,IUserAppService userAppService)
+            , IUserAppService userAppService, IRoleCommandRepository roleCommandRepository,IAccountQueryRepository accountQueryRepository)
         {
-            _accountQueryRepository = accountQueryRepository;
+            _roleQueryRepository = roleQueryRepository;
             _configuration = configuration;
             _refreshTokenQueryRepository = refreshTokenQueryRepository;
             _cookieService = cookieService;
             _authCommandRepository = authCommandRepository;
             _mapper = mapper;
-            _accountCommandRepository = accountCommandRepository;
             _authQueryRepository = authQueryRepository;
             _refreshTokenCommandRepository = refreshTokenCommandRepository;
             _unitOfWork = unitOfWork;
             _sessionCommandRepository = sessionCommandRepository;
             _sessionQueryRepository = sessionQueryRepository;
             _userAppService = userAppService;
+            _roleCommandRepository = roleCommandRepository;
+            _accountQueryRepository = accountQueryRepository;   
         }
 
         #region Register
@@ -67,7 +69,7 @@ namespace ShopService.Application.Services.Auth
         {
             var output = new BaseResponseDto<ShowUserInfoDto>
             {
-                Message = "خطا در درج کاربر",
+                Message = "خطا در ایجاد کاربر",
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
@@ -79,25 +81,19 @@ namespace ShopService.Application.Services.Auth
                 PhoneNumber = createUserDto.PhoneNumber
             };
             var result = await _authCommandRepository.Register(identityUser, createUserDto.Password);
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
-                var role = "admin";
-                var roleExist = await _accountQueryRepository.RoleExist(role);
-                if (!roleExist)
-                {
-                    var identityRole = new IdentityRole
-                    {
-                        Name = role
-                    };
-
-                    await _accountCommandRepository.AddRole(identityRole);
-                }
-                await _accountCommandRepository.AddRoleToUser(identityUser, role);
-
-                output.Message = "کاربر با موفقبت ایجاد شد";
-                output.Success = true;
-                output.Data = _mapper.Map<ShowUserInfoDto>(identityUser);
+                output.Message = "خطا در ایحاد کاربر";
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.BadRequest;
+                return output;  
             }
+            await _roleCommandRepository.AssignRoleToUser(identityUser, "user");
+
+            output.Message = "کاربر با موفقبت ایجاد شد";
+            output.Success = true;
+            output.Data = _mapper.Map<ShowUserInfoDto>(identityUser);
+
             output.StatusCode = output.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
             return output;
         }
@@ -112,7 +108,7 @@ namespace ShopService.Application.Services.Auth
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
-            var currentUser = await _accountQueryRepository.GetUserByUsername(loginDto.Username);
+            var currentUser = await _accountQueryRepository.GetQueryable().FirstOrDefaultAsync(c => c.UserName == loginDto.Username);
             if (currentUser == null)
             {
                 output.Message = "نام کاربری یا رمز عبور اشتباه است لطفا مجددا تلاش کنید";
@@ -137,7 +133,7 @@ namespace ShopService.Application.Services.Auth
                 return output;
             }
             var refreshToken = GenerateRefreshToken();
-            var refreshTokenExit = await _refreshTokenQueryRepository.GetRefreshTokenQueryable().FirstOrDefaultAsync(r=> r.UserId == currentUser.Id);
+            var refreshTokenExit = await _refreshTokenQueryRepository.GetRefreshTokenQueryable().FirstOrDefaultAsync(r => r.UserId == currentUser.Id);
             string finalRefreshToken;
             if (refreshTokenExit == null)
             {
@@ -177,7 +173,7 @@ namespace ShopService.Application.Services.Auth
 
             setCookie(acccessToken, finalRefreshToken, currentUser.Id);
 
-            output.StatusCode = output.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
+            output.StatusCode = output.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
             return output;
         }
 
@@ -201,7 +197,7 @@ namespace ShopService.Application.Services.Auth
                 output.StatusCode = HttpStatusCode.BadRequest;
                 return output;
             }
-            var refreshTokenExist = await _refreshTokenQueryRepository.GetRefreshTokenQueryable().FirstOrDefaultAsync(r=> r.UserId == userId);
+            var refreshTokenExist = await _refreshTokenQueryRepository.GetRefreshTokenQueryable().FirstOrDefaultAsync(r => r.UserId == userId);
             if (refreshTokenExist == null)
             {
                 output.Message = "رفرش توکن یافت نشد";
@@ -224,9 +220,9 @@ namespace ShopService.Application.Services.Auth
             DeleteCookie("AccessToken", "RefreshToken", "UserId");
 
             output.Message = "کاربر با موفقیت خارج شد";
-            output.StatusCode = HttpStatusCode.OK;
             output.Success = true;
             output.Data = true;
+            output.StatusCode = output.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
             return output;
 
         }
@@ -242,7 +238,7 @@ namespace ShopService.Application.Services.Auth
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
-            var refreshTokenExist = await _refreshTokenQueryRepository.GetRefreshTokenQueryable().FirstOrDefaultAsync(r=> r.Token == refreshToken.RefreshToken);
+            var refreshTokenExist = await _refreshTokenQueryRepository.GetRefreshTokenQueryable().FirstOrDefaultAsync(r => r.Token == refreshToken.RefreshToken);
             if (refreshTokenExist == null || refreshTokenExist.ExpiresAt < DateTime.Now)
             {
                 output.Message = "رفرش توکن نا معتبر";
@@ -250,7 +246,7 @@ namespace ShopService.Application.Services.Auth
                 output.StatusCode = HttpStatusCode.BadRequest;
                 return output;
             }
-            var user = await _accountQueryRepository.GetUserById(refreshTokenExist.UserId);
+            var user = await _accountQueryRepository.GetQueryable().Where(c => c.Id == refreshTokenExist.UserId).FirstOrDefaultAsync();
             if (user == null)
             {
                 output.Message = "یوزر یافت نشد";
@@ -288,7 +284,7 @@ namespace ShopService.Application.Services.Auth
         #region GenerateAccessToken
         private async Task<string> GenerateAccessToken(CustomUserEntity user)
         {
-            var userRole = await _accountQueryRepository.Roles(user);
+            var userRole = await _roleQueryRepository.Roles(user);
             var SecreteKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var signingKey = new SigningCredentials(SecreteKey, SecurityAlgorithms.HmacSha256);
             var claims = new List<Claim>

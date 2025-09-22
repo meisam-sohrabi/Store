@@ -1,7 +1,6 @@
 ﻿using ApiCallService.ApplicationContract.DTO.Base;
 using ApiCallService.ApplicationContract.DTO.Internal.ProductBrand;
 using ApiCallService.ApplicationContract.Interfaces.Internal.ProductBrand;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiCallService.Api.Controllers

@@ -1,6 +1,6 @@
 ﻿using ApiCallService.ApplicationContract.DTO.Base;
 using ApiCallService.ApplicationContract.DTO.Internal.Transaction;
-using ApiCallService.ApplicationContract.Interfaces.Internal.CategoryWithProduct;
+using ApiCallService.ApplicationContract.Interfaces.Internal.Transactions;
 using Microsoft.AspNetCore.Http;
 using System.Net;
 using System.Net.Http.Headers;
@@ -45,6 +45,7 @@ namespace ApiCallService.Application.Services.Internal.Transactions.Product
             {
                 return content;
             }
+            output.StatusCode = output.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
             return output;
         }
         #endregion

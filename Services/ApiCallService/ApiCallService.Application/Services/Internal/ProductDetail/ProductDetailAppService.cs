@@ -21,9 +21,9 @@ namespace ApiCallService.Application.Services.Internal.ProductDetail
         }
 
         #region Create
-        public async Task<BaseResponseDto<ProductDetailDto>> CreateProductDetailAsync(ProductDetailDto ProductDetailDto)
+        public async Task<BaseResponseDto<ProductDetailResponseDto>> CreateProductDetailAsync(ProductDetailRequestDto ProductDetailDto)
         {
-            var output = new BaseResponseDto<ProductDetailDto>
+            var output = new BaseResponseDto<ProductDetailResponseDto>
             {
                 Message = "خطا در درج جزئیات محصول",
                 Success = false,
@@ -42,21 +42,19 @@ namespace ApiCallService.Application.Services.Internal.ProductDetail
                 output.Success = false;
                 return output;
             }
-            var content = await response.Content.ReadFromJsonAsync<BaseResponseDto<ProductDetailDto>>();
+            var content = await response.Content.ReadFromJsonAsync<BaseResponseDto<ProductDetailResponseDto>>();
             if (content != null)
             {
-                output.Message = content.Message;
-                output.Success = content.Success;
-                output.StatusCode = content.Success ? content.StatusCode : content.StatusCode;
+                return content;
             }
             return output;
         }
         #endregion
 
         #region Edit
-        public async Task<BaseResponseDto<ProductDetailDto>> EditProductDetailAsync(int id, ProductDetailDto ProductDetailDto)
+        public async Task<BaseResponseDto<ProductDetailResponseDto>> EditProductDetailAsync(int id, ProductDetailRequestDto ProductDetailDto)
         {
-            var output = new BaseResponseDto<ProductDetailDto>
+            var output = new BaseResponseDto<ProductDetailResponseDto>
             {
                 Message = "خطا در به روز رسانی جزئیات محصول",
                 Success = false,
@@ -75,22 +73,21 @@ namespace ApiCallService.Application.Services.Internal.ProductDetail
                 output.Success = false;
                 return output;
             }
-            var content = await response.Content.ReadFromJsonAsync<BaseResponseDto<ProductDetailDto>>();
+            var content = await response.Content.ReadFromJsonAsync<BaseResponseDto<ProductDetailResponseDto>>();
             if (content != null)
             {
-                output.Message = content.Message;
-                output.Success = content.Success;
-                output.StatusCode = content.Success ? content.StatusCode : content.StatusCode;
+                return content;
+
             }
             return output;
         }
         #endregion
 
         #region GetAll
-        public async Task<BaseResponseDto<List<ProductDetailDto>>> GetAllProductDetailsAsync()
+        public async Task<BaseResponseDto<List<ProductDetailResponseDto>>> GetAllProductDetailsAsync()
 
         {
-            var output = new BaseResponseDto<List<ProductDetailDto>>
+            var output = new BaseResponseDto<List<ProductDetailResponseDto>>
             {
                 Message = "خطا در بازیابی  جزئیات محصولات ",
                 StatusCode = HttpStatusCode.BadRequest
@@ -109,22 +106,20 @@ namespace ApiCallService.Application.Services.Internal.ProductDetail
                 return output;
             }
             var content = await response.Content.ReadAsStringAsync();
-            var deserialize = JsonConvert.DeserializeObject<BaseResponseDto<List<ProductDetailDto>>>(content);
+            var deserialize = JsonConvert.DeserializeObject<BaseResponseDto<List<ProductDetailResponseDto>>>(content);
             if (deserialize != null)
             {
-                output.Message = deserialize.Message;
-                output.Success = deserialize.Success;
-                output.StatusCode = deserialize.Success ? deserialize.StatusCode : deserialize.StatusCode;
-                output.Data = deserialize.Data;
+                return deserialize;
+
             }
             return output;
         }
         #endregion
 
         #region Get
-        public async Task<BaseResponseDto<ProductDetailDto>> GetProductDetailByIdAsync(int id)
+        public async Task<BaseResponseDto<ProductDetailResponseDto>> GetProductDetailByIdAsync(int id)
         {
-            var output = new BaseResponseDto<ProductDetailDto>
+            var output = new BaseResponseDto<ProductDetailResponseDto>
             {
                 Message = "خطا در بازیابی جزئیات محصول",
                 StatusCode = HttpStatusCode.BadRequest
@@ -143,13 +138,11 @@ namespace ApiCallService.Application.Services.Internal.ProductDetail
                 return output;
             }
             var content = await response.Content.ReadAsStringAsync();
-            var deserialize = JsonConvert.DeserializeObject<BaseResponseDto<ProductDetailDto>>(content);
+            var deserialize = JsonConvert.DeserializeObject<BaseResponseDto<ProductDetailResponseDto>>(content);
             if (deserialize != null)
             {
-                output.Message = deserialize.Message;
-                output.Success = deserialize.Success;
-                output.StatusCode = deserialize.Success ? deserialize.StatusCode : deserialize.StatusCode;
-                output.Data = deserialize.Data;
+                return deserialize;
+
             }
             return output;
 
@@ -157,9 +150,9 @@ namespace ApiCallService.Application.Services.Internal.ProductDetail
         #endregion
 
         #region Delete
-        public async Task<BaseResponseDto<ProductDetailDto>> DeleteProductDetailAsync(int id)
+        public async Task<BaseResponseDto<ProductDetailResponseDto>> DeleteProductDetailAsync(int id)
         {
-            var output = new BaseResponseDto<ProductDetailDto>
+            var output = new BaseResponseDto<ProductDetailResponseDto>
             {
                 Message = "خطا در حذف برند جزئیات محصول",
                 Success = false,
@@ -178,12 +171,10 @@ namespace ApiCallService.Application.Services.Internal.ProductDetail
                 output.Success = false;
                 return output;
             }
-            var content = await response.Content.ReadFromJsonAsync<BaseResponseDto<ProductDetailDto>>();
+            var content = await response.Content.ReadFromJsonAsync<BaseResponseDto<ProductDetailResponseDto>>();
             if (content != null)
             {
-                output.Message = content.Message;
-                output.Success = content.Success;
-                output.StatusCode = content.Success ? content.StatusCode : content.StatusCode;
+                return content;
             }
             return output;
         }

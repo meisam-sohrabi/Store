@@ -8,7 +8,7 @@ namespace ApiCallService.ApplicationContract.DTO.Internal.Transaction
     public class ProductTransactionDto
     {
         public CategoryDto Category { get; set; }
-        public ProductDto Product { get; set; }
+        public ProductRequestDto Product { get; set; }
         public ProductBrandDto ProductBrand { get; set; }
         public ProductDetailDto ProductDetail { get; set; }
     }

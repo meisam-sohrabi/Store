@@ -42,8 +42,7 @@ namespace ShopService.Application.Services.Transactions.Product
             _productBrandQueryRepository = productBrandQueryRepository;
         }
 
-        // category and product we get the id then we create product and product detail
-
+        #region Transaction
         public async Task<BaseResponseDto<ProductTransactionDto>> ProductTransaction(ProductTransactionDto productTransactionDto)
         {
             var output = new BaseResponseDto<ProductTransactionDto>
@@ -55,33 +54,26 @@ namespace ShopService.Application.Services.Transactions.Product
             try
             {
                 var categoryExist = await _categoryQueryRepository.GetQueryable()
-                    .AnyAsync(c => c.Name == productTransactionDto.Category.Name);
-                if (categoryExist)
+                    .FirstOrDefaultAsync(c => c.Id == productTransactionDto.CategoryId);
+                if (categoryExist == null)
                 {
-                    output.Message = "دسته بندی از قبل ثبت شده است";
+                    output.Message = "دسته بندی یافت نشد";
                     output.StatusCode = HttpStatusCode.Conflict;
                     return output;
                 }
                 var brandExist = await _productBrandQueryRepository.GetQueryable()
-                    .AnyAsync(b => b.Name == productTransactionDto.ProductBrand.Name);
-                if (brandExist)
+                    .FirstOrDefaultAsync(b => b.Id == productTransactionDto.ProductBrandId);
+                if (brandExist == null)
                 {
-                    output.Message = "برند از قبل ثبت شده است";
+                    output.Message = "برند یافت نشد";
                     output.StatusCode = HttpStatusCode.Conflict;
                     return output;
                 }
                 await _unitOfWork.BeginTransactionAsync();
-                var category = _mapper.Map<CategoryEntity>(productTransactionDto.Category);
-                _categoryCommandRepository.Add(category);
-                await _unitOfWork.SaveChangesAsync();
-
-                var brand = _mapper.Map<ProductBrandEntity>(productTransactionDto.ProductBrand);
-                _productBrandCommandRepository.Add(brand);
-                await _unitOfWork.SaveChangesAsync();
 
                 var product = _mapper.Map<ProductEntity>(productTransactionDto.Product);
-                product.CategoryId = category.Id;
-                product.ProductBrandId = brand.Id;
+                product.CategoryId = categoryExist.Id;
+                product.ProductBrandId = brandExist.Id;
                 _productCommandRepository.Add(product);
                 await _unitOfWork.SaveChangesAsync();
 
@@ -92,7 +84,7 @@ namespace ShopService.Application.Services.Transactions.Product
 
                 await _unitOfWork.CommitTransactionAsync();
 
-                output.Message = "دسته بندی ، برند ، محصولات و جزئیات  با موفقیت ایجاد شد";
+                output.Message = "محصولات و جزئیات  با موفقیت ایجاد شد";
                 output.Success = true;
                 output.StatusCode = HttpStatusCode.Created;
 
@@ -109,5 +101,7 @@ namespace ShopService.Application.Services.Transactions.Product
             }
             return output;
         }
+        #endregion
+
     }
 }

@@ -7,6 +7,7 @@ namespace ShopService.Domain.Entities
         public string FullName { get; set; }
         public RefreshTokenEntity RefreshToken { get; set; }
         public ICollection<UserSessionEntity> Sessions { get; set; } = new List<UserSessionEntity>();
+        public ICollection<PermissionEntity > Permissions { get; set; } = new List<PermissionEntity>();
 
     }
 }
