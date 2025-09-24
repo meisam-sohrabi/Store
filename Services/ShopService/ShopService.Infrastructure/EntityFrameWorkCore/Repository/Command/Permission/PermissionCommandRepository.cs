@@ -24,7 +24,15 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Command.Perm
 
         public void Update(PermissionEntity permissionEntity)
         {
-            _context.Permissions.Update(permissionEntity);
+            var entry = _context.Entry(permissionEntity);
+            var key = _context.Model.FindEntityType(typeof(ProductEntity))?.FindPrimaryKey();
+            if (key != null)
+            {
+                foreach (var property in key.Properties)
+                {
+                    entry.Property(property.Name).IsModified = false;
+                }
+            }
         }
     }
 }

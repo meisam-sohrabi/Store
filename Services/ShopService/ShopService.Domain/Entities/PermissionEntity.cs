@@ -9,7 +9,7 @@ namespace ShopService.Domain.Entities
         public string Resource { get; set; } 
         public string Action { get; set; }
         public string? Description { get; set; }
-        public ICollection<CustomUserEntity> Users { get; set; } = new List<CustomUserEntity>();
+        public ICollection<UserPermissoinEntity> UserPermissions { get; set; } = new List<UserPermissoinEntity>();
 
     }
 }

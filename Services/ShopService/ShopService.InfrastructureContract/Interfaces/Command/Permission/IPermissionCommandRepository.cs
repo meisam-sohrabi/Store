@@ -1,4 +1,5 @@
-﻿using ShopService.Domain.Entities;
+﻿using Microsoft.AspNetCore.Identity;
+using ShopService.Domain.Entities;
 
 namespace ShopService.InfrastructureContract.Interfaces.Command.Permission
 {
@@ -7,5 +8,6 @@ namespace ShopService.InfrastructureContract.Interfaces.Command.Permission
         void Add(PermissionEntity permissionEntity);
         void Update(PermissionEntity permissionEntity);
         void Delete(PermissionEntity permissionEntity);
+
     }
 }

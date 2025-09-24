@@ -30,7 +30,18 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Command.Cate
         #region Edit
         public void Edit(CategoryEntity category)
         {
-            _context.Update(category);
+            var entry = _context.Entry(category);
+
+            var key = _context.Model.FindEntityType(typeof(CategoryEntity))?.FindPrimaryKey();
+            if (key != null)
+            {
+                foreach (var property in key.Properties)
+                {
+
+                    entry.Property(property.Name).IsModified = false;
+
+                }
+            }
         }
         #endregion
     }

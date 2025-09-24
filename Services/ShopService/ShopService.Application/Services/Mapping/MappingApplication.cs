@@ -8,6 +8,7 @@ using ShopService.ApplicationContract.DTO.ProductDetail;
 using ShopService.ApplicationContract.DTO.Permission;
 using ShopService.ApplicationContract.DTO.Role;
 using Microsoft.AspNetCore.Identity;
+using ShopService.ApplicationContract.DTO.UserPermission;
 
 namespace ShopService.Application.Services.Mapping
 {
@@ -24,6 +25,7 @@ namespace ShopService.Application.Services.Mapping
             CreateMap<PermissionDto, PermissionEntity >();
             CreateMap<PermissionEntity, PermissionDto>();
             CreateMap<RoleDto, IdentityRole>();
+            CreateMap<UserPermissionDto, UserPermissoinEntity>();
         }
     }
 }

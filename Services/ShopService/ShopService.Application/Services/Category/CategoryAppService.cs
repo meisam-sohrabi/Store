@@ -85,7 +85,7 @@ namespace ShopService.Application.Services.Category
                 return output;
             }
             var mapped = _mapper.Map(categoryDto, categoryExist);
-            _categoryCommandRepository.Edit(mapped);
+            _categoryCommandRepository.Edit(categoryExist);
             var affectedRows = await _unitOfWork.SaveChangesAsync();
             if (affectedRows > 0)
             {

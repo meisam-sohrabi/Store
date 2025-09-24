@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ShopService.Application.Services.UserPermissoin;
 using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.Permission;
+using ShopService.ApplicationContract.DTO.UserPermission;
 using ShopService.ApplicationContract.Interfaces.Permission;
 
 namespace ShopService.Api.Controllers
@@ -11,10 +13,12 @@ namespace ShopService.Api.Controllers
     public class PermissionController : ControllerBase
     {
         private readonly IPermissionAppService _permissionAppService;
+        private readonly IUserPermissionAppService _userPermissionAppService;
 
-        public PermissionController(IPermissionAppService permissionAppService)
+        public PermissionController(IPermissionAppService permissionAppService, IUserPermissionAppService userPermissionAppService)
         {
             _permissionAppService = permissionAppService;
+            _userPermissionAppService = userPermissionAppService;
         }
 
         [HttpPost("Create")]
@@ -37,6 +41,18 @@ namespace ShopService.Api.Controllers
         public async Task<BaseResponseDto<List<PermissionDto>>> GetAll()
         {
             return await _permissionAppService.GetAllPermissions();
+        }
+
+        [HttpPost("AssignPermission")]
+        public async Task<BaseResponseDto<UserPermissionDto>> AssignPermission([FromBody] UserPermissionDto userPermissionDto)
+        {
+            return await _userPermissionAppService.AssignPermission(userPermissionDto);
+        }
+
+        [HttpPost("RevokePermission")]
+        public async Task<BaseResponseDto<UserPermissionDto>> RevokePermission([FromBody] UserPermissionDto userPermissionDto)
+        {
+            return await _userPermissionAppService.RevokePermission(userPermissionDto);
         }
 
         [HttpDelete("Delete/{id}")]

@@ -40,15 +40,15 @@ namespace ShopService.Api.Controllers
         }
 
         [HttpPost("AssignRole")]
-        public async Task<BaseResponseDto<RoleDto>> AssignRole([FromBody] string userId,string role)
+        public async Task<BaseResponseDto<RoleDto>> AssignRole([FromBody] AssignOrRevokeRoleDto assignOrRevokeRoleDto)
         {
-            return await _roleAppService.AssignRole(userId,role);
+            return await _roleAppService.AssignRole(assignOrRevokeRoleDto);
         }
 
         [HttpPost("RevokeRole")]
-        public async Task<BaseResponseDto<RoleDto>> RevokeRole([FromBody] string userId, string role)
+        public async Task<BaseResponseDto<RoleDto>> RevokeRole([FromBody] AssignOrRevokeRoleDto assignOrRevokeRoleDto)
         {
-            return await _roleAppService.RevokeRole(userId, role);
+            return await _roleAppService.RevokeRole(assignOrRevokeRoleDto);
         }
 
         [HttpDelete("Delete")]

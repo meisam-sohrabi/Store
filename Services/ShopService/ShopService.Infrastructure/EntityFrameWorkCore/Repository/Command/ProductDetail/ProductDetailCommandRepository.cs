@@ -24,7 +24,15 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Command.Prod
 
         public void Edit(ProductDetailEntity productDetail)
         {
-            _context.ProductDetails.Update(productDetail);
+            var entry = _context.Entry(productDetail);
+            var key = _context.Model.FindEntityType(typeof(ProductEntity))?.FindPrimaryKey();
+            if (key != null)
+            {
+                foreach (var property in key.Properties)
+                {
+                    entry.Property(property.Name).IsModified = false;
+                }
+            }
         }
     }
 }

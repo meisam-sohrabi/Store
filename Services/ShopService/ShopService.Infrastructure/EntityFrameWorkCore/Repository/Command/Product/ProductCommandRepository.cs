@@ -30,7 +30,15 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Command.Prod
         #region Edit
         public void Edit(ProductEntity product)
         {
-            _context.Update(product);
+            var entry = _context.Entry(product);
+            var key = _context.Model.FindEntityType(typeof(ProductEntity))?.FindPrimaryKey();
+            if (key != null)
+            {
+                foreach (var property in key.Properties)
+                {
+                    entry.Property(property.Name).IsModified = false;
+                }
+            }
         }
         #endregion
 

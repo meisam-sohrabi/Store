@@ -32,7 +32,7 @@ namespace ShopService.Application.Services.Role
         {
             var output = new BaseResponseDto<RoleDto>
             {
-                Message = "خطا در دریافت رول",
+                Message = "خطا در سلب رول از کاربر",
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
@@ -72,7 +72,7 @@ namespace ShopService.Application.Services.Role
         {
             var output = new BaseResponseDto<RoleDto>
             {
-                Message = "خطا در دریافت رول",
+                Message = "خطا در اختصاص رول به کاربر",
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };

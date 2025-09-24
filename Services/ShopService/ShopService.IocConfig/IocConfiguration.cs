@@ -12,6 +12,7 @@ using ShopService.Application.Services.ProductDetail;
 using ShopService.Application.Services.Role;
 using ShopService.Application.Services.Transactions.Product;
 using ShopService.Application.Services.User;
+using ShopService.Application.Services.UserPermissoin;
 using ShopService.ApplicationContract.Interfaces;
 using ShopService.ApplicationContract.Interfaces.Account;
 using ShopService.ApplicationContract.Interfaces.Atuh;
@@ -33,6 +34,7 @@ using ShopService.Infrastructure.EntityFrameWorkCore.Repository.Command.ProductD
 using ShopService.Infrastructure.EntityFrameWorkCore.Repository.Command.Role;
 using ShopService.Infrastructure.EntityFrameWorkCore.Repository.Command.Security;
 using ShopService.Infrastructure.EntityFrameWorkCore.Repository.Command.Session;
+using ShopService.Infrastructure.EntityFrameWorkCore.Repository.Command.UserPermission;
 using ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.Account;
 using ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.Auth;
 using ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.Category;
@@ -44,6 +46,7 @@ using ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.ProductDet
 using ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.Role;
 using ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.Security;
 using ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.Session;
+using ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.UserPermission;
 using ShopService.Infrastructure.EntityFrameWorkCore.UnitOfWork;
 using ShopService.InfrastructureContract.Interfaces;
 using ShopService.InfrastructureContract.Interfaces.Command.Account;
@@ -56,6 +59,7 @@ using ShopService.InfrastructureContract.Interfaces.Command.ProductDetail;
 using ShopService.InfrastructureContract.Interfaces.Command.Role;
 using ShopService.InfrastructureContract.Interfaces.Command.Security;
 using ShopService.InfrastructureContract.Interfaces.Command.Session;
+using ShopService.InfrastructureContract.Interfaces.Command.UserPermission;
 using ShopService.InfrastructureContract.Interfaces.Query.Account;
 using ShopService.InfrastructureContract.Interfaces.Query.Auth;
 using ShopService.InfrastructureContract.Interfaces.Query.Category;
@@ -67,6 +71,7 @@ using ShopService.InfrastructureContract.Interfaces.Query.ProductDetail;
 using ShopService.InfrastructureContract.Interfaces.Query.Role;
 using ShopService.InfrastructureContract.Interfaces.Query.Security;
 using ShopService.InfrastructureContract.Interfaces.Query.Session;
+using ShopService.InfrastructureContract.Interfaces.Query.UserPermission;
 namespace ShopService.IocConfig
 {
     public static class IocConfiguration
@@ -79,6 +84,8 @@ namespace ShopService.IocConfig
             services.AddScoped<IRoleQueryRepository, RoleQueryRepository>();
             services.AddScoped<IPermissionCommandRepository,PermissionCommandRepository>();
             services.AddScoped<IPermissionQueryRepository, PermissionQueryRepository>();
+            services.AddScoped<IUserPermissionCommandRepository, UserPermissionCommandRepository>();
+            services.AddScoped<IUserPermissionQueryRepository, UserPermissionQueryRepository>();
             services.AddScoped<IUserAppService, UserAppService>();  
             services.AddScoped<ICategoryCommandRepository, CategoryCommandRepository>();
             services.AddScoped<ICategoryQueryRepository, CategoryQueryRepository>();
@@ -98,9 +105,10 @@ namespace ShopService.IocConfig
             services.AddScoped<ISessionCommandRepository,SessionCommandRepository>();
             services.AddScoped<ISessionQueryRepository,SessionQueryRepository>();
             services.AddScoped<ICookieAppService, CookieAppService>();
-            services.AddScoped<ILogAppService, LogAppService>();
+            services.AddSingleton<ILogAppService, LogAppService>(); // log should be singleton
             services.AddScoped<IRoleAppService, RoleAppService>();
             services.AddScoped<IPermissionAppService, PermissionAppService>();
+            services.AddScoped<IUserPermissionAppService, UserPermissionAppService>();
             services.AddScoped<ICategoryAppService,CategoryAppService>();
             services.AddScoped<IProductAppService,ProductAppService>();
             services.AddScoped<IProductBrandAppService,ProductBrandAppService>();

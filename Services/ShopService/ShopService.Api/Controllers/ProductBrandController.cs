@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ShopService.Application.Services.Attributes;
 using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.ProductBrand;
 using ShopService.ApplicationContract.Interfaces.ProductBrand;
@@ -19,6 +20,7 @@ namespace ShopService.Api.Controllers
 
         [HttpPost("Create")]
         [Authorize(Roles = "admin")]
+        [GeneralPermission(Resource:"ProductBrandController",Action:"Create")]
         public async Task<BaseResponseDto<ProductBrandDto>> Create([FromBody] ProductBrandDto productDto)
         {
             return await _productBrandAppService.CreateProductBrand(productDto);

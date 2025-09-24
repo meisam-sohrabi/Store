@@ -25,7 +25,15 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Command.Prod
 
         public void Edit(ProductBrandEntity productBrand)
         {
-            _context.ProductBrands.Update(productBrand);
+            var entry = _context.Entry(productBrand);
+            var key = _context.Model.FindEntityType(typeof(ProductEntity))?.FindPrimaryKey();
+            if (key != null)
+            {
+                foreach (var property in key.Properties)
+                {
+                    entry.Property(property.Name).IsModified = false;
+                }
+            }
         }
     }
 }

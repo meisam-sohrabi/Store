@@ -24,7 +24,7 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext
         public DbSet<ProductBrandEntity> ProductBrands { get; set; }
         public DbSet<ProductDetailEntity> ProductDetails { get; set; }
         public DbSet<PermissionEntity> Permissions { get; set; }
-
+        public DbSet<UserPermissoinEntity> UserPermissions { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ProductEntity>().ToTable("Products");
@@ -63,35 +63,46 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext
             modelBuilder.Entity<UserSessionEntity>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.HasOne(e=> e.User)
-                .WithMany(e=> e.Sessions)
-                .HasForeignKey(e=> e.UserId)
+                entity.HasOne(e => e.User)
+                .WithMany(e => e.Sessions)
+                .HasForeignKey(e => e.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
             });
             modelBuilder.Entity<ProductBrandEntity>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.Property(p=> p.Name).IsRequired().HasMaxLength(30);
-                entity.Property(p=> p.Description).HasMaxLength(350);
-                entity.HasMany(e=> e.Products).WithOne(p=> p.ProductBrand).HasForeignKey(p=>p.ProductBrandId).OnDelete(DeleteBehavior.Restrict);
+                entity.Property(p => p.Name).IsRequired().HasMaxLength(30);
+                entity.Property(p => p.Description).HasMaxLength(350);
+                entity.HasMany(e => e.Products).WithOne(p => p.ProductBrand).HasForeignKey(p => p.ProductBrandId).OnDelete(DeleteBehavior.Restrict);
             });// ProductBrand can be unique 
             modelBuilder.Entity<ProductDetailEntity>(entity =>
             {
                 entity.HasKey(e => e.Id);
-                entity.Property(p=> p.Size).IsRequired().HasMaxLength(30);
-                entity.Property(p=> p.Description).HasMaxLength(350);
+                entity.Property(p => p.Size).IsRequired().HasMaxLength(30);
+                entity.Property(p => p.Description).HasMaxLength(350);
                 entity.Property(p => p.Price).HasPrecision(18, 2);
-                entity.HasOne(p=> p.Product).WithMany(p=> p.ProductDetails).HasForeignKey(e=> e.ProductId).OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(p => p.Product).WithMany(p => p.ProductDetails).HasForeignKey(e => e.ProductId).OnDelete(DeleteBehavior.Cascade);
             });
             modelBuilder.Entity<PermissionEntity>(entity =>
             {
-                entity.HasKey(p=> p.Id);
+                entity.HasKey(p => p.Id);
                 entity.Property(p => p.Resource).IsRequired();
                 entity.Property(p => p.Action).IsRequired();
-                entity.HasMany(p => p.Users).WithMany(u => u.Permissions).UsingEntity(j => j.ToTable("UserPermissions"));
             });// Permission can be unique 
+            modelBuilder.Entity<UserPermissoinEntity>()
+                .HasKey(up => new { up.PermissionId, up.UserId });
 
+            modelBuilder.Entity<UserPermissoinEntity>()
+                .HasOne(up => up.User)
+                .WithMany(u => u.UserPermissions)
+                .HasForeignKey(up => up.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<UserPermissoinEntity>()
+                .HasOne(up => up.Permission)
+                .WithMany(p => p.UserPermissions)
+                .HasForeignKey(up => up.PermissionId)
+                .OnDelete(DeleteBehavior.Cascade);
 
 
 
