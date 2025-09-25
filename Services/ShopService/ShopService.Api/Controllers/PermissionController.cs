@@ -43,6 +43,20 @@ namespace ShopService.Api.Controllers
             return await _permissionAppService.GetAllPermissions();
         }
 
+        [HttpGet("GetAllUserPermissions")]
+        [Authorize]
+        public async Task<BaseResponseDto<List<ShowUserPermissionDto>>> GetAllUserPermissions([FromQuery] string userId)
+        {
+            return await _userPermissionAppService.GetAllUserPermissions(userId);
+        }
+
+        [HttpGet("GetAllNotAssignUserPermissions")]
+        [Authorize]
+        public async Task<BaseResponseDto<List<ShowUserPermissionDto>>> GetAllNotAssignUserPermissions([FromQuery] string userId)
+        {
+            return await _permissionAppService.GetAllUserNotAssignPermissions(userId);
+        }
+
         [HttpPost("AssignPermission")]
         public async Task<BaseResponseDto<UserPermissionDto>> AssignPermission([FromBody] UserPermissionDto userPermissionDto)
         {

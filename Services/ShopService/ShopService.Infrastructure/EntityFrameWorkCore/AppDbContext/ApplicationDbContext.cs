@@ -25,6 +25,8 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext
         public DbSet<ProductDetailEntity> ProductDetails { get; set; }
         public DbSet<PermissionEntity> Permissions { get; set; }
         public DbSet<UserPermissoinEntity> UserPermissions { get; set; }
+        public DbSet<OrderEntity> Orders { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ProductEntity>().ToTable("Products");
@@ -34,6 +36,7 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext
             modelBuilder.Entity<ProductBrandEntity>().ToTable("ProductBrands");
             modelBuilder.Entity<ProductDetailEntity>().ToTable("ProductDetails");
             modelBuilder.Entity<PermissionEntity>().ToTable("Permissions");
+            modelBuilder.Entity<OrderEntity>().ToTable("Orders");
             modelBuilder.Entity<ProductEntity>(entity =>
             {
                 entity.HasKey(e => e.Id);
@@ -104,7 +107,15 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext
                 .HasForeignKey(up => up.PermissionId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-
+            modelBuilder.Entity<OrderEntity>(entity =>
+            {
+                entity.HasKey(o => o.Id);
+                entity.Property(o=> o.UserId).IsRequired();
+                entity.Property(o => o.TotalPrice).HasPrecision(18, 2);
+                entity.HasOne(o => o.User)
+                .WithMany(o => o.Orders)
+                .OnDelete(DeleteBehavior.Restrict);
+            });
 
 
 

@@ -1,5 +1,6 @@
 ﻿using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.Permission;
+using ShopService.ApplicationContract.DTO.UserPermission;
 
 namespace ShopService.ApplicationContract.Interfaces.Permission
 {
@@ -9,5 +10,7 @@ namespace ShopService.ApplicationContract.Interfaces.Permission
         Task<BaseResponseDto<PermissionDto>> EditPermission(int id, PermissionDto permissionDto);
         Task<BaseResponseDto<PermissionDto>> DeletePermission(int id);
         Task<BaseResponseDto<List<PermissionDto>>> GetAllPermissions();
+        Task<BaseResponseDto<List<ShowUserPermissionDto>>> GetAllUserNotAssignPermissions(string userId);
+
     }
 }

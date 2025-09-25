@@ -14,12 +14,11 @@ namespace ShopService.Application.Services.User
         }
         public string GetCurrentUser()
         {
-            var user = _httpContextAccessor.HttpContext.User;
-            if (!user.Identity.IsAuthenticated)
+            if (!_httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated ?? false)
             {
                 return "0";
             }
-            var userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
             if(userId == null)
             {
                 return "0";

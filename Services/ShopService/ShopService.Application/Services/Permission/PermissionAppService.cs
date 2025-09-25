@@ -2,10 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.Permission;
+using ShopService.ApplicationContract.DTO.UserPermission;
 using ShopService.ApplicationContract.Interfaces.Permission;
 using ShopService.Domain.Entities;
 using ShopService.InfrastructureContract.Interfaces;
 using ShopService.InfrastructureContract.Interfaces.Command.Permission;
+using ShopService.InfrastructureContract.Interfaces.Query.Account;
 using ShopService.InfrastructureContract.Interfaces.Query.Permission;
 using System.Net;
 
@@ -17,14 +19,17 @@ namespace ShopService.Application.Services.Permission
         private readonly IPermissionQueryRepository _permissionQueryRepository;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IAccountQueryRepository _accountQueryRepository;
 
         public PermissionAppService(IPermissionCommandRepository permissionCommandRepository
-            , IPermissionQueryRepository permissionQueryRepository, IMapper mapper, IUnitOfWork unitOfWork)
+            , IPermissionQueryRepository permissionQueryRepository, IMapper mapper, IUnitOfWork unitOfWork
+            , IAccountQueryRepository accountQueryRepository)
         {
             _permissionCommandRepository = permissionCommandRepository;
             _permissionQueryRepository = permissionQueryRepository;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _accountQueryRepository = accountQueryRepository;
         }
 
 
@@ -117,12 +122,51 @@ namespace ShopService.Application.Services.Permission
         }
         #endregion
 
+        #region GetAllUserNotAssignPermissions
+        public async Task<BaseResponseDto<List<ShowUserPermissionDto>>> GetAllUserNotAssignPermissions(string userId)
+        {
+            var output = new BaseResponseDto<List<ShowUserPermissionDto>>
+            {
+                Message = "خطا در دریافت پرمیژن های کاربر",
+                Success = false,
+                StatusCode = HttpStatusCode.BadRequest
+            };
+            var userExist = await _accountQueryRepository.GetQueryable().FirstOrDefaultAsync(c => c.Id == userId);
+            if (userExist == null)
+            {
+                output.Message = "یوزر موردنظر یافت نشد";
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.NotFound;
+                return output;
+            }
+            var notAssignUserPermission = await _permissionQueryRepository.GetQueryable()
+                .Where(p => !p.UserPermissions.Any(up => up.PermissionId == p.Id && up.UserId == userId))
+                .Select(f => new ShowUserPermissionDto
+                {
+                    Resource = f.Resource,
+                    Action = f.Action,
+                }).ToListAsync();
+            if (!notAssignUserPermission.Any())
+            {
+                output.Message = "پرمیژن های اختصاص نیافته برای کاربر یافت نشد";
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.NotFound;
+                return output;
+            }
+            output.Message = "پرمیژن های  اختصاص نیافته کاربر با موفقیت دریافت شد";
+            output.Success = true;
+            output.Data = notAssignUserPermission;
+            output.StatusCode = output.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
+            return output;
+        }
+        #endregion
+
         #region GetAll
         public async Task<BaseResponseDto<List<PermissionDto>>> GetAllPermissions()
         {
             var output = new BaseResponseDto<List<PermissionDto>>
             {
-                Message = "خطا در ایجاد پرمیژن",
+                Message = "خطا در دریافت پرمیژن",
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
@@ -140,8 +184,8 @@ namespace ShopService.Application.Services.Permission
             output.Data = mapped;
             output.StatusCode = output.Success ? HttpStatusCode.OK : output.StatusCode;
             return output;
-            #endregion
-
         }
+        #endregion
+
     }
 }

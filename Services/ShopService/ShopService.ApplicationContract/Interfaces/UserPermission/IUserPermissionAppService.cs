@@ -8,5 +8,6 @@ namespace ShopService.Application.Services.UserPermissoin
     {
         Task<BaseResponseDto<UserPermissionDto>> AssignPermission(UserPermissionDto userPermissionDto);
         Task<BaseResponseDto<UserPermissionDto>> RevokePermission(UserPermissionDto userPermissionDto);
+        Task<BaseResponseDto<List<ShowUserPermissionDto>>> GetAllUserPermissions(string userId);
     }
 }

@@ -7,6 +7,7 @@ using ShopService.InfrastructureContract.Interfaces;
 using ShopService.InfrastructureContract.Interfaces.Command.UserPermission;
 using ShopService.InfrastructureContract.Interfaces.Query.Account;
 using ShopService.InfrastructureContract.Interfaces.Query.Permission;
+using ShopService.InfrastructureContract.Interfaces.Query.UserPermission;
 using System.Net;
 
 namespace ShopService.Application.Services.UserPermissoin
@@ -15,18 +16,21 @@ namespace ShopService.Application.Services.UserPermissoin
     {
         private readonly IUserPermissionCommandRepository _userPermissionCommanRepository;
         private readonly IPermissionQueryRepository _permissionQueryRepository;
+        private readonly IUserPermissionQueryRepository _userPermissionQueryRepository;
         private readonly IAccountQueryRepository _accountQueryRepository;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
         public UserPermissionAppService(IUserPermissionCommandRepository userPermissionCommanRepository
-            , IPermissionQueryRepository permissionQueryRepository
+            , IPermissionQueryRepository permissionQueryRepository,
+            IUserPermissionQueryRepository userPermissionQueryRepository
             , IAccountQueryRepository accountQueryRepository
             , IMapper mapper,
             IUnitOfWork unitOfWork)
         {
             _userPermissionCommanRepository = userPermissionCommanRepository;
             _permissionQueryRepository = permissionQueryRepository;
+            _userPermissionQueryRepository = userPermissionQueryRepository;
             _accountQueryRepository = accountQueryRepository;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
@@ -108,6 +112,46 @@ namespace ShopService.Application.Services.UserPermissoin
         }
         #endregion
 
+        #region GetAllUserPermissions
+        public async Task<BaseResponseDto<List<ShowUserPermissionDto>>> GetAllUserPermissions(string userId)
+        {
+            var output = new BaseResponseDto<List<ShowUserPermissionDto>>
+            {
+                Message = "خطا در دریافت پرمیژن های کاربر",
+                Success = false,
+                StatusCode = HttpStatusCode.BadRequest
+            };
+            var userExist = await _accountQueryRepository.GetQueryable().FirstOrDefaultAsync(c => c.Id == userId);
+            if (userExist == null)
+            {
+                output.Message = "یوزر موردنظر یافت نشد";
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.NotFound;
+                return output;
+            }
+            var userPermission = await _userPermissionQueryRepository.GetQueryable().Where(p => p.UserId == userExist.Id)
+                .Select(p => new ShowUserPermissionDto
+                {
+                    Resource = p.Permission.Resource,
+                    Action = p.Permission.Action,
+                })
+                .ToListAsync();
+            if (!userPermission.Any())
+            {
+                output.Message = "پرمیژنی برای کاربر ثبت نشده است";
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.NotFound;
+                return output;
+            }
+            output.Message = "پرمیژن های کاربر با موفقیت دریافت شد";
+            output.Success = true;
+            output.Data = userPermission;
+            output.StatusCode = output.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
+            return output;
+        }
+
+
+        #endregion
 
     }
 }
