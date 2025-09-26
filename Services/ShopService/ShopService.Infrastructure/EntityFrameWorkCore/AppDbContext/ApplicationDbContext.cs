@@ -32,6 +32,8 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext
 
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+
+            #region Commented Old Config
             //modelBuilder.Entity<ProductEntity>().ToTable("Products");
             //modelBuilder.Entity<CategoryEntity>().ToTable("Categories");
             //modelBuilder.Entity<RefreshTokenEntity>().ToTable("RefreshToken");
@@ -119,11 +121,7 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext
             //    .WithMany(o => o.Orders)
             //    .OnDelete(DeleteBehavior.Restrict);
             //});
-
-
-
-
-
+            #endregion
 
 
             base.OnModelCreating(modelBuilder);
