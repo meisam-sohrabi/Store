@@ -1,8 +1,8 @@
-﻿using ShopService.Domain.Entities;
-using ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext;
-using ShopService.InfrastructureContract.Interfaces.Query.Security;
+﻿using GatewayService.Domain.Entities;
+using GatewayService.Infrastructure.EntityFrameWorkCore.AppDbContext;
+using GatewayService.InfrastructureContract.Interfaces.Query.Security;
 
-namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.Security
+namespace GatewayService.Infrastructure.EntityFrameWorkCore.Repository.Query.Security
 {
     public class RefreshTokenQueryRepository : IRefreshTokenQueryRepository
     {

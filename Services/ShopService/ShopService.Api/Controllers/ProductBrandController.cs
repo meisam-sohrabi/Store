@@ -35,6 +35,7 @@ namespace ShopService.Api.Controllers
         }
 
         [HttpGet("GetAll")]
+        [Authorize]
         public async Task<BaseResponseDto<List<ProductBrandDto>>> GetAll()
         {
             return await _productBrandAppService.GetAllProductBrands();

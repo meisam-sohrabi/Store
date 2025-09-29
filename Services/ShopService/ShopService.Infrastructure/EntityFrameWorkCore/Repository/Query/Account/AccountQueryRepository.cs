@@ -7,12 +7,10 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.Accoun
     public class AccountQueryRepository : IAccountQueryRepository
     {
         private readonly UserManager<CustomUserEntity> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AccountQueryRepository(UserManager<CustomUserEntity> userManager,RoleManager<IdentityRole> roleManager)
+        public AccountQueryRepository(UserManager<CustomUserEntity> userManager)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
         }
 
 
