@@ -25,7 +25,7 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Command.Perm
         public void Update(PermissionEntity permissionEntity)
         {
             var entry = _context.Entry(permissionEntity);
-            var key = _context.Model.FindEntityType(typeof(ProductEntity))?.FindPrimaryKey();
+            var key = _context.Model.FindEntityType(typeof(PermissionEntity))?.FindPrimaryKey();
             if (key != null)
             {
                 foreach (var property in key.Properties)
