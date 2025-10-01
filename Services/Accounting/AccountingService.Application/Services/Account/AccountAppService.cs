@@ -25,8 +25,8 @@ namespace AccountingService.Application.Services.Account
         public AccountAppService(IAccountCommandRepository accountCommandRepository
             , IAccountQueryRepository accountQueryRepository
             , IUserAppService userAppService
-            ,IMapper mapper
-            ,IRoleCommandRepository roleCommandRepository,
+            , IMapper mapper
+            , IRoleCommandRepository roleCommandRepository,
             IUnitOfWork unitOfWork)
         {
             _accountCommandRepository = accountCommandRepository;
@@ -104,6 +104,8 @@ namespace AccountingService.Application.Services.Account
         #endregion
 
         #region Delete
+
+        // we dont delete a use , we deactive a user by soft delete IsDeleted = true
         public async Task<BaseResponseDto<ShowUserInfoDto>> DeleteUser(string username)
         {
             var output = new BaseResponseDto<ShowUserInfoDto>
@@ -120,13 +122,13 @@ namespace AccountingService.Application.Services.Account
                 output.StatusCode = HttpStatusCode.NotFound;
                 return output;
             }
-            await _accountCommandRepository.Delete(userExist);
-            var affectedRows = await _unitOfWork.SaveChangesAsync();
-            if (affectedRows > 0)
+            var affectedRows = await _accountCommandRepository.Delete(userExist);
+            if (affectedRows.Succeeded)
             {
-                output.Message = "کاربر با موفقیت به حذف شد";
+                output.Message = "کاربر با موفقیت  حذف شد";
                 output.Success = true;
             }
+            //var affectedRows = await _unitOfWork.SaveChangesAsync(); // chon identity ma niyaz be savechanges nadarim
             output.StatusCode = output.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
             return output;
         }
@@ -135,7 +137,7 @@ namespace AccountingService.Application.Services.Account
         #endregion
 
         #region ShowInfo
-        public async  Task<BaseResponseDto<ShowUserInfoDto>> ShowInfo()
+        public async Task<BaseResponseDto<ShowUserInfoDto>> ShowInfo()
         {
             var output = new BaseResponseDto<ShowUserInfoDto>
             {
@@ -157,8 +159,8 @@ namespace AccountingService.Application.Services.Account
                 output.StatusCode = HttpStatusCode.NotFound;
                 return output;
             }
-            output.Message = "کاربر یافت نشد";
-            output.Success = false;
+            output.Message = "کاربر یافت شد";
+            output.Success = true;
             output.Data = user;
             output.StatusCode = output.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
             return output;

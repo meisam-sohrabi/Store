@@ -16,5 +16,11 @@ namespace AccountingService.Infrastructure.EntityFrameWorkCore.AppDbContext
         }
         public DbSet<PermissionEntity> Permissions { get; set; }
         public DbSet<UserPermissoinEntity> UserPermissions { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+            base.OnModelCreating(builder);
+        }
     }
 }

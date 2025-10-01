@@ -27,9 +27,9 @@ namespace AccountingService.Api.Controllers
 
         [HttpPost("Edit")]
         [Authorize(Roles = "admin")]
-        public async Task<BaseResponseDto<RoleDto>> Edit([FromBody] RoleDto RoleDto)
+        public async Task<BaseResponseDto<RoleDto>> Edit([FromBody] RoleDto RoleDto,[FromQuery] string oldRole)
         {
-            return await _roleAppService.EditRole(RoleDto);
+            return await _roleAppService.EditRole(RoleDto, oldRole);
         }
 
         [HttpGet("GetAll")]
@@ -53,7 +53,7 @@ namespace AccountingService.Api.Controllers
 
         [HttpDelete("Delete")]
         [Authorize(Roles = "admin")]
-        public async Task<BaseResponseDto<RoleDto>> Delete([FromBody] RoleDto roleDto)
+        public async Task<BaseResponseDto<RoleDto>> Delete([FromQuery] RoleDto roleDto)
         {
             return await _roleAppService.DeleteRole(roleDto);
         }

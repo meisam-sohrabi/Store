@@ -117,7 +117,7 @@ namespace GatewayService.Application.Services.Auth
                 finalRefreshToken = refreshTokenExit.Token;
 
             }
-            var loginSession = new UserSessionEntity { UserId = currentUser.Id };
+            var loginSession = new UserSessionEntity { UserId = currentUser.Id ,Username = currentUser.UserName };
             await _sessionCommandRepository.Add(loginSession);
             var affectedRow = await _unitOfWork.SaveChangesAsync();
             if (affectedRow > 0)

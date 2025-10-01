@@ -4,12 +4,12 @@ using GatewayService.Domain.Entities;
 
 namespace GatewayService.Infrastructure.EntityFrameWorkCore.EntityConfiguration
 {
-    public class UserSessionEntityConfiguration : IEntityTypeConfiguration<UserSessionEntity>
+    public class CustomUserEntityConfiguration : IEntityTypeConfiguration<CustomUserEntity>
     {
-        public void Configure(EntityTypeBuilder<UserSessionEntity> builder)
+        public void Configure(EntityTypeBuilder<CustomUserEntity> builder)
         {
-            builder.ToTable("UserSessions");
             builder.HasKey(e => e.Id);
+            builder.HasOne(e => e.RefreshToken).WithOne(e => e.User).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

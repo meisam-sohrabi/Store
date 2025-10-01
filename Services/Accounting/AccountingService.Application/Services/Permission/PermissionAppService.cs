@@ -117,7 +117,7 @@ namespace AccountingService.Application.Services.Permission
                 output.Message = $"پرمیژن  با موفقیت به روز رسانی شد";
                 output.Success = true;
             }
-            output.StatusCode = output.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
+            output.StatusCode = output.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
             return output;
         }
         #endregion

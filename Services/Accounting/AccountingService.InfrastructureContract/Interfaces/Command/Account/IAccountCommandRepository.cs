@@ -6,6 +6,6 @@ namespace AccountingService.InfrastructureContract.Interfaces.Command.Account
     {
         Task<IdentityResult> Create(CustomUserEntity user, string password);
         void Update(CustomUserEntity user);
-        Task Delete(CustomUserEntity user);
+        Task<IdentityResult> Delete(CustomUserEntity user);
     }
 }

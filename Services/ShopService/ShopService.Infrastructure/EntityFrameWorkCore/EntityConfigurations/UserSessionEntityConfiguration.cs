@@ -10,10 +10,6 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.EntityConfigurations
         {
             builder.ToTable("UserSessions");
             builder.HasKey(e => e.Id);
-            builder.HasOne(e => e.User)
-            .WithMany(e => e.Sessions)
-            .HasForeignKey(e => e.UserId)
-            .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

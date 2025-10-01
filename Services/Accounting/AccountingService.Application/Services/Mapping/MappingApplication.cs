@@ -17,6 +17,7 @@ namespace AccountingService.Application.Services.Mapping
 
             CreateMap<RoleDto, IdentityRole>();
             CreateMap<PermissionEntity, PermissionDto>();
+            CreateMap<PermissionDto, PermissionEntity>();
             CreateMap<UserPermissionDto, UserPermissoinEntity>();
 
         }

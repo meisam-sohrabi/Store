@@ -21,9 +21,9 @@ namespace AccountingService.Infrastructure.EntityFrameWorkCore.Repository.Comman
             return await _userManager.CreateAsync(user, password);
         }
 
-        public async Task Delete(CustomUserEntity user)
+        public async Task<IdentityResult> Delete(CustomUserEntity user)
         {
-            await _userManager.DeleteAsync(user);
+           return await _userManager.DeleteAsync(user);
         }
 
 

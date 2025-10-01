@@ -9,7 +9,7 @@ namespace GatewayService.Domain.Entities
         public DateTime? LogoutTime { get; set; }
 
         public string UserId { get; set; }
-        [ForeignKey(nameof(UserId))]
-        public CustomUserEntity User { get; set; }
+        public string Username { get; set; }
+
     }
 }

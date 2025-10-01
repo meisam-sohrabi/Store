@@ -175,7 +175,7 @@ namespace AccountingService.Application.Services.Role
         #endregion
 
         #region Edit
-        public async Task<BaseResponseDto<RoleDto>> EditRole(RoleDto roleDto)
+        public async Task<BaseResponseDto<RoleDto>> EditRole(RoleDto roleDto,string oldRole)
         {
             var output = new BaseResponseDto<RoleDto>
             {
@@ -183,14 +183,16 @@ namespace AccountingService.Application.Services.Role
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
-            var roleExist = await _roleQueryRepository.GetRoleByName(roleDto.Name);
+            var roleExist = await _roleQueryRepository.GetRoleByName(oldRole);
             if (roleExist == null)
             {
-                output.Message = "رول موردنظر وجود دارد";
+                output.Message = "رول موردنظر وجود ندارد";
                 output.Success = false;
-                output.StatusCode = HttpStatusCode.Conflict;
+                output.StatusCode = HttpStatusCode.NotFound;
                 return output;
             }
+            roleExist.Name = roleDto.Name;
+            roleExist.NormalizedName = roleDto.Name.ToUpper();
             var result = await _roleCommandRepository.Update(roleExist);
             if (!result.Succeeded)
             {

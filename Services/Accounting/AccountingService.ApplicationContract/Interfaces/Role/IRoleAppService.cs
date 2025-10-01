@@ -6,7 +6,7 @@ namespace AccountingService.ApplicationContract.Interfaces.Role
     public interface IRoleAppService
     {
         Task<BaseResponseDto<RoleDto>> CreateRole(RoleDto roleDto);
-        Task<BaseResponseDto<RoleDto>> EditRole(RoleDto roleDto);
+        Task<BaseResponseDto<RoleDto>> EditRole(RoleDto roleDto,string newRole);
         Task<BaseResponseDto<RoleDto>> DeleteRole(RoleDto roleDto);
         Task<BaseResponseDto<List<RoleDto>>> GetAllRoles();
         Task<BaseResponseDto<RoleDto>> AssignRole(AssignOrRevokeRoleDto assignOrRevokeRoleDto);
