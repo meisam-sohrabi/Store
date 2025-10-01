@@ -10,4 +10,3 @@ namespace ShopService.ApplicationContract.DTO.Search
         public List<ProductDetailResponseDto> productDetail { get; set; }
     }
 }
-

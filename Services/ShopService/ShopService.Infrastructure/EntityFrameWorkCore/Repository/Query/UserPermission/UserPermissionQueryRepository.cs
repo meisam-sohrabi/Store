@@ -14,7 +14,7 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.UserPe
         }
         public IQueryable<UserPermissoinEntity> GetQueryable()
         {
-            return _context.UserPermissions.AsQueryable();
+            return _context.UserPermissoins.AsQueryable();
         }
     }
 }

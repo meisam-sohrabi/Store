@@ -19,14 +19,11 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext
 
         public DbSet<ProductEntity> Products { get; set; }
         public DbSet<CategoryEntity> Categories { get; set; }
-        public DbSet<RefreshTokenEntity> RefreshToken { get; set; }
-        public DbSet<UserSessionEntity> UserSessions { get; set; }
         public DbSet<ProductBrandEntity> ProductBrands { get; set; }
         public DbSet<ProductDetailEntity> ProductDetails { get; set; }
-        public DbSet<PermissionEntity> Permissions { get; set; }
-        public DbSet<UserPermissoinEntity> UserPermissions { get; set; }
         public DbSet<OrderEntity> Orders { get; set; }
-
+        public DbSet<PermissionEntity> Permissions { get; set; }
+        public DbSet<UserPermissoinEntity> UserPermissoins { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 

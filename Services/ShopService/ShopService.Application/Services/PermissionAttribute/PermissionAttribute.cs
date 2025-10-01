@@ -20,7 +20,7 @@ namespace ShopService.Application.Services.PermissionAttribute
             }
 
             var loadService = context.HttpContext.RequestServices.GetRequiredService<IAccountQueryRepository>();
-            var userExist = await loadService.GetQueryable().AnyAsync(e => e.Id == userId);
+            var userExist = await loadService.GetQueryable().AnyAsync(c => c.Id == userId);
             if (!userExist)
             {
                 context.Result = new ForbidResult();

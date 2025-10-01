@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShopService.Application.Services.Permission;
+using ShopService.Application.Services.Attributes;
 using ShopService.Application.Services.PermissionAttribute;
 using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.Category;
@@ -20,7 +20,6 @@ namespace ShopService.Api.Controllers
 
         [HttpPost("Create")]
         [Authorize(Roles = "admin")]
-        [Permission]
         public async Task<BaseResponseDto<CategoryDto>> Create([FromBody] CategoryDto categoryDto)
         {
             return await _categoryAppService.CreateCategory(categoryDto);

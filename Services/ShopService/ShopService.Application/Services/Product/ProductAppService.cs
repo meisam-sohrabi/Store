@@ -217,7 +217,7 @@ namespace ShopService.Application.Services.Product
         #endregion
 
         #region Search
-        public async Task<BaseResponseDto<List<SearchResponseDto>>> AdvanceSearchProduct(SearchRequstDto searchRequstDto)
+        public async Task<BaseResponseDto<List<SearchResponseDto>>> AdvanceSearchProduct(SearchRequestDto searchRequstDto)
         {
             var output = new BaseResponseDto<List<SearchResponseDto>>
             {

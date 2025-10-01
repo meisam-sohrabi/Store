@@ -12,24 +12,9 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.Accoun
         {
             _userManager = userManager;
         }
-
-
-        public  IQueryable<CustomUserEntity> GetQueryable()
+        public IQueryable<CustomUserEntity> GetQueryable()
         {
-            return  _userManager.Users.AsQueryable();
+            return _userManager.Users.AsQueryable();
         }
-
-        public async Task<CustomUserEntity> GetUserById(string id)
-        {
-            return await _userManager.FindByIdAsync(id);
-        }
-
-        public async Task<CustomUserEntity> GetUserByUsername(string username)
-        {
-            return await _userManager.FindByEmailAsync(username);
-        }
-
-
-
     }
 }

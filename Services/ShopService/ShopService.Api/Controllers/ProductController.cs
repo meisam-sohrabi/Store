@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShopService.Application.Services.Permission;
 using ShopService.Application.Services.PermissionAttribute;
 using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.Product;
@@ -67,7 +66,7 @@ namespace ShopService.Api.Controllers
         }
 
         [HttpPost("Search")]
-        public async Task<BaseResponseDto<List<SearchResponseDto>>> Search([FromBody] SearchRequstDto search)
+        public async Task<BaseResponseDto<List<SearchResponseDto>>> Search([FromBody] SearchRequestDto search)
         {
             return await _productAppService.AdvanceSearchProduct(search);
         }

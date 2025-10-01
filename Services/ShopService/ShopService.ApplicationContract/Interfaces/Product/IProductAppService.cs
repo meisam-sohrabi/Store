@@ -11,7 +11,7 @@ namespace ShopService.ApplicationContract.Interfaces.Product
         Task<BaseResponseDto<ProductResponseDto>> DeleteProduct(int id);
         Task<BaseResponseDto<List<ProductResponseDto>>> GetAllProduct();
         Task<BaseResponseDto<ProductResponseDto>> GetProduct(int id);
-        Task<BaseResponseDto<List<SearchResponseDto>>> AdvanceSearchProduct(SearchRequstDto searchRequstDto);
+        Task<BaseResponseDto<List<SearchResponseDto>>> AdvanceSearchProduct(SearchRequestDto searchRequstDto);
 
     }
 }

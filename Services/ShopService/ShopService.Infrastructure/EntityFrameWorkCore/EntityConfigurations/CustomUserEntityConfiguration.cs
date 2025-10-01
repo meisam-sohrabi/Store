@@ -9,7 +9,6 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.EntityConfigurations
         public void Configure(EntityTypeBuilder<CustomUserEntity> builder)
         {
             builder.HasKey(e => e.Id);
-            builder.HasOne(e => e.RefreshToken).WithOne(e => e.User).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
