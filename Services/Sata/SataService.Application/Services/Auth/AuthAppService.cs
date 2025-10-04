@@ -198,7 +198,7 @@ namespace SataService.Application.Services.Auth
                          HttpMethod.Post, "/verifyCaptcha");
                 var content = JsonConvert.SerializeObject(verifyCaptchaRequestDto);
                 request.Content = new StringContent(content, Encoding.UTF8, "application/json");
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearerm", token);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 var response = await _httpClient.SendAsync(request);
                 if (!response.IsSuccessStatusCode)
                 {
