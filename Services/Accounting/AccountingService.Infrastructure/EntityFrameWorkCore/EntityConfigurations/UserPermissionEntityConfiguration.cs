@@ -20,6 +20,8 @@ namespace AccountingService.Infrastructure.EntityFrameWorkCore.EntityConfigurati
            .WithMany(p => p.UserPermissions)
            .HasForeignKey(up => up.PermissionId)
            .OnDelete(DeleteBehavior.Cascade);
+
+            // mishe as usingentity ham estefade kard.
         }
     }
 }

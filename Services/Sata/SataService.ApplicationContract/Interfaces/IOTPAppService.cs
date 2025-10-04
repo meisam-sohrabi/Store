@@ -5,6 +5,7 @@ namespace SataService.ApplicationContract.Interfaces
 {
     public interface IOTPAppService
     {
-        Task<BaseResponseDto<OTPResponseDto>> GetOTP(OTPRequestDto otpRequestDto);
+        Task<BaseResponseDto<SendOtpResponseDto>> SendOTP(SendOtpRequestDto otpRequestDto, string clientId, string clinetSecret, string workstationid);
+        Task<BaseResponseDto<VerifyOtpResponseDto>> VerifyOTP(VerifyOtpRequestDto otpVerifyRequestDto, string requestId);
     }
 }

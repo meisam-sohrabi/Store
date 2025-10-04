@@ -2,6 +2,7 @@
 using AccountingService.Infrastructure.EntityFrameWorkCore.AppDbContext;
 using AccountingService.InfrastructureContract.Interfaces.Command.Account;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace AccountingService.Infrastructure.EntityFrameWorkCore.Repository.Command.Account
 {
@@ -29,7 +30,7 @@ namespace AccountingService.Infrastructure.EntityFrameWorkCore.Repository.Comman
 
         public void Update(CustomUserEntity user)
         {
-            var entry = _context.Entry(user);
+            var entry = _context.Entry(user); // agar faghat yek kelid bashe ba entity property mishe hamino anjam dad
             var key = _context.Model.FindEntityType(typeof(CustomUserEntity))?.FindPrimaryKey();
             if (key != null)
             {

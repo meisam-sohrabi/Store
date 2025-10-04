@@ -9,7 +9,7 @@ namespace GatewayService.Infrastructure.EntityFrameWorkCore.EntityConfiguration
         public void Configure(EntityTypeBuilder<CustomUserEntity> builder)
         {
             builder.HasKey(e => e.Id);
-            builder.HasOne(e => e.RefreshToken).WithOne(e => e.User).OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(e => e.RefreshToken).WithOne(e => e.User).HasForeignKey<RefreshTokenEntity>(c=> c.UserId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

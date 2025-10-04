@@ -16,10 +16,16 @@ namespace SataService.Api.Controllers
             _otpAppService = otpAppService;
         }
 
-        [HttpPost("OTPRequest")]
-        public async Task<BaseResponseDto<OTPResponseDto>> GetOTP([FromBody] OTPRequestDto otpRequestDto)
+        [HttpPost("Send-Otp")]
+        public async Task<BaseResponseDto<SendOtpResponseDto>> SendOTP([FromBody] SendOtpRequestDto otpRequestDto, [FromHeader] string clientId, [FromHeader] string clinetSecret, [FromHeader] string workstationid)
         {
-            return await _otpAppService.GetOTP(otpRequestDto);
+            return await _otpAppService.SendOTP(otpRequestDto,clientId,clinetSecret,workstationid);
+        }
+
+        [HttpPost("Verify-Otp")]
+        public async Task<BaseResponseDto<VerifyOtpResponseDto>> VerifyOTP([FromBody] VerifyOtpRequestDto verifyOtpRequestDto, [FromHeader] string requestId)
+        {
+            return await _otpAppService.VerifyOTP(verifyOtpRequestDto,requestId);
         }
     }
 }

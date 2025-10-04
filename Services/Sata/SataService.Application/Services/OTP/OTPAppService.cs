@@ -3,6 +3,7 @@ using SataService.ApplicationContract.DTO.Base;
 using SataService.ApplicationContract.DTO.OTP;
 using SataService.ApplicationContract.Interfaces;
 using System.Net;
+using System.Text;
 
 namespace SataService.Application.Services.OTP
 {
@@ -13,10 +14,13 @@ namespace SataService.Application.Services.OTP
         public OTPAppService(HttpClient httpClient)
         {
             _httpClient = httpClient;
+            _httpClient.BaseAddress = new Uri("https://esakhad.esata.ir:9081/gateway");
         }
-        public async Task<BaseResponseDto<OTPResponseDto>> GetOTP(OTPRequestDto otpRequestDto)
+
+        #region SendOtp
+        public async Task<BaseResponseDto<SendOtpResponseDto>> SendOTP(SendOtpRequestDto otpRequestDto,string clientId,string clinetSecret,string workstationid)
         {
-            var output = new BaseResponseDto<OTPResponseDto>
+            var output = new BaseResponseDto<SendOtpResponseDto>
             {
                 Message = "خطا در بازیابی رمز یکبار مصرف",
                 Success = false,
@@ -25,11 +29,12 @@ namespace SataService.Application.Services.OTP
             try
             {
                 var request = new HttpRequestMessage(
-                    HttpMethod.Post, "https://esakhad.esata.ir:9081/gateway/webApi-test/auth/send-otp");
+                    HttpMethod.Post, "/webApi-test/auth/send-otp");
                 var content = JsonConvert.SerializeObject(otpRequestDto);
-                request.Headers.Add("clientId", "");
-                request.Headers.Add("clientSecret", "");
-                request.Headers.Add("workstationId", "");
+                request.Content = new StringContent(content, Encoding.UTF8, "application/json");
+                request.Headers.Add("clientId",clientId);
+                request.Headers.Add("clinetSecret",clinetSecret);
+                request.Headers.Add("workstationid",workstationid);
                 var response = await _httpClient.SendAsync(request);
                 if (!response.IsSuccessStatusCode)
                 {
@@ -38,9 +43,8 @@ namespace SataService.Application.Services.OTP
                     output.Success = false;
                     return output;
                 }
-                response.EnsureSuccessStatusCode();
                 var result = await response.Content.ReadAsStringAsync();
-                var deserialize = JsonConvert.DeserializeObject<OTPResponseDto>(result);
+                var deserialize = JsonConvert.DeserializeObject<SendOtpResponseDto>(result);
                 if (deserialize == null)
                 {
                     output.Message = "اطلاعات یافت نشد";
@@ -48,27 +52,32 @@ namespace SataService.Application.Services.OTP
                     output.Success = false;
                     return output;
                 }
-                if (deserialize.status == 0)
+                switch (deserialize.status)
                 {
-                    output.Message = "اطلاعات دریافت شد";
-                    output.StatusCode = HttpStatusCode.OK;
-                    output.Success = true;
-                    output.Data = deserialize;
-                    return output;
-                }
-                if (deserialize.status == 1)
-                {
-                    output.Message = "خطا در اطلاعات دریافتی";
-                    output.StatusCode = HttpStatusCode.BadRequest;
-                    output.Success = false;
-                    return output;
-                }
-                if (deserialize.status == 2)
-                {
-                    output.Message = "هشدار در اطلاعات دریافتی";
-                    output.StatusCode = HttpStatusCode.BadRequest;
-                    output.Success = false;
-                    return output;
+                    case 0:
+                        output.Message = "اطلاعات دریافت شد";
+                        output.StatusCode = HttpStatusCode.OK;
+                        output.Success = true;
+                        output.Data = deserialize;
+                        break;
+
+                    case 1:
+                        output.Message = "خطا در اطلاعات دریافتی";
+                        output.StatusCode = HttpStatusCode.OK;
+                        output.Success = false;
+                        break;
+
+                    case 2:
+                        output.Message = "هشدار در اطلاعات دریافتی";
+                        output.StatusCode = HttpStatusCode.OK;
+                        output.Success = false;
+                        break;
+
+                    default:
+                        output.Message = "کد وضعیت ناشناخته";
+                        output.StatusCode = HttpStatusCode.InternalServerError;
+                        output.Success = false;
+                        break;
                 }
                 return output;
 
@@ -77,9 +86,100 @@ namespace SataService.Application.Services.OTP
             {
                 output.Message = $"خطای سرور: {ex.Message}";
                 output.Success = false;
+                output.StatusCode = HttpStatusCode.InternalServerError;
+                return output;
+            }
+            catch (Exception ex)
+            {
+                output.Message = $"خطای سرور: {ex.Message}";
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.InternalServerError;
                 return output;
             }
 
         }
+        #endregion
+
+        #region VeifyOtp
+        public async Task<BaseResponseDto<VerifyOtpResponseDto>> VerifyOTP(VerifyOtpRequestDto otpVerifyRequestDto, string requestId)
+        {
+            var output = new BaseResponseDto<VerifyOtpResponseDto>
+            {
+                Message = "خطا در تایید رمز یکبار مصرف",
+                Success = false,
+                StatusCode = HttpStatusCode.BadRequest
+            };
+
+            try
+            {
+                var request = new HttpRequestMessage(
+                    HttpMethod.Post, "/webApi-test/auth/verify-otp");
+                var content = JsonConvert.SerializeObject(otpVerifyRequestDto);
+                request.Content = new StringContent(content, Encoding.UTF8, "application/json");
+                request.Headers.Add("requestId", requestId);
+                var response = await _httpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
+                {
+                    output.Message = $"خطای سرور: {response.StatusCode}";
+                    output.StatusCode = response.StatusCode;
+                    output.Success = false;
+                    return output;
+                }
+                var result = await response.Content.ReadAsStringAsync();
+                var deserialize = JsonConvert.DeserializeObject<VerifyOtpResponseDto>(result);
+                if (deserialize == null)
+                {
+                    output.Message = "اطلاعات یافت نشد";
+                    output.StatusCode = HttpStatusCode.BadRequest;
+                    output.Success = false;
+                    return output;
+                }
+                switch (deserialize.status)
+                {
+                    case 0:
+                        output.Message = "اطلاعات دریافت شد";
+                        output.StatusCode = HttpStatusCode.OK;
+                        output.Success = true;
+                        output.Data = deserialize;
+                        break;
+
+                    case 1:
+                        output.Message = "خطا در اطلاعات دریافتی";
+                        output.StatusCode = HttpStatusCode.OK;
+                        output.Success = false;
+                        break;
+
+                    case 2:
+                        output.Message = "هشدار در اطلاعات دریافتی";
+                        output.StatusCode = HttpStatusCode.OK;
+                        output.Success = false;
+                        break;
+
+                    default:
+                        output.Message = "کد وضعیت ناشناخته";
+                        output.StatusCode = HttpStatusCode.InternalServerError;
+                        output.Success = false;
+                        break;
+                }
+                return output;
+
+            }
+            catch (HttpRequestException ex)
+            {
+                output.Message = $"خطای سرور: {ex.Message}";
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.InternalServerError;
+                return output;
+            }
+            catch (Exception ex)
+            {
+                output.Message = $"خطای سرور: {ex.Message}";
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.InternalServerError;
+                return output;
+            }
+        }
+        #endregion
+
     }
 }
