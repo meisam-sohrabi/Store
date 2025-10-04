@@ -1,4 +1,4 @@
-﻿namespace SataService.ApplicationContract.DTO.Captcha
+﻿namespace SataService.ApplicationContract.DTO.Auth.Captcha
 {
     public class VerifyCaptchaRequestDto
     {

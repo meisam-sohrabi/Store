@@ -1,4 +1,4 @@
-﻿namespace SataService.ApplicationContract.DTO.OTP
+﻿namespace SataService.ApplicationContract.DTO.Auth.OTP.Send
 {
     public class SendOtpRequestDto
     {

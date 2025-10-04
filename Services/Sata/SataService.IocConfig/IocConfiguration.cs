@@ -1,14 +1,17 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using SataService.Application.Services.OTP;
-using SataService.ApplicationContract.Interfaces;
+using SataService.Application.Services.Auth;
+using SataService.Application.Services.Prescription;
+using SataService.ApplicationContract.Interfaces.Auth;
+using SataService.ApplicationContract.Interfaces.Prescription;
 namespace SataService.IocConfig
 {
     public static class IocConfiguration
     {
         public static IServiceCollection ConfigureIoc(this IServiceCollection services)
         {
-            services.AddScoped<IOTPAppService, OTPAppService>();
-            return services;    
+            services.AddScoped<IAuthAppService, AuthAppService>();
+            services.AddScoped<IPrescriptionAppService,PrescriptionAppService>();
+            return services;
         }
     }
 }

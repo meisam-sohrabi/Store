@@ -1,7 +1,8 @@
 using Microsoft.OpenApi.Models;
-using SataService.Application.Services.Captcha;
-using SataService.Application.Services.OTP;
-using SataService.ApplicationContract.Interfaces;
+using SataService.Application.Services.Auth;
+using SataService.Application.Services.Prescription;
+using SataService.ApplicationContract.Interfaces.Auth;
+using SataService.ApplicationContract.Interfaces.Prescription;
 using SataService.IocConfig;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddHttpClient<IOTPAppService, OTPAppService>();
-builder.Services.AddHttpClient<ICaptchaAppService,CaptchaAppService>();
+builder.Services.AddHttpClient<IAuthAppService, AuthAppService>();
+builder.Services.AddHttpClient<IPrescriptionAppService, PrescriptionAppService>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.ConfigureIoc();
@@ -42,6 +43,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

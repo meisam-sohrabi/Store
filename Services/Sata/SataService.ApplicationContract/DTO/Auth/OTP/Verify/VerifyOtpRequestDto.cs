@@ -1,4 +1,4 @@
-﻿namespace SataService.ApplicationContract.DTO.OTP
+﻿namespace SataService.ApplicationContract.DTO.Auth.OTP.Verify
 {
     public class VerifyOtpRequestDto
     {

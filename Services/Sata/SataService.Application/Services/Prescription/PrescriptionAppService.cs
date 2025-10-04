@@ -1,40 +1,40 @@
 ﻿using Newtonsoft.Json;
 using SataService.ApplicationContract.DTO.Base;
-using SataService.ApplicationContract.DTO.OTP;
-using SataService.ApplicationContract.Interfaces;
+using SataService.ApplicationContract.DTO.Prescription.DoctorsList;
+using SataService.ApplicationContract.DTO.Prescription.Insurance;
+using SataService.ApplicationContract.Interfaces.Prescription;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Text;
 
-namespace SataService.Application.Services.OTP
+namespace SataService.Application.Services.Prescription
 {
-    public class OTPAppService : IOTPAppService
+    public class PrescriptionAppService : IPrescriptionAppService
     {
         private readonly HttpClient _httpClient;
-
-        public OTPAppService(HttpClient httpClient)
+        public PrescriptionAppService(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("https://esakhad.esata.ir:9081/gateway");
+            _httpClient.BaseAddress = new Uri("https://esakhad.esata.ir:9081/gateway/webApi-test");
         }
 
-        #region SendOtp
-        public async Task<BaseResponseDto<SendOtpResponseDto>> SendOTP(SendOtpRequestDto otpRequestDto,string clientId,string clinetSecret,string workstationid)
+        #region DoctorsList
+        public async Task<BaseResponseDto<DoctorsListResponseDto>> CenterDoctorList(string token, string sessionId, string requestId)
         {
-            var output = new BaseResponseDto<SendOtpResponseDto>
+            var output = new BaseResponseDto<DoctorsListResponseDto>
             {
-                Message = "خطا در بازیابی رمز یکبار مصرف",
+                Message = "خطا در بازیابی لیست پزشکان",
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
             try
             {
                 var request = new HttpRequestMessage(
-                    HttpMethod.Post, "/webApi-test/auth/send-otp");
-                var content = JsonConvert.SerializeObject(otpRequestDto);
-                request.Content = new StringContent(content, Encoding.UTF8, "application/json");
-                request.Headers.Add("clientId",clientId);
-                request.Headers.Add("clinetSecret",clinetSecret);
-                request.Headers.Add("workstationid",workstationid);
+                   HttpMethod.Post, "/v1/centerDoctorList");
+                request.Content = new StringContent("", Encoding.UTF8, "application/json");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                request.Headers.Add("sessionId", sessionId);
+                request.Headers.Add("requestId", requestId);
                 var response = await _httpClient.SendAsync(request);
                 if (!response.IsSuccessStatusCode)
                 {
@@ -44,7 +44,7 @@ namespace SataService.Application.Services.OTP
                     return output;
                 }
                 var result = await response.Content.ReadAsStringAsync();
-                var deserialize = JsonConvert.DeserializeObject<SendOtpResponseDto>(result);
+                var deserialize = JsonConvert.DeserializeObject<DoctorsListResponseDto>(result);
                 if (deserialize == null)
                 {
                     output.Message = "اطلاعات یافت نشد";
@@ -96,26 +96,28 @@ namespace SataService.Application.Services.OTP
                 output.StatusCode = HttpStatusCode.InternalServerError;
                 return output;
             }
-
         }
+
         #endregion
 
-        #region VeifyOtp
-        public async Task<BaseResponseDto<VerifyOtpResponseDto>> VerifyOTP(VerifyOtpRequestDto otpVerifyRequestDto, string requestId)
+
+        #region Eligible
+        public async Task<BaseResponseDto<EligibleResponseDto>> Eligible(EligibleRequestDto eligibleRequestDto, string token, string sessionId, string requestId)
         {
-            var output = new BaseResponseDto<VerifyOtpResponseDto>
+            var output = new BaseResponseDto<EligibleResponseDto>
             {
-                Message = "خطا در تایید رمز یکبار مصرف",
+                Message = "خطا در بازیابی رمز یکبار مصرف",
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
-
             try
             {
                 var request = new HttpRequestMessage(
-                    HttpMethod.Post, "/webApi-test/auth/verify-otp");
-                var content = JsonConvert.SerializeObject(otpVerifyRequestDto);
+                   HttpMethod.Post, "/v1/eligible");
+                var content = JsonConvert.SerializeObject(eligibleRequestDto);
                 request.Content = new StringContent(content, Encoding.UTF8, "application/json");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                request.Headers.Add("sessionId", sessionId);
                 request.Headers.Add("requestId", requestId);
                 var response = await _httpClient.SendAsync(request);
                 if (!response.IsSuccessStatusCode)
@@ -126,7 +128,7 @@ namespace SataService.Application.Services.OTP
                     return output;
                 }
                 var result = await response.Content.ReadAsStringAsync();
-                var deserialize = JsonConvert.DeserializeObject<VerifyOtpResponseDto>(result);
+                var deserialize = JsonConvert.DeserializeObject<EligibleResponseDto>(result);
                 if (deserialize == null)
                 {
                     output.Message = "اطلاعات یافت نشد";
