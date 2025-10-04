@@ -188,7 +188,7 @@ namespace SataService.Application.Services.Auth
         {
             var output = new BaseResponseDto<VerifyCaptchaResponseDto>
             {
-                Message = "خطا در بازیابی رمز یکبار مصرف",
+                Message = "خطا در تایید کپچا",
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };

@@ -106,7 +106,7 @@ namespace SataService.Application.Services.Prescription
         {
             var output = new BaseResponseDto<EligibleResponseDto>
             {
-                Message = "خطا در بازیابی رمز یکبار مصرف",
+                Message = "خطا در استعلام بیمه ",
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
