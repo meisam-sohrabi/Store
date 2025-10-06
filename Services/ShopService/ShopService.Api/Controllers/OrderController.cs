@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ShopService.Application.Services.PermissionAttribute;
 using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.Order;
+using ShopService.ApplicationContract.DTO.Transaction;
 using ShopService.ApplicationContract.Interfaces.Order;
 
 namespace ShopService.Api.Controllers
@@ -17,14 +20,16 @@ namespace ShopService.Api.Controllers
             _orderAppService = orderAppService;
         }
 
-        [HttpPost("Order")]
-        public async Task<BaseResponseDto<OrderDto>> CreateOrder(OrderDto orderDto)
+        [HttpPost("OrderTransaction")]
+        [Authorize(Roles = "admin")]
+        [Permission]
+        public async Task<BaseResponseDto<OrderTransactionDto>> OrderTransaction([FromBody] OrderTransactionDto orderTransactionDto, [FromQuery] int productId)
         {
-            return await _orderAppService.CreateOrder(orderDto);
+            return await _orderAppService.OrderTransaction(orderTransactionDto,productId);
         }
 
         [HttpGet("GetAllOrders")]
-        public async Task<BaseResponseDto<List<ShowOrderDto>>> GetAllOrder()
+        public async Task<BaseResponseDto<List<OrderResponseDto>>> GetAllOrder()
         {
             return await _orderAppService.GetAllOrders();
         }

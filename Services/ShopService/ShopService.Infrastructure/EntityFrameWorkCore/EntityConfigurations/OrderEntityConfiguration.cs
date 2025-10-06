@@ -13,7 +13,7 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.EntityConfigurations
             builder.Property(o => o.UserId).IsRequired();
             builder.Property(o => o.TotalPrice).HasPrecision(18, 2);
             builder.HasOne(o => o.User)
-            .WithMany(o => o.Orders)
+            .WithMany()
             .OnDelete(DeleteBehavior.Restrict);
         }
     }

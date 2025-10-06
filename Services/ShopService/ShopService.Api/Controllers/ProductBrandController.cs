@@ -20,7 +20,7 @@ namespace ShopService.Api.Controllers
 
         [HttpPost("Create")]
         [Authorize(Roles = "admin")]
-        [GeneralPermission(Resource:"ProductBrandController",Action:"Create")]
+        [GeneralPermission(Resource: "ProductBrandController", Action: "Create")]
         public async Task<BaseResponseDto<ProductBrandDto>> Create([FromBody] ProductBrandDto productDto)
         {
             return await _productBrandAppService.CreateProductBrand(productDto);

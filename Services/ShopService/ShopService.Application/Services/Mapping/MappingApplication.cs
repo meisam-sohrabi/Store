@@ -4,6 +4,8 @@ using ShopService.ApplicationContract.DTO.Order;
 using ShopService.ApplicationContract.DTO.Product;
 using ShopService.ApplicationContract.DTO.ProductBrand;
 using ShopService.ApplicationContract.DTO.ProductDetail;
+using ShopService.ApplicationContract.DTO.ProductInventory;
+using ShopService.ApplicationContract.DTO.ProductPrice;
 using ShopService.Domain.Entities;
 
 namespace ShopService.Application.Services.Mapping
@@ -16,7 +18,9 @@ namespace ShopService.Application.Services.Mapping
             CreateMap<ProductRequestDto, ProductEntity>();
             CreateMap<ProductBrandDto, ProductBrandEntity>();
             CreateMap<ProductDetailRequestDto, ProductDetailEntity>();
-            CreateMap<OrderDto, OrderEntity>();
+            CreateMap<ProductInventoryRequestDto, ProductInventoryEntity>();
+            CreateMap<ProductPriceRequestDto, ProductPriceEntity>();
+            CreateMap<OrderRequestDto, OrderEntity>();
         }
     }
 }

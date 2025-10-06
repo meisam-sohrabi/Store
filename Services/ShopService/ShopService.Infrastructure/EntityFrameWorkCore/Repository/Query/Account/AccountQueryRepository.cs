@@ -1,20 +1,20 @@
-﻿using Microsoft.AspNetCore.Identity;
-using ShopService.Domain.Entities;
+﻿using ShopService.Domain.Entities;
+using ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext;
 using ShopService.InfrastructureContract.Interfaces.Query.Account;
 
 namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.Account
 {
     public class AccountQueryRepository : IAccountQueryRepository
     {
-        private readonly UserManager<CustomUserEntity> _userManager;
+        private readonly ApplicationDbContext _context;
 
-        public AccountQueryRepository(UserManager<CustomUserEntity> userManager)
+        public AccountQueryRepository(ApplicationDbContext context)
         {
-            _userManager = userManager;
+            _context = context;
         }
         public IQueryable<CustomUserEntity> GetQueryable()
         {
-            return _userManager.Users.AsQueryable();
+            return _context.Users.AsQueryable();
         }
     }
 }

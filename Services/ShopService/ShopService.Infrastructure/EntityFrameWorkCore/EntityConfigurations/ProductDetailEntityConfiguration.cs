@@ -12,11 +12,10 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.EntityConfigurations
             builder.HasKey(e => e.Id);
             builder.Property(p => p.Size).IsRequired().HasMaxLength(30);
             builder.Property(p => p.Description).HasMaxLength(350);
-            builder.Property(p => p.Price).HasPrecision(18, 2);
             builder.HasOne(p => p.Product)
                 .WithMany(p => p.ProductDetails)
                 .HasForeignKey(e => e.ProductId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

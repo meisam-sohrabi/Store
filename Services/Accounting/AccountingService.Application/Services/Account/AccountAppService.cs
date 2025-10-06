@@ -7,7 +7,9 @@ using AccountingService.InfrastructureContract.Interfaces;
 using AccountingService.InfrastructureContract.Interfaces.Command.Account;
 using AccountingService.InfrastructureContract.Interfaces.Command.Role;
 using AccountingService.InfrastructureContract.Interfaces.Query.Account;
+using AccountingService.InfrastructureContract.Interfaces.Query.Role;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 
@@ -20,13 +22,15 @@ namespace AccountingService.Application.Services.Account
         private readonly IUserAppService _userAppService;
         private readonly IMapper _mapper;
         private readonly IRoleCommandRepository _roleCommandRepository;
+        private readonly IRoleQueryRepository _roleQueryRepository;
         private readonly IUnitOfWork _unitOfWork;
 
         public AccountAppService(IAccountCommandRepository accountCommandRepository
             , IAccountQueryRepository accountQueryRepository
             , IUserAppService userAppService
             , IMapper mapper
-            , IRoleCommandRepository roleCommandRepository,
+            , IRoleCommandRepository roleCommandRepository
+            , IRoleQueryRepository roleQueryRepository,
             IUnitOfWork unitOfWork)
         {
             _accountCommandRepository = accountCommandRepository;
@@ -34,6 +38,7 @@ namespace AccountingService.Application.Services.Account
             _userAppService = userAppService;
             _mapper = mapper;
             _roleCommandRepository = roleCommandRepository;
+            _roleQueryRepository = roleQueryRepository;
             _unitOfWork = unitOfWork;
         }
 
@@ -60,6 +65,17 @@ namespace AccountingService.Application.Services.Account
                 output.Success = false;
                 output.StatusCode = HttpStatusCode.BadRequest;
                 return output;
+            }
+            var roleExist = await _roleQueryRepository.RoleExist("user");
+            if (!roleExist)
+            {
+                var identiyRole = new IdentityRole
+                {
+                    Name = "user",
+                    NormalizedName = "USER"
+                };
+                await _roleCommandRepository.Add(identiyRole);
+               
             }
             await _roleCommandRepository.AssignRoleToUser(identityUser, "user");
 

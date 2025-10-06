@@ -1,5 +1,6 @@
 ﻿using ShopService.ApplicationContract.DTO.Product;
 using ShopService.ApplicationContract.DTO.ProductDetail;
+using ShopService.ApplicationContract.DTO.ProductPrice;
 
 namespace ShopService.ApplicationContract.DTO.Transaction
 {
@@ -7,8 +8,7 @@ namespace ShopService.ApplicationContract.DTO.Transaction
     {
         public ProductRequestDto Product { get; set; }
         public ProductDetailRequestDto ProductDetail { get; set; }
-        public int CategoryId { get; set; }
-        public int ProductBrandId { get; set; }
+        public ProductPriceRequestDto ProductPrice { get; set; }
 
     }
 }

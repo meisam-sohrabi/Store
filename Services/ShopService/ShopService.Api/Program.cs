@@ -1,10 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ShopService.Application.Services.SignalR;
-using ShopService.Domain.Entities;
-using ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext;
 using ShopService.IocConfig;
 using System.Text;
 var builder = WebApplication.CreateBuilder(args);
@@ -17,14 +14,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSignalR();
 builder.Services.AddSwaggerGen();
-builder.Services.AddIdentity<CustomUserEntity, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.ConfigureIoc();
 builder.Services.AddAuthentication(option =>
 {
     option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-    option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme; 
+    option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 
 
 }).AddJwtBearer(option =>

@@ -6,7 +6,6 @@ using ShopService.ApplicationContract.DTO.Product;
 using ShopService.ApplicationContract.DTO.Search;
 using ShopService.ApplicationContract.DTO.Transaction;
 using ShopService.ApplicationContract.Interfaces.Product;
-using ShopService.ApplicationContract.Interfaces.Transactions.Product;
 
 namespace ShopService.Api.Controllers
 {
@@ -15,20 +14,19 @@ namespace ShopService.Api.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductAppService _productAppService;
-        private readonly IProductTransactionAppService _productTransactionAppService;
 
-        public ProductController(IProductAppService productAppService, IProductTransactionAppService productTransactionAppService)
+        public ProductController(IProductAppService productAppService)
         {
             _productAppService = productAppService;
-            _productTransactionAppService = productTransactionAppService;
         }
 
-        [HttpPost("Create")]
-        [Authorize(Roles = "admin")]
-        public async Task<BaseResponseDto<ProductResponseDto>> Create([FromBody] ProductRequestDto productDto)
-        {
-            return await _productAppService.CreateProduct(productDto);
 
+        [HttpPost("ProductTransaction")]
+        [Authorize(Roles = "admin")]
+        [Permission]
+        public async Task<BaseResponseDto<ProductTransactionDto>> ProductTransaction([FromBody] ProductTransactionDto productTransactionDto, [FromQuery] int categoryId, [FromQuery] int productBrandId)
+        {
+            return await _productAppService.ProductTransaction(productTransactionDto, categoryId, productBrandId);
         }
 
         [HttpPost("Edit/{id}")]
@@ -55,14 +53,6 @@ namespace ShopService.Api.Controllers
         public async Task<BaseResponseDto<ProductResponseDto>> Delete([FromRoute] int id)
         {
             return await _productAppService.DeleteProduct(id);
-        }
-
-        [HttpPost("ProductTransaction")]
-        [Authorize(Roles = "admin")]
-        [Permission]
-        public async Task<BaseResponseDto<ProductTransactionDto>> ProductTransaction([FromBody] ProductTransactionDto productTransactionDto)
-        {
-            return await _productTransactionAppService.ProductTransaction(productTransactionDto);
         }
 
         [HttpPost("Search")]

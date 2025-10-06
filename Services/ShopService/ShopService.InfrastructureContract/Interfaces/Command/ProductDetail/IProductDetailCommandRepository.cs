@@ -2,7 +2,7 @@
 
 namespace ShopService.InfrastructureContract.Interfaces.Command.ProductDetail
 {
-    public interface IProductDetailCommanRepository
+    public interface IProductDetailCommandRepository
     {
         void Add(ProductDetailEntity productDetail);
         void Edit(ProductDetailEntity productDetail);

@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ShopService.Domain.Entities
 {
-    public class CustomUserEntity  : IdentityUser
+    public class CustomUserEntity
     {
+        [Key]
+        public string Id { get; set; }
         public string FullName { get; set; }
-        public ICollection<OrderEntity> Orders { get; set; } = new List<OrderEntity>();
-        public ICollection<UserPermissoinEntity> UserPermissions { get; set; } = new List<UserPermissoinEntity>();
+        public string UserName { get; set; }
 
     }
 }

@@ -1,8 +1,7 @@
 ﻿namespace ShopService.ApplicationContract.DTO.Order
 {
-    public class OrderDto
+    public class OrderRequestDto
     {
         public int Quantity { get; set; }
-        public int ProductId { get; set; }
     }
 }

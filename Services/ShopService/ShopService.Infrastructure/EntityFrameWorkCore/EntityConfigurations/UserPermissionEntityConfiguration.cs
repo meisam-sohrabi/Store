@@ -8,18 +8,20 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<UserPermissoinEntity> builder)
         {
-            builder.ToTable("UserPermissions");
+            builder.ToTable("UserPermissions",c=> c.ExcludeFromMigrations());
             builder.HasKey(up => new { up.PermissionId, up.UserId });
 
             builder.HasOne(up => up.User)
-            .WithMany(u => u.UserPermissions)
+            .WithMany()   // چون در این سرویس نیازی به ICollection<UserPermission> در User نداریم
             .HasForeignKey(up => up.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(up => up.Permission)
-           .WithMany(p => p.UserPermissions)
+           .WithMany()
            .HasForeignKey(up => up.PermissionId)
            .OnDelete(DeleteBehavior.Cascade);
+
+            // mishe as usingentity ham estefade kard.
         }
     }
 }

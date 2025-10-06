@@ -9,7 +9,6 @@ namespace ShopService.Domain.Entities
         public string Resource { get; set; } 
         public string Action { get; set; }
         public string? Description { get; set; }
-        public ICollection<UserPermissoinEntity> UserPermissions { get; set; } = new List<UserPermissoinEntity>();
 
     }
 }

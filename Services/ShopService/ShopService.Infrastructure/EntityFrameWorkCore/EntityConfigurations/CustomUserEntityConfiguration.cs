@@ -9,6 +9,7 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.EntityConfigurations
         public void Configure(EntityTypeBuilder<CustomUserEntity> builder)
         {
             builder.HasKey(e => e.Id);
+            builder.ToTable("AspNetUsers", c => c.ExcludeFromMigrations());
         }
     }
 }

@@ -4,7 +4,7 @@ using ShopService.InfrastructureContract.Interfaces.Command.ProductDetail;
 
 namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Command.ProductDetail
 {
-    public class ProductDetailCommandRepository : IProductDetailCommanRepository
+    public class ProductDetailCommandRepository : IProductDetailCommandRepository
     {
         private readonly ApplicationDbContext _context;
 

@@ -4,14 +4,19 @@ using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.Product;
 using ShopService.ApplicationContract.DTO.ProductDetail;
 using ShopService.ApplicationContract.DTO.Search;
+using ShopService.ApplicationContract.DTO.Transaction;
 using ShopService.ApplicationContract.Interfaces.Product;
 using ShopService.Domain.Entities;
 using ShopService.InfrastructureContract.Interfaces;
 using ShopService.InfrastructureContract.Interfaces.Command.Product;
+using ShopService.InfrastructureContract.Interfaces.Command.ProductDetail;
+using ShopService.InfrastructureContract.Interfaces.Command.ProductInventory;
+using ShopService.InfrastructureContract.Interfaces.Command.ProductPrice;
 using ShopService.InfrastructureContract.Interfaces.Query.Category;
 using ShopService.InfrastructureContract.Interfaces.Query.Product;
 using ShopService.InfrastructureContract.Interfaces.Query.ProductBrand;
 using ShopService.InfrastructureContract.Interfaces.Query.ProductDetail;
+using ShopService.InfrastructureContract.Interfaces.Query.ProductPrice;
 using System.Net;
 
 namespace ShopService.Application.Services.Product
@@ -24,13 +29,19 @@ namespace ShopService.Application.Services.Product
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IProductBrandQueryRepository _productBrandQueryRepository;
-        private readonly IProductDetailQueryRepository _productDetailQueryRepository;
+        private readonly IProductPriceCommandRepository _productPriceCommandRepository;
+        private readonly IProductDetailCommandRepository _productDetailCommandRepository;
+        private readonly IProductInventoryCommandRepository _productInventoryCommandRepository;
 
         public ProductAppService(IProductQueryRespository productQueryRespository,
             IProductCommandRepository productCommandRepository,
             ICategoryQueryRepository categoryQueryRepository,
             IUnitOfWork unitOfWork, IMapper mapper, IProductBrandQueryRepository productBrandQueryRepository
-            ,IProductDetailQueryRepository productDetailQueryRepository)
+            , IProductPriceQueryRepository productPriceQueryRepository
+            , IProductDetailQueryRepository productDetailQueryRepository
+            , IProductPriceCommandRepository productPriceCommandRepository
+            , IProductDetailCommandRepository productDetailCommandRepository
+            , IProductInventoryCommandRepository productInventoryCommandRepository)
         {
             _productQueryRespository = productQueryRespository;
             _productCommandRepository = productCommandRepository;
@@ -38,48 +49,50 @@ namespace ShopService.Application.Services.Product
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _productBrandQueryRepository = productBrandQueryRepository;
-            _productDetailQueryRepository = productDetailQueryRepository;
+            _productPriceCommandRepository = productPriceCommandRepository;
+            _productDetailCommandRepository = productDetailCommandRepository;
+            _productInventoryCommandRepository = productInventoryCommandRepository;
         }
 
         #region Create
-        public async Task<BaseResponseDto<ProductResponseDto>> CreateProduct(ProductRequestDto productDto)
-        {
-            var output = new BaseResponseDto<ProductResponseDto>
-            {
-                Message = "خطا در ایجاد محصول",
-                Success = false,
-                StatusCode = HttpStatusCode.BadRequest
-            };
-            var categoryExist = await _categoryQueryRepository.GetQueryable()
-                .AnyAsync(c => c.Id == productDto.CategoryId);
+        //public async Task<BaseResponseDto<ProductResponseDto>> CreateProduct(ProductRequestDto productDto)
+        //{
+        //    var output = new BaseResponseDto<ProductResponseDto>
+        //    {
+        //        Message = "خطا در ایجاد محصول",
+        //        Success = false,
+        //        StatusCode = HttpStatusCode.BadRequest
+        //    };
+        //    var categoryExist = await _categoryQueryRepository.GetQueryable()
+        //        .AnyAsync(c => c.Id == productDto.CategoryId);
 
-            if (!categoryExist)
-            {
-                output.Message = "دسته‌بندی موردنظر وجود ندارد";
-                output.Success = false;
-                output.StatusCode = HttpStatusCode.NotFound;
-                return output;
-            }
-            var brandExist = await _productBrandQueryRepository.GetQueryable()
-                .AnyAsync(c => c.Id == productDto.BrandId);
-            if (!brandExist)
-            {
-                output.Message = "برند موردنظر وجود ندارد";
-                output.Success = false;
-                output.StatusCode = HttpStatusCode.NotFound;
-                return output;
-            }
-            var mapped = _mapper.Map<ProductEntity>(productDto);
-            _productCommandRepository.Add(mapped);
-            var affectedRows = await _unitOfWork.SaveChangesAsync();
-            if (affectedRows > 0)
-            {
-                output.Message = $"محصول {productDto.Name} با موفقیت ایجاد شد";
-                output.Success = true;
-            }
-            output.StatusCode = output.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
-            return output;
-        }
+        //    if (!categoryExist)
+        //    {
+        //        output.Message = "دسته‌بندی موردنظر وجود ندارد";
+        //        output.Success = false;
+        //        output.StatusCode = HttpStatusCode.NotFound;
+        //        return output;
+        //    }
+        //    var brandExist = await _productBrandQueryRepository.GetQueryable()
+        //        .AnyAsync(c => c.Id == productDto.ProductBrandId);
+        //    if (!brandExist)
+        //    {
+        //        output.Message = "برند موردنظر وجود ندارد";
+        //        output.Success = false;
+        //        output.StatusCode = HttpStatusCode.NotFound;
+        //        return output;
+        //    }
+        //    var mapped = _mapper.Map<ProductEntity>(productDto);
+        //    _productCommandRepository.Add(mapped);
+        //    var affectedRows = await _unitOfWork.SaveChangesAsync();
+        //    if (affectedRows > 0)
+        //    {
+        //        output.Message = $"محصول {productDto.Name} با موفقیت ایجاد شد";
+        //        output.Success = true;
+        //    }
+        //    output.StatusCode = output.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
+        //    return output;
+        //}
         #endregion
 
         #region Edit
@@ -91,26 +104,26 @@ namespace ShopService.Application.Services.Product
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
+            // در صورتی که بخوایم دسته بندی و برند و هم عوض کنیم اونوقت باید ووردی هم بدیم
+            //var categoryExist = await _categoryQueryRepository.GetQueryable()
+            //.AnyAsync(c => c.Id == productDto.CategoryId);
 
-            var categoryExist = await _categoryQueryRepository.GetQueryable()
-            .AnyAsync(c => c.Id == productDto.CategoryId);
-
-            if (!categoryExist)
-            {
-                output.Message = "دسته‌بندی موردنظر وجود ندارد";
-                output.Success = false;
-                output.StatusCode = HttpStatusCode.NotFound;
-                return output;
-            }
-            var brandExist = await _productBrandQueryRepository.GetQueryable()
-            .AnyAsync(c => c.Id == productDto.BrandId);
-            if (!brandExist)
-            {
-                output.Message = "برند موردنظر وجود ندارد";
-                output.Success = false;
-                output.StatusCode = HttpStatusCode.NotFound;
-                return output;
-            }
+            //if (!categoryExist)
+            //{
+            //    output.Message = "دسته‌بندی موردنظر وجود ندارد";
+            //    output.Success = false;
+            //    output.StatusCode = HttpStatusCode.NotFound;
+            //    return output;
+            //}
+            //var brandExist = await _productBrandQueryRepository.GetQueryable()
+            //.AnyAsync(c => c.Id == productDto.ProductBrandId);
+            //if (!brandExist)
+            //{
+            //    output.Message = "برند موردنظر وجود ندارد";
+            //    output.Success = false;
+            //    output.StatusCode = HttpStatusCode.NotFound;
+            //    return output;
+            //}
             var productExist = await _productQueryRespository.GetQueryable()
                 .FirstOrDefaultAsync(c => c.Id == id);
 
@@ -121,17 +134,47 @@ namespace ShopService.Application.Services.Product
                 output.StatusCode = HttpStatusCode.NotFound;
                 return output;
             }
-
-            var mapped = _mapper.Map(productDto, productExist);
-            _productCommandRepository.Edit(mapped);
-            var affectedRows = await _unitOfWork.SaveChangesAsync();
-            if (affectedRows > 0)
+            var oldQuantity = productExist.Quantity;
+            var newQuantity = productDto.Quantity;
+            var quantityChanged = oldQuantity != newQuantity;
+            try
             {
-                output.Message = "محصول با موفقیت بروزرسانی شد";
-                output.Success = true;
-            }
-            output.StatusCode = output.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
+                await _unitOfWork.BeginTransactionAsync();
 
+                var mapped = _mapper.Map(productDto, productExist);
+                _productCommandRepository.Edit(mapped);
+
+
+
+                if (quantityChanged)
+                {
+                    var diff = newQuantity - oldQuantity;
+                    var inventory = new ProductInventoryEntity
+                    {
+                        QuantityChange = diff,
+                        ProductId = productExist.Id,
+                    };
+                    await _productInventoryCommandRepository.Add(inventory);
+                }
+
+
+                await _unitOfWork.SaveChangesAsync();
+                await _unitOfWork.CommitTransactionAsync();
+
+                output.Message = "محصول  با موفقیت به روزرسانی شد";
+                output.Success = true;
+                output.StatusCode = HttpStatusCode.OK;
+
+            }
+            catch (Exception ex)
+            {
+
+                await _unitOfWork.RollBackTransactionAsync();
+
+                output.Message = "خطای غیرمنتظره رخ داد" + ex.Message;
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.InternalServerError;
+            }
             return output;
         }
         #endregion
@@ -179,7 +222,7 @@ namespace ShopService.Application.Services.Product
                 StatusCode = HttpStatusCode.BadRequest
             };
             var products = await _productQueryRespository.GetQueryable()
-                .Select(c => new ProductResponseDto { Name = c.Name, Description = c.Description })
+                .Select(c => new ProductResponseDto { Name = c.Name, Description = c.Description, Quantity = c.Quantity })
                 .ToListAsync();
             if (products.Any())
             {
@@ -203,7 +246,7 @@ namespace ShopService.Application.Services.Product
             };
             var product = await _productQueryRespository.GetQueryable()
                 .Where(c => c.Id == id)
-                .Select(c => new ProductResponseDto { Name = c.Name, Description = c.Description })
+                .Select(c => new ProductResponseDto { Name = c.Name, Description = c.Description, Quantity = c.Quantity })
                 .FirstOrDefaultAsync();
             if (product != null)
             {
@@ -236,8 +279,9 @@ namespace ShopService.Application.Services.Product
                     produtName = s.product.Name,
                     productBrand = s.brand.Name,
                     categoryName = s.category.Name,
+                    Price = s.product.ProductPrices.OrderByDescending(c => c.CreateDate).Select(c => c.Price).FirstOrDefault(),
                     productDetail = s.product.ProductDetails
-                                    .Select(c => new ProductDetailResponseDto { Description = c.Description, Size = c.Size, Price = c.Price }).ToList(),
+                                    .Select(c => new ProductDetailResponseDto { Description = c.Description, Size = c.Size, Color = c.Color }).ToList(),
                 }).ToListAsync();
             if (searchProduct != null)
             {
@@ -248,8 +292,81 @@ namespace ShopService.Application.Services.Product
             output.StatusCode = output.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
             return output;
         }
+
         #endregion
 
+        #region Transaction
+        public async Task<BaseResponseDto<ProductTransactionDto>> ProductTransaction(ProductTransactionDto productTransactionDto, int categoryId, int productBrandId)
+        {
+            var output = new BaseResponseDto<ProductTransactionDto>
+            {
+                Message = "خطا در درج اطلاعات",
+                Success = false,
+                StatusCode = HttpStatusCode.BadRequest
+            };
+            try
+            {
+                var categoryExist = await _categoryQueryRepository.GetQueryable()
+                    .FirstOrDefaultAsync(c => c.Id == categoryId);
+                if (categoryExist == null)
+                {
+                    output.Message = "دسته بندی یافت نشد";
+                    output.Success = false;
+                    output.StatusCode = HttpStatusCode.NotFound;
+                    return output;
+                }
+                var brandExist = await _productBrandQueryRepository.GetQueryable()
+                    .FirstOrDefaultAsync(b => b.Id == productBrandId);
+                if (brandExist == null)
+                {
+                    output.Message = "برند یافت نشد";
+                    output.Success = false;
+                    output.StatusCode = HttpStatusCode.NotFound;
+                    return output;
+                }
+                await _unitOfWork.BeginTransactionAsync();
+
+                var product = _mapper.Map<ProductEntity>(productTransactionDto.Product);
+                product.CategoryId = categoryExist.Id;
+                product.ProductBrandId = brandExist.Id;
+                _productCommandRepository.Add(product);
+                await _unitOfWork.SaveChangesAsync();
+
+                var detail = _mapper.Map<ProductDetailEntity>(productTransactionDto.ProductDetail);
+                detail.ProductId = product.Id;
+                _productDetailCommandRepository.Add(detail);
+
+                var price = _mapper.Map<ProductPriceEntity>(productTransactionDto.ProductPrice);
+                price.ProductId = product.Id;
+                _productPriceCommandRepository.Add(price);
+
+                var inventory = new ProductInventoryEntity
+                {
+                    QuantityChange = +product.Quantity,
+                    ProductId = product.Id,
+                };
+                await _productInventoryCommandRepository.Add(inventory);
+
+                await _unitOfWork.SaveChangesAsync();
+                await _unitOfWork.CommitTransactionAsync();
+
+                output.Message = "محصول  با موفقیت ایجاد شد";
+                output.Success = true;
+                output.StatusCode = HttpStatusCode.Created;
+
+            }
+            catch (Exception ex)
+            {
+
+                await _unitOfWork.RollBackTransactionAsync();
+
+                output.Message = "خطای غیرمنتظره رخ داد" + ex.Message;
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.InternalServerError;
+            }
+            return output;
+        }
+        #endregion
     }
 }
 
@@ -304,7 +421,8 @@ namespace ShopService.Application.Services.Product
                     productDetail = s.product.ProductDetails
                     .Select(c => new ProductDetailResponseDto { Description = c.Description, Size = c.Size, Price = c.Price }).ToList(),
                 }).ToListAsync();*/
-#endregion
+
+
 //Select(s => new SearchResponseDto
 //{
 //    produtName = s.product.Name,
@@ -327,3 +445,6 @@ namespace ShopService.Application.Services.Product
                     categoryName = pcb.category.Name,
                     productDetail = d.Price
                 }).ToListAsync();*/
+#endregion
+
+

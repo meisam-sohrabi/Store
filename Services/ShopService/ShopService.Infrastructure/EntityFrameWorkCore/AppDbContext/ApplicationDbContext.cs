@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ShopService.Domain.Entities;
 
 namespace ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext
 {
-    public class ApplicationDbContext : IdentityDbContext<CustomUserEntity>
+    public class ApplicationDbContext : DbContext
     {
 
         public ApplicationDbContext(DbContextOptions options) : base(options)
@@ -24,6 +23,9 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext
         public DbSet<OrderEntity> Orders { get; set; }
         public DbSet<PermissionEntity> Permissions { get; set; }
         public DbSet<UserPermissoinEntity> UserPermissoins { get; set; }
+        public DbSet<ProductPriceEntity> ProductPrices { get; set; }
+        public DbSet<ProductInventoryEntity> productInventories { get; set; }
+        public DbSet<CustomUserEntity> Users { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 

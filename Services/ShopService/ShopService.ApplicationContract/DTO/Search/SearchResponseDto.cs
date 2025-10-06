@@ -8,5 +8,6 @@ namespace ShopService.ApplicationContract.DTO.Search
         public string productBrand { get; set; }
         public string produtName { get; set; }
         public List<ProductDetailResponseDto> productDetail { get; set; }
+        public Decimal Price { get; set; }
     }
 }

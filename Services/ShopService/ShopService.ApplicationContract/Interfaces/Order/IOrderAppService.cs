@@ -1,11 +1,12 @@
 ﻿using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.Order;
+using ShopService.ApplicationContract.DTO.Transaction;
 
 namespace ShopService.ApplicationContract.Interfaces.Order
 {
     public interface IOrderAppService
     {
-        Task<BaseResponseDto<OrderDto>> CreateOrder(OrderDto orderDto);
-        Task<BaseResponseDto<List<ShowOrderDto>>> GetAllOrders();
+        Task<BaseResponseDto<OrderTransactionDto>> OrderTransaction(OrderTransactionDto orderTransactionDto,int productId);
+        Task<BaseResponseDto<List<OrderResponseDto>>> GetAllOrders();
     }
 }

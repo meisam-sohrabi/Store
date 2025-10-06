@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ShopService.Application.Services.Attributes;
-using ShopService.Application.Services.PermissionAttribute;
 using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.Category;
 using ShopService.ApplicationContract.Interfaces.Category;
