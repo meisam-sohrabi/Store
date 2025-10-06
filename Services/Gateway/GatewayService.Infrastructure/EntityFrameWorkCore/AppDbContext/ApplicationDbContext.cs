@@ -1,10 +1,9 @@
 ﻿using GatewayService.Domain.Entities;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace GatewayService.Infrastructure.EntityFrameWorkCore.AppDbContext
 {
-    public class ApplicationDbContext : IdentityDbContext<CustomUserEntity>
+    public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
@@ -17,6 +16,9 @@ namespace GatewayService.Infrastructure.EntityFrameWorkCore.AppDbContext
         }
         public DbSet<RefreshTokenEntity> RefreshToken { get; set; }
         public DbSet<UserSessionEntity> UserSessions { get; set; }
+        public DbSet<CustomUserEntity> Users { get; set; }
+        public DbSet<CustomRoleEntity> Roles { get; set; }
+        public DbSet<CustomUserRoleEntity> UserRoles { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);

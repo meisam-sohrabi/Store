@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using AccountingService.Application.Services.Account;
+﻿using AccountingService.Application.Services.Account;
 using AccountingService.Application.Services.Mapping;
 using AccountingService.Application.Services.Permission;
 using AccountingService.Application.Services.Role;
@@ -19,6 +18,7 @@ using AccountingService.Infrastructure.EntityFrameWorkCore.Repository.Query.Acco
 using AccountingService.Infrastructure.EntityFrameWorkCore.Repository.Query.Permission;
 using AccountingService.Infrastructure.EntityFrameWorkCore.Repository.Query.Role;
 using AccountingService.Infrastructure.EntityFrameWorkCore.Repository.Query.UserPermission;
+using AccountingService.Infrastructure.EntityFrameWorkCore.Seed;
 using AccountingService.Infrastructure.EntityFrameWorkCore.UnitOfWork;
 using AccountingService.InfrastructureContract.Interfaces;
 using AccountingService.InfrastructureContract.Interfaces.Command.Account;
@@ -29,6 +29,7 @@ using AccountingService.InfrastructureContract.Interfaces.Query.Account;
 using AccountingService.InfrastructureContract.Interfaces.Query.Permission;
 using AccountingService.InfrastructureContract.Interfaces.Query.Role;
 using AccountingService.InfrastructureContract.Interfaces.Query.UserPermission;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AccountingService.IocConfiguration
 {
@@ -39,6 +40,7 @@ namespace AccountingService.IocConfiguration
 
             services.AddDbContext<ApplicationDbContext>();
             services.AddAutoMapper(typeof(MappingApplication).Assembly);
+            services.AddScoped<DataSeeds>();
             services.AddScoped<IAccountCommandRepository, AccountCommandRepository>();
             services.AddScoped<IAccountQueryRepository, AccountQueryRepository>();
             services.AddScoped<IRoleCommandRepository, RoleCommandRepository>();

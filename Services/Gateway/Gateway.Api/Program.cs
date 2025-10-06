@@ -1,8 +1,5 @@
-using GatewayService.Domain.Entities;
-using GatewayService.Infrastructure.EntityFrameWorkCore.AppDbContext;
 using GatewayService.IocConfig;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -14,7 +11,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddIdentity<CustomUserEntity, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddReverseProxy().LoadFromConfig(builder.Configuration.GetSection("ReverseProxy")); // section get the whole configuration.
 builder.Services.ConfigureIoc();
 builder.Services.AddAuthentication(option =>

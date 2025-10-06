@@ -1,26 +1,20 @@
 ﻿using GatewayService.Domain.Entities;
+using GatewayService.Infrastructure.EntityFrameWorkCore.AppDbContext;
 using GatewayService.InfrastructureContract.Interfaces.Query.Auth;
-using Microsoft.AspNetCore.Identity;
 
 namespace GatewayService.Infrastructure.EntityFrameWorkCore.Repository.Query.Auth
 {
     public class AuthQueryRepository : IAuthQueryRrepository
     {
-        private readonly UserManager<CustomUserEntity> _userManager;
+        private readonly ApplicationDbContext _context;
 
-        public AuthQueryRepository(UserManager<CustomUserEntity> userManager)
+        public AuthQueryRepository(ApplicationDbContext context)
         {
-            _userManager = userManager;
+            _context = context;
         }
-
-        public async Task<bool> CheckPassword(CustomUserEntity user, string password)
-        {
-            return await _userManager.CheckPasswordAsync(user, password);
-        }
-
         public IQueryable<CustomUserEntity> GetQueryable()
         {
-            return _userManager.Users.AsQueryable();
+            return _context.Users.AsQueryable();
         }
     }
 }

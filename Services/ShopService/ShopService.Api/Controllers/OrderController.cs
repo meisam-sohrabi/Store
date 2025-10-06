@@ -21,7 +21,7 @@ namespace ShopService.Api.Controllers
         }
 
         [HttpPost("OrderTransaction")]
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "user")]
         [Permission]
         public async Task<BaseResponseDto<OrderTransactionDto>> OrderTransaction([FromBody] OrderTransactionDto orderTransactionDto, [FromQuery] int productId)
         {

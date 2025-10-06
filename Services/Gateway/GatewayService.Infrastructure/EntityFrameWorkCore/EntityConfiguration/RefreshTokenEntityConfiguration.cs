@@ -12,6 +12,7 @@ namespace GatewayService.Infrastructure.EntityFrameWorkCore.EntityConfiguration
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Token).IsRequired();
             builder.Property(e => e.UserId).IsRequired();
+            builder.HasOne(r=> r.User).WithOne().HasForeignKey<RefreshTokenEntity>(c=> c.UserId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

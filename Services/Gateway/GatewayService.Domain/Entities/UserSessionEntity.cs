@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace GatewayService.Domain.Entities
 {
     public class UserSessionEntity
     {
+        [Key]
         public int Id { get; set; }
         public DateTime LoginTime { get; set; } = DateTime.Now;
         public DateTime? LogoutTime { get; set; }

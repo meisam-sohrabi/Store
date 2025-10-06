@@ -1,8 +1,10 @@
 using AccountingService.Domain.Entities;
 using AccountingService.Infrastructure.EntityFrameWorkCore.AppDbContext;
+using AccountingService.Infrastructure.EntityFrameWorkCore.Seed;
 using AccountingService.IocConfiguration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -78,6 +80,16 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 var app = builder.Build();
+
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var dataSeeder = services.GetRequiredService<DataSeeds>();
+    await dataSeeder.SeedAsync();
+}
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

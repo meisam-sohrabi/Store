@@ -11,6 +11,7 @@ using GatewayService.InfrastructureContract.Interfaces.Query.Auth;
 using GatewayService.InfrastructureContract.Interfaces.Query.Role;
 using GatewayService.InfrastructureContract.Interfaces.Query.Security;
 using GatewayService.InfrastructureContract.Interfaces.Query.Session;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -33,6 +34,7 @@ namespace GatewayService.Application.Services.Auth
         private readonly ICookieAppService _cookieAppService;
         private readonly ISessionQueryRepository _sessionQueryRepository;
         private readonly IUserAppService _userAppService;
+        private readonly IPasswordHasher<CustomUserEntity> _passwordHasher;
 
         public AuthAppService(IAuthQueryRrepository authQueryRrepository, IConfiguration configuration
             ,IRoleQueryRepository roleQueryRepository
@@ -42,7 +44,8 @@ namespace GatewayService.Application.Services.Auth
             ,IUnitOfWork unitOfWork
             ,ICookieAppService cookieAppService
             ,ISessionQueryRepository sessionQueryRepository
-            ,IUserAppService userAppService)
+            ,IUserAppService userAppService
+            ,IPasswordHasher<CustomUserEntity> passwordHasher)
         {
             _authQueryRrepository = authQueryRrepository;
             _configuration = configuration;
@@ -54,6 +57,7 @@ namespace GatewayService.Application.Services.Auth
             _cookieAppService = cookieAppService;
             _sessionQueryRepository = sessionQueryRepository;
             _userAppService = userAppService;
+            _passwordHasher = passwordHasher;
         }
 
         #region Login
@@ -73,7 +77,7 @@ namespace GatewayService.Application.Services.Auth
                 output.StatusCode = HttpStatusCode.BadRequest;
                 return output;
             }
-            var passCheck = await _authQueryRrepository.CheckPassword(currentUser, loginDto.Password);
+            var passCheck = CheckPassword(currentUser, loginDto.Password); 
             if (!passCheck)
             {
                 output.Message = "نام کاربری یا رمز عبور اشتباه است لطفا مجددا تلاش کنید";
@@ -284,6 +288,14 @@ namespace GatewayService.Application.Services.Auth
         _cookieAppService.DeleteCookie(refreshTokenKey) &&
         _cookieAppService.DeleteCookie(userIdKey);
 
+        }
+        #endregion
+
+        #region CheckPassword
+        private bool CheckPassword(CustomUserEntity user,string password)
+        {
+            var result=  _passwordHasher.VerifyHashedPassword(user,user.PasswordHash,password);
+            return result == PasswordVerificationResult.Success ? true : false;
         }
         #endregion
     }
