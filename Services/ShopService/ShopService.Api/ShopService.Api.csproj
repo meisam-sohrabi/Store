@@ -18,6 +18,9 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
+	  <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+	  <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+	  <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="9.0.0" />
 	  <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="9.0.0" />
 	  <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="9.0.0" />
 	  <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="9.0.4" />
@@ -26,6 +29,11 @@
   <ItemGroup>
     <ProjectReference Include="..\ShopService.Application\ShopService.Application.csproj" />
     <ProjectReference Include="..\ShopService.IocConfig\ShopService.IocConfig.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ElasticData\" />
+    <Folder Include="ElasticConfig\" />
   </ItemGroup>
 
 </Project>

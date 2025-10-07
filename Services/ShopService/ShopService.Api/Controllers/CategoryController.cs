@@ -32,7 +32,7 @@ namespace ShopService.Api.Controllers
         }
 
         [HttpGet("GetAll")]
-        [Authorize]
+        //[Authorize]
         public async Task<BaseResponseDto<List<CategoryDto>>> GetAll()
         {
             return await _categoryAppService.GetAllCategories();

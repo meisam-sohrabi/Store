@@ -1,10 +1,23 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using Serilog.Sinks.Elasticsearch;
 using ShopService.Application.Services.SignalR;
 using ShopService.IocConfig;
 using System.Text;
 var builder = WebApplication.CreateBuilder(args);
+
+
+Log.Logger = new LoggerConfiguration()
+     .Enrich.FromLogContext()
+     .WriteTo.Console()
+     .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://localhost:9200"))
+     {
+         AutoRegisterTemplate = true,
+         IndexFormat = "shopservice-api-logs-{0:yyyy.MM.dd}"
+     })
+     .CreateLogger();
 
 // Add services to the container.
 
@@ -74,6 +87,7 @@ builder.Services.AddSwaggerGen(c =>
         },
     });
 });
+builder.Host.UseSerilog();
 
 var app = builder.Build();
 

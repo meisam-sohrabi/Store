@@ -10,7 +10,6 @@ using ShopService.InfrastructureContract.Interfaces;
 using ShopService.InfrastructureContract.Interfaces.Command.Category;
 using ShopService.InfrastructureContract.Interfaces.Query.Category;
 using System.Net;
-
 using System.Text.Json;
 namespace ShopService.Application.Services.Category
 {
@@ -155,11 +154,13 @@ namespace ShopService.Application.Services.Category
                 output.StatusCode = HttpStatusCode.NotFound;
                 return output;
             }
+       
             output.Message = "دسته‌بندی ها با موفقیت دریافت شد";
             output.Success = true;
             output.StatusCode = output.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
             output.Data = categories;
             return output;
+            
         }
         #endregion
 

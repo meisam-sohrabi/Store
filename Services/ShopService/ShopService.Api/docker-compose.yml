@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+    elasticsearch:
+        container_name: elasticsearch
+        image: elastic/elasticsearch:8.18.8
+        volumes:
+            - D:\meisam\Store\Services\ShopService\ShopService.Api\ElasticData:/usr/share/elasticsearch/data
+            # - ./ElasticConfig/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+        environment:
+            - discovery.type=single-node
+            - xpack.security.enabled=false
+            - xpack.security.enrollment.enabled=false
+            - xpack.security.http.ssl.enabled=false
+            - xpack.security.transport.ssl.enabled=false
+        ports:
+            - 9200:9200
+        networks:
+            - elk
+    kibana:
+        container_name: kibana
+        image: elastic/kibana:8.18.8
+        ports:
+            - 5601:5601
+        depends_on:
+            - elasticsearch
+        environment:
+            - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+        networks:
+            - elk
+networks:
+    elk:
+        driver: bridge
