@@ -17,6 +17,7 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\..\..\SharedKernel\LogService\LogService\LogService.csproj" />
+	  <ProjectReference Include="..\..\..\SharedKernel\RedisService\RedisService.csproj" />
 	  <ProjectReference Include="..\ShopService.ApplicationContract\ShopService.ApplicationContract.csproj" />
 	  <ProjectReference Include="..\ShopService.InfrastructureContract\ShopService.InfrastructureContract.csproj" />
 	</ItemGroup>

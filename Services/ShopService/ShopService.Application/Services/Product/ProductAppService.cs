@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using RedisService;
 using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.Product;
 using ShopService.ApplicationContract.DTO.ProductDetail;
@@ -32,6 +33,7 @@ namespace ShopService.Application.Services.Product
         private readonly IProductPriceCommandRepository _productPriceCommandRepository;
         private readonly IProductDetailCommandRepository _productDetailCommandRepository;
         private readonly IProductInventoryCommandRepository _productInventoryCommandRepository;
+        private readonly ICacheAdapter _cacheAdapter;
 
         public ProductAppService(IProductQueryRespository productQueryRespository,
             IProductCommandRepository productCommandRepository,
@@ -41,7 +43,8 @@ namespace ShopService.Application.Services.Product
             , IProductDetailQueryRepository productDetailQueryRepository
             , IProductPriceCommandRepository productPriceCommandRepository
             , IProductDetailCommandRepository productDetailCommandRepository
-            , IProductInventoryCommandRepository productInventoryCommandRepository)
+            , IProductInventoryCommandRepository productInventoryCommandRepository
+            , ICacheAdapter cacheAdapter)
         {
             _productQueryRespository = productQueryRespository;
             _productCommandRepository = productCommandRepository;
@@ -52,6 +55,7 @@ namespace ShopService.Application.Services.Product
             _productPriceCommandRepository = productPriceCommandRepository;
             _productDetailCommandRepository = productDetailCommandRepository;
             _productInventoryCommandRepository = productInventoryCommandRepository;
+            _cacheAdapter = cacheAdapter;
         }
 
         #region Create
@@ -221,6 +225,15 @@ namespace ShopService.Application.Services.Product
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
+            var cachedData = _cacheAdapter.Get<List<ProductResponseDto>>("Products");
+            if (cachedData != null && cachedData.Any())
+            {
+                output.Message = "محصولات با موفقیت دریافت شد";
+                output.Success = true;
+                output.Data = cachedData;
+                output.StatusCode = HttpStatusCode.OK;
+                return output;
+            }
             var products = await _productQueryRespository.GetQueryable()
                 .Select(c => new ProductResponseDto { Name = c.Name, Description = c.Description, Quantity = c.Quantity })
                 .ToListAsync();
@@ -229,6 +242,8 @@ namespace ShopService.Application.Services.Product
                 output.Message = "محصولات با موفقیت دریافت شد";
                 output.Success = true;
                 output.Data = products;
+                _cacheAdapter.Set("Products", products);
+
             }
             output.StatusCode = output.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
             return output;

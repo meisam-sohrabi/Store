@@ -1,5 +1,6 @@
 ﻿using LogService;
 using Microsoft.Extensions.DependencyInjection;
+using RedisService;
 using ShopService.Application.Services.Category;
 using ShopService.Application.Services.Cookie;
 using ShopService.Application.Services.Mapping;
@@ -82,6 +83,7 @@ namespace ShopService.IocConfig
             services.AddScoped<IProductPriceAppService, ProductPriceAppService>();
             services.AddScoped<IOrderAppService, OrderAppService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ICacheAdapter, DistributedCacheAdapter>();
             return services;
         }
     }

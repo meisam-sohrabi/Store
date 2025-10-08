@@ -1,0 +1,121 @@
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Serilog;
+using Serilog.Sinks.Elasticsearch;
+using ShopService.Application.Services.SignalR;
+using ShopService.IocConfig;
+using System.Text;
+
+namespace ShopService.Api.Helper
+{
+    public static class HostingExtensions
+    {
+        public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
+        {
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://localhost:9200"))
+                {
+                    AutoRegisterTemplate = true,
+                    IndexFormat = "shopservice-api-logs-{0:yyyy.MM.dd}"
+                })
+                .CreateLogger();
+
+            builder.Services.AddControllers();
+            //builder.Services.AddOpenApi();
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSignalR();
+            builder.Services.AddSwaggerGen();
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.ConfigureIoc();
+            builder.Services.AddAuthentication(option =>
+            {
+                option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(option =>
+            {
+                option.TokenValidationParameters = new()
+                {
+                    ValidateIssuerSigningKey = true,
+                    ValidateAudience = true,
+                    ValidateIssuer = true,
+                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+                    ValidAudience = builder.Configuration["Jwt:Audience"],
+                };
+            });
+            builder.Services.AddSwaggerGen(c =>
+            {
+                // Add the JWT Authorization header to Swagger
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please enter JWT token with Bearer prefix, e.g., 'Bearer {token}'",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                 {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] {}
+                    }
+                });
+
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Shop",
+                    Version = "v1",
+                    Description = "",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "",
+                        Email = ".",
+                    },
+                });
+            });
+            builder.Host.UseSerilog();
+            builder.Services.AddStackExchangeRedisCache(option =>
+            {
+                option.Configuration = "localhost:6379";
+                option.InstanceName = "";
+            });
+
+
+            return builder.Build();
+        }
+
+
+
+
+        public static WebApplication ConfigurePipelines(this WebApplication app)
+        {
+            // Configure the HTTP request pipeline.
+            if (app.Environment.IsDevelopment())
+            {
+                //app.MapOpenApi();
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+            app.UseHttpsRedirection();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.MapControllers();
+            app.MapHub<ServerConnection>("/printorder");
+            return app;
+        }
+    }
+}
