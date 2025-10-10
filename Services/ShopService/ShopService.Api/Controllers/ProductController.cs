@@ -42,6 +42,13 @@ namespace ShopService.Api.Controllers
             return await _productAppService.GetAllProduct();
         }
 
+        [HttpGet("StoredProcedureGetAll")]
+        public async Task<BaseResponseDto<List<ProductWithInventoryDto>>> StoreProcedureGetAll([FromQuery] string? search, [FromQuery] DateTime? start, [FromQuery] DateTime? end)
+        {
+            return await _productAppService.GetProductWithInventory(search,start,end);
+        }
+
+
         [HttpGet("GetById/{id}")]
         public async Task<BaseResponseDto<ProductResponseDto>> GetById([FromRoute] int id)
         {

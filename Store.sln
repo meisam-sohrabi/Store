@@ -109,6 +109,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SataService.IocConfig", "Se
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedisService", "SharedKernel\RedisService\RedisService.csproj", "{5A6113B3-FF53-464C-803D-DEF15674CDF8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sp_ProductView", "Sp_ProductView", "{90A8B249-CA7C-40C1-984B-093FBBBF58F0}"
+	ProjectSection(SolutionItems) = preProject
+		Services\ShopService\Sp_ProductView\Sp_ProductView.sql = Services\ShopService\Sp_ProductView\Sp_ProductView.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -351,6 +356,7 @@ Global
 		{895DF8EE-D1F8-4C7D-A662-6164E45F1052} = {3CE38628-8F21-44EB-839A-16DBC8E83E0D}
 		{A12BD4E8-6592-4A6E-8F65-E6F3A5F8BCCC} = {3CE38628-8F21-44EB-839A-16DBC8E83E0D}
 		{5A6113B3-FF53-464C-803D-DEF15674CDF8} = {FBE4DDF1-E8EE-498C-8D23-22BF7AFDDC67}
+		{90A8B249-CA7C-40C1-984B-093FBBBF58F0} = {58350F64-3C26-4DA8-AD86-48D20941F89A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {36597FBA-8F4D-4AAC-A7B0-9228996087C3}

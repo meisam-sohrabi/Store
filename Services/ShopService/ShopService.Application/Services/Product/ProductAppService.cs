@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using RedisService;
-using Serilog;
 using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.Product;
 using ShopService.ApplicationContract.DTO.ProductDetail;
@@ -20,7 +20,6 @@ using ShopService.InfrastructureContract.Interfaces.Query.ProductBrand;
 using ShopService.InfrastructureContract.Interfaces.Query.ProductDetail;
 using ShopService.InfrastructureContract.Interfaces.Query.ProductPrice;
 using System.Net;
-using Microsoft.Extensions.Logging;
 namespace ShopService.Application.Services.Product
 {
     public class ProductAppService : IProductAppService
@@ -47,7 +46,7 @@ namespace ShopService.Application.Services.Product
             , IProductDetailCommandRepository productDetailCommandRepository
             , IProductInventoryCommandRepository productInventoryCommandRepository
             , ICacheAdapter cacheAdapter
-            ,ILogger<ProductAppService> logger)
+            , ILogger<ProductAppService> logger)
         {
             _productQueryRespository = productQueryRespository;
             _productCommandRepository = productCommandRepository;
@@ -230,7 +229,7 @@ namespace ShopService.Application.Services.Product
                 StatusCode = HttpStatusCode.BadRequest
             };
             List<ProductResponseDto> cachedData = null;
-           
+
             try
             {
                 cachedData = _cacheAdapter.Get<List<ProductResponseDto>>("Products");
@@ -262,11 +261,11 @@ namespace ShopService.Application.Services.Product
                 {
                     _cacheAdapter.Set("Products", products);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     _logger.LogWarning("Failed to save products to Redis cache.");
                 }
-                
+
 
             }
             output.StatusCode = output.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
@@ -332,6 +331,28 @@ namespace ShopService.Application.Services.Product
             return output;
         }
 
+        #endregion
+
+        #region ProductInventoryStoredProcedure
+
+        public async Task<BaseResponseDto<List<ProductWithInventoryDto>>> GetProductWithInventory(string? search, DateTime? start, DateTime? end)
+        {
+            var output = new BaseResponseDto<List<ProductWithInventoryDto>>
+            {
+                Message = "خطا در دریافت محصول مورد نظر",
+                Success = false,
+                StatusCode = HttpStatusCode.BadRequest
+            };
+            var spData = await _productQueryRespository.GetProductsByDateAndTextAsync(search, start, end);
+            if (spData.Any())
+            {
+                output.Message = "اطلاعات مورد نظر با موفقیت دریافت شد";
+                output.Success = true;
+                output.Data = spData;
+            }
+            output.StatusCode = output.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
+            return output;
+        }
         #endregion
 
         #region Transaction
@@ -405,6 +426,7 @@ namespace ShopService.Application.Services.Product
             }
             return output;
         }
+
         #endregion
     }
 }

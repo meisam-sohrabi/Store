@@ -13,6 +13,7 @@ namespace ShopService.ApplicationContract.Interfaces.Product
         Task<BaseResponseDto<List<ProductResponseDto>>> GetAllProduct();
         Task<BaseResponseDto<ProductResponseDto>> GetProduct(int id);
         Task<BaseResponseDto<List<SearchResponseDto>>> AdvanceSearchProduct(SearchRequestDto searchRequstDto);
+        Task<BaseResponseDto<List<ProductWithInventoryDto>>> GetProductWithInventory(string? search,DateTime? start,DateTime? end);
 
     }
 }
