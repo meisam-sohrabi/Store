@@ -17,6 +17,7 @@
 	</ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\SharedKernel\BaseConfig\BaseConfig\BaseConfig.csproj" />
     <ProjectReference Include="..\ApiCallService.ApplicationContract\ApiCallService.ApplicationContract.csproj" />
     <ProjectReference Include="..\ApiCallService.Application\ApiCallService.Application.csproj" />
     <ProjectReference Include="..\ApiCallService.IocConfig\ApiCallService.IocConfig.csproj" />

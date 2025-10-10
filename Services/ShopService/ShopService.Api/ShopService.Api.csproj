@@ -4,6 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>04ec347b-3faa-4b21-bb66-76c185d79735</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\SharedKernel\BaseConfig\BaseConfig\BaseConfig.csproj" />
     <ProjectReference Include="..\ShopService.Application\ShopService.Application.csproj" />
     <ProjectReference Include="..\ShopService.IocConfig\ShopService.IocConfig.csproj" />
   </ItemGroup>

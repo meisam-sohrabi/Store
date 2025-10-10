@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using RedisService;
+using Serilog;
 using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.Product;
 using ShopService.ApplicationContract.DTO.ProductDetail;
@@ -19,7 +20,7 @@ using ShopService.InfrastructureContract.Interfaces.Query.ProductBrand;
 using ShopService.InfrastructureContract.Interfaces.Query.ProductDetail;
 using ShopService.InfrastructureContract.Interfaces.Query.ProductPrice;
 using System.Net;
-
+using Microsoft.Extensions.Logging;
 namespace ShopService.Application.Services.Product
 {
     public class ProductAppService : IProductAppService
@@ -34,6 +35,7 @@ namespace ShopService.Application.Services.Product
         private readonly IProductDetailCommandRepository _productDetailCommandRepository;
         private readonly IProductInventoryCommandRepository _productInventoryCommandRepository;
         private readonly ICacheAdapter _cacheAdapter;
+        private readonly ILogger<ProductAppService> _logger;
 
         public ProductAppService(IProductQueryRespository productQueryRespository,
             IProductCommandRepository productCommandRepository,
@@ -44,7 +46,8 @@ namespace ShopService.Application.Services.Product
             , IProductPriceCommandRepository productPriceCommandRepository
             , IProductDetailCommandRepository productDetailCommandRepository
             , IProductInventoryCommandRepository productInventoryCommandRepository
-            , ICacheAdapter cacheAdapter)
+            , ICacheAdapter cacheAdapter
+            ,ILogger<ProductAppService> logger)
         {
             _productQueryRespository = productQueryRespository;
             _productCommandRepository = productCommandRepository;
@@ -56,6 +59,7 @@ namespace ShopService.Application.Services.Product
             _productDetailCommandRepository = productDetailCommandRepository;
             _productInventoryCommandRepository = productInventoryCommandRepository;
             _cacheAdapter = cacheAdapter;
+            _logger = logger;
         }
 
         #region Create
@@ -225,10 +229,21 @@ namespace ShopService.Application.Services.Product
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
-            var cachedData = _cacheAdapter.Get<List<ProductResponseDto>>("Products");
+            List<ProductResponseDto> cachedData = null;
+           
+            try
+            {
+                cachedData = _cacheAdapter.Get<List<ProductResponseDto>>("Products");
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning("Redis is not available. Falling back to database.");
+            }
+
             if (cachedData != null && cachedData.Any())
             {
-                output.Message = "محصولات با موفقیت دریافت شد";
+                output.Message = "محصولات با موفقیت از کش دریافت شد";
                 output.Success = true;
                 output.Data = cachedData;
                 output.StatusCode = HttpStatusCode.OK;
@@ -239,10 +254,19 @@ namespace ShopService.Application.Services.Product
                 .ToListAsync();
             if (products.Any())
             {
-                output.Message = "محصولات با موفقیت دریافت شد";
+                output.Message = "محصولات با موفقیت از دیتابیس دریافت شد";
                 output.Success = true;
                 output.Data = products;
-                _cacheAdapter.Set("Products", products);
+
+                try
+                {
+                    _cacheAdapter.Set("Products", products);
+                }
+                catch(Exception ex)
+                {
+                    _logger.LogWarning("Failed to save products to Redis cache.");
+                }
+                
 
             }
             output.StatusCode = output.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;

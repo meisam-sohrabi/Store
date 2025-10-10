@@ -1,7 +1,7 @@
 ﻿using AccountingService.Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-
+using BaseConfig;
 namespace AccountingService.Infrastructure.EntityFrameWorkCore.AppDbContext
 {
     public class ApplicationDbContext : IdentityDbContext<CustomUserEntity>
@@ -11,7 +11,7 @@ namespace AccountingService.Infrastructure.EntityFrameWorkCore.AppDbContext
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=.;Database=SecondAppDb;Trusted_Connection=True;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer(ApplicaitonConfiguration.connectionSqlString);
             base.OnConfiguring(optionsBuilder);
         }
         public DbSet<PermissionEntity> Permissions { get; set; }

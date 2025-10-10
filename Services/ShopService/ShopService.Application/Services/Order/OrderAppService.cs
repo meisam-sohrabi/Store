@@ -87,6 +87,8 @@ namespace ShopService.Application.Services.Order
 
 
         #region Transaction
+
+        // dto bayad taghir konad chon tranasaction hastesh
         public async Task<BaseResponseDto<OrderTransactionDto>> OrderTransaction(OrderTransactionDto orderTransactionDto,int productId)
         {
             var output = new BaseResponseDto<OrderTransactionDto>
@@ -128,6 +130,7 @@ namespace ShopService.Application.Services.Order
                 var order = _mapper.Map<OrderEntity>(orderTransactionDto.Order);
                 order.TotalPrice = productExist.ProductPrice.Price * orderTransactionDto.Order.Quantity;
                 order.UserId = _userAppService.GetCurrentUser();
+                order.ProductId = productExist.Product.Id;
                 await _orderCommandRepository.Add(order);
 
                 productExist.Product.Quantity -= orderTransactionDto.Order.Quantity;

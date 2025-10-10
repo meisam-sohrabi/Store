@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShopService.Domain.Entities;
-
+using BaseConfig;
 namespace ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext
 {
     public class ApplicationDbContext : DbContext
@@ -12,7 +12,7 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=.;Database=SecondAppDb;Trusted_Connection=True;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer(ApplicaitonConfiguration.connectionSqlString);
             base.OnConfiguring(optionsBuilder);
         }
 

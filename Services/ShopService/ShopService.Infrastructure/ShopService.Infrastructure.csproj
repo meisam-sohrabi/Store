@@ -13,6 +13,7 @@
 		</PackageReference>
 	</ItemGroup>
 	<ItemGroup>
+	  <ProjectReference Include="..\..\..\SharedKernel\BaseConfig\BaseConfig\BaseConfig.csproj" />
 	  <ProjectReference Include="..\ShopService.Domain\ShopService.Domain.csproj" />
 	  <ProjectReference Include="..\ShopService.InfrastructureContract\ShopService.InfrastructureContract.csproj" />
 	</ItemGroup>

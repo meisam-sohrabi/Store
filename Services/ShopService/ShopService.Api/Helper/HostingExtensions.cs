@@ -6,7 +6,7 @@ using Serilog.Sinks.Elasticsearch;
 using ShopService.Application.Services.SignalR;
 using ShopService.IocConfig;
 using System.Text;
-
+using BaseConfig;
 namespace ShopService.Api.Helper
 {
     public static class HostingExtensions
@@ -42,9 +42,9 @@ namespace ShopService.Api.Helper
                     ValidateIssuerSigningKey = true,
                     ValidateAudience = true,
                     ValidateIssuer = true,
-                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
-                    ValidAudience = builder.Configuration["Jwt:Audience"],
+                    ValidIssuer = ApplicaitonConfiguration.jwtIssuer,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ApplicaitonConfiguration.jwtKey)),
+                    ValidAudience = ApplicaitonConfiguration.jwtAudience,
                 };
             });
             builder.Services.AddSwaggerGen(c =>
