@@ -7,6 +7,9 @@ using ShopService.Application.Services.SignalR;
 using ShopService.IocConfig;
 using System.Text;
 using BaseConfig;
+using Quartz;
+using ShopService.Application.Services.Job;
+using ShopService.Application.Services.Worker;
 namespace ShopService.Api.Helper
 {
     public static class HostingExtensions
@@ -93,6 +96,21 @@ namespace ShopService.Api.Helper
                 option.InstanceName = "";
             });
 
+            builder.Services.AddQuartz(q =>
+            {
+                var jobKey = new JobKey("product");
+                q.AddJob<JobsAppService>(j => j.WithIdentity(jobKey));
+                q.AddTrigger(t => t.ForJob(jobKey).WithIdentity("product-trigger")
+                .StartNow()
+                .WithSimpleSchedule(s => s.WithIntervalInMinutes(1)
+                .RepeatForever()));
+            });
+            builder.Services.AddQuartzHostedService(h =>
+            {
+                h.WaitForJobsToComplete = true;
+            });
+
+            builder.Services.AddHostedService<ConsumerWorker>();
 
             return builder.Build();
         }

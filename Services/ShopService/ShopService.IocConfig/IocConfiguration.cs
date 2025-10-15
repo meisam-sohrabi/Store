@@ -9,6 +9,7 @@ using ShopService.Application.Services.Product;
 using ShopService.Application.Services.ProductBrand;
 using ShopService.Application.Services.ProductDetail;
 using ShopService.Application.Services.ProductPrice;
+using ShopService.Application.Services.RabbitMq;
 using ShopService.Application.Services.User;
 using ShopService.ApplicationContract.Interfaces;
 using ShopService.ApplicationContract.Interfaces.Category;
@@ -17,6 +18,7 @@ using ShopService.ApplicationContract.Interfaces.Product;
 using ShopService.ApplicationContract.Interfaces.ProductBrand;
 using ShopService.ApplicationContract.Interfaces.ProductDetail;
 using ShopService.ApplicationContract.Interfaces.ProductPrice;
+using ShopService.ApplicationContract.Interfaces.RabbitMq;
 using ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext;
 using ShopService.Infrastructure.EntityFrameWorkCore.Repository.Command.Category;
 using ShopService.Infrastructure.EntityFrameWorkCore.Repository.Command.Order;
@@ -84,6 +86,7 @@ namespace ShopService.IocConfig
             services.AddScoped<IOrderAppService, OrderAppService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICacheAdapter, DistributedCacheAdapter>();
+            services.AddSingleton<IRabbitMqAppService, RabbitMqAppService>();
             return services;
         }
     }

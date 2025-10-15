@@ -9,7 +9,7 @@
             {
                 Directory.CreateDirectory(path);
             }
-            var logMessage = $"time :[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] message: {message}{Environment.NewLine} user id: {currentuserId}";
+            var logMessage = $"time :[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] message: {message} user id: {currentuserId} {Environment.NewLine}";
             var fileName = appServiceName + "Log" + ".txt";
             if (File.Exists(Path.Combine(path, fileName)))
             {
