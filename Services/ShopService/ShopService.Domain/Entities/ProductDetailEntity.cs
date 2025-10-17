@@ -14,5 +14,7 @@ namespace ShopService.Domain.Entities
         public int ProductId { get; set; }
         [ForeignKey(nameof(ProductId))] 
         public ProductEntity Product { get; set; }
+
+        public ICollection<ProductPriceEntity> ProductPrices { get; set; }
     }
 }

@@ -12,8 +12,8 @@ using ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext;
 namespace ShopService.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251006090949_init")]
-    partial class init
+    [Migration("20251017142306_productId_to_productDetailId_in_Order")]
+    partial class productId_to_productDetailId_in_Order
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -105,7 +105,7 @@ namespace ShopService.Infrastructure.Migrations
                     b.Property<DateTime>("OrderedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int>("ProductDetailId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -368,7 +368,7 @@ namespace ShopService.Infrastructure.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int>("ProductDetailId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("SetDate")
@@ -379,7 +379,7 @@ namespace ShopService.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductDetailId");
 
                     b.ToTable("ProductPrices");
                 });
@@ -456,13 +456,13 @@ namespace ShopService.Infrastructure.Migrations
 
             modelBuilder.Entity("ShopService.Domain.Entities.ProductPriceEntity", b =>
                 {
-                    b.HasOne("ShopService.Domain.Entities.ProductEntity", "Product")
+                    b.HasOne("ShopService.Domain.Entities.ProductDetailEntity", "ProductDetail")
                         .WithMany("ProductPrices")
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("ProductDetailId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Product");
+                    b.Navigation("ProductDetail");
                 });
 
             modelBuilder.Entity("ShopService.Domain.Entities.UserPermissoinEntity", b =>
@@ -494,13 +494,16 @@ namespace ShopService.Infrastructure.Migrations
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("ShopService.Domain.Entities.ProductDetailEntity", b =>
+                {
+                    b.Navigation("ProductPrices");
+                });
+
             modelBuilder.Entity("ShopService.Domain.Entities.ProductEntity", b =>
                 {
                     b.Navigation("ProductDetails");
 
                     b.Navigation("ProductInventories");
-
-                    b.Navigation("ProductPrices");
                 });
 #pragma warning restore 612, 618
         }

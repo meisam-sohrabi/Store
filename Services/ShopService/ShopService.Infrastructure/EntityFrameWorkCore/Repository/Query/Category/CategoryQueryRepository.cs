@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ShopService.Domain.Entities;
-using ShopService.InfrastructureContract.Interfaces.Query.Category;
+﻿using ShopService.Domain.Entities;
 using ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext;
+using ShopService.InfrastructureContract.Interfaces.Query.Category;
 
 namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.Category
 {
@@ -18,7 +17,7 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.Catego
         #region Get
         public IQueryable<CategoryEntity> GetQueryable()
         {
-            return  _context.Categories.Include(c => c.Products).AsQueryable();
+            return _context.Categories.AsQueryable();
         }
         #endregion
 

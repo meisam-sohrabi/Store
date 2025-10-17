@@ -6,7 +6,7 @@ namespace ShopService.ApplicationContract.Interfaces.Order
 {
     public interface IOrderAppService
     {
-        Task<BaseResponseDto<OrderTransactionDto>> OrderTransaction(OrderTransactionDto orderTransactionDto,int productId);
+        Task<BaseResponseDto<OrderTransactionDto>> OrderTransaction(OrderTransactionDto orderTransactionDto,int productDetailId);
         Task<BaseResponseDto<List<OrderResponseDto>>> GetAllOrders();
     }
 }

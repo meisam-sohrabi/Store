@@ -7,6 +7,7 @@ using ShopService.Domain.Entities;
 using ShopService.InfrastructureContract.Interfaces;
 using ShopService.InfrastructureContract.Interfaces.Command.ProductPrice;
 using ShopService.InfrastructureContract.Interfaces.Query.Product;
+using ShopService.InfrastructureContract.Interfaces.Query.ProductDetail;
 using ShopService.InfrastructureContract.Interfaces.Query.ProductPrice;
 using System.Net;
 
@@ -17,22 +18,55 @@ namespace ShopService.Application.Services.ProductPrice
         private readonly IProductPriceCommandRepository _productPriceCommandRepository;
         private readonly IProductPriceQueryRepository _productPriceQueryRepository;
         private readonly IProductQueryRespository _productQueryRespository;
+        private readonly IProductDetailQueryRepository _productDetailQueryRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
         public ProductPriceAppService(IProductPriceCommandRepository productPriceCommandRepository,
             IProductPriceQueryRepository productPriceQueryRepository,
             IProductQueryRespository productQueryRespository
-            , IUnitOfWork unitOfWork,
+            ,IProductDetailQueryRepository productDetailQueryRepository
+            ,IUnitOfWork unitOfWork,
             IMapper mapper)
         {
             _productPriceCommandRepository = productPriceCommandRepository;
             _productPriceQueryRepository = productPriceQueryRepository;
             _productQueryRespository = productQueryRespository;
+            _productDetailQueryRepository = productDetailQueryRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
+
+        #region Create
+        public async Task<BaseResponseDto<ProductPriceResponseDto>> CreateProductPrice(ProductPriceRequestDto productPriceRequestDto)
+        {
+            var output = new BaseResponseDto<ProductPriceResponseDto>
+            {
+                Message = "خطا در درج قیمت محصول",
+                Success = false,
+                StatusCode = HttpStatusCode.BadRequest
+            };
+            var productDetailExist = await _productDetailQueryRepository.GetQueryable().AnyAsync(c => c.Id == productPriceRequestDto.ProductDetailId);
+            if (!productDetailExist)
+            {
+                output.Message = "محصول موردنظر وجود ندارد";
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.NotFound;
+                return output;
+            }
+            var mapped = _mapper.Map<ProductPriceEntity>(productPriceRequestDto);
+            _productPriceCommandRepository.Add(mapped);
+            var affectedRows = await _unitOfWork.SaveChangesAsync();
+            if (affectedRows > 0)
+            {
+                output.Message = "قیمت محصول با موفقیت درج شد";
+                output.Success = true;
+            }
+            output.StatusCode = output.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
+            return output;
+        }
+        #endregion
 
         #region Delete
         public async Task<BaseResponseDto<ProductPriceResponseDto>> DeleteProductPrice(int id)

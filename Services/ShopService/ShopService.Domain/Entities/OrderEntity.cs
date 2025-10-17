@@ -10,7 +10,7 @@ namespace ShopService.Domain.Entities
         public int Quantity { get; set; }
         public decimal TotalPrice { get; set; }
         public DateTime OrderedAt { get; set; }  = DateTime.Now;
-        public int ProductId { get; set; }
+        public int ProductDetailId { get; set; }
         public string UserId { get; set; }
         [ForeignKey(nameof(UserId))]
         public CustomUserEntity User { get; set; }

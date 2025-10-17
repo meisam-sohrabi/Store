@@ -30,6 +30,8 @@ namespace ShopService.Application.Services.Product
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IProductBrandQueryRepository _productBrandQueryRepository;
+        private readonly IProductPriceQueryRepository _productPriceQueryRepository;
+        private readonly IProductDetailQueryRepository _productDetailQueryRepository;
         private readonly IProductPriceCommandRepository _productPriceCommandRepository;
         private readonly IProductDetailCommandRepository _productDetailCommandRepository;
         private readonly IProductInventoryCommandRepository _productInventoryCommandRepository;
@@ -54,6 +56,8 @@ namespace ShopService.Application.Services.Product
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _productBrandQueryRepository = productBrandQueryRepository;
+            _productPriceQueryRepository = productPriceQueryRepository;
+            _productDetailQueryRepository = productDetailQueryRepository;
             _productPriceCommandRepository = productPriceCommandRepository;
             _productDetailCommandRepository = productDetailCommandRepository;
             _productInventoryCommandRepository = productInventoryCommandRepository;
@@ -306,26 +310,34 @@ namespace ShopService.Application.Services.Product
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
-            var searchProduct = await _productQueryRespository.GetQueryable()
+
+            if (!string.IsNullOrEmpty(searchRequstDto.Search))
+            {
+                var searchProduct = await _productQueryRespository.GetQueryable()
                 .Where(c => c.Name.Contains(searchRequstDto.Search) || c.Description.Contains(searchRequstDto.Search))
-                .Join(_categoryQueryRepository.GetQueryable().Where(c => c.IsActive == true),
+                .Join(_categoryQueryRepository.GetQueryable()
+                .Where(c => c.IsActive == true),
                 p => p.CategoryId, c => c.Id, (p, c) => new { product = p, category = c })
                 .Join(_productBrandQueryRepository.GetQueryable(),
                 pc => pc.product.ProductBrandId, b => b.Id, (pc, b) => new { pc.product, pc.category, brand = b })
-                .Select(s => new SearchResponseDto
+                .Join(_productDetailQueryRepository.GetQueryable(),
+                pcb => pcb.product.Id, d => d.ProductId, (pcb, d) => new { pcb.product, pcb.category, pcb.brand, detail = d })
+                .Select(c => new SearchResponseDto
                 {
-                    produtName = s.product.Name,
-                    productBrand = s.brand.Name,
-                    categoryName = s.category.Name,
-                    Price = s.product.ProductPrices.OrderByDescending(c => c.CreateDate).Select(c => c.Price).FirstOrDefault(),
-                    productDetail = s.product.ProductDetails
-                                    .Select(c => new ProductDetailResponseDto { Description = c.Description, Size = c.Size, Color = c.Color }).ToList(),
+                    produtName = c.product.Name,
+                    productBrand = c.brand.Name,
+                    categoryName = c.category.Name,
+                    Price =  _productPriceQueryRepository.GetQueryable().Where(pr=> pr.ProductDetailId == c.detail.Id).
+                    OrderByDescending(c=> c.SetDate).Select(c=> c.Price).FirstOrDefault(),
+                    productColor = c.detail.Color,
+                    productSize = c.detail.Size,
                 }).ToListAsync();
-            if (searchProduct != null)
-            {
-                output.Message = "محصول مورد نظر با موفقیت دریافت شد";
-                output.Success = true;
-                output.Data = searchProduct;
+                if (searchProduct.Any())
+                {
+                    output.Message = "محصول مورد نظر با موفقیت دریافت شد";
+                    output.Success = true;
+                    output.Data = searchProduct;
+                }
             }
             output.StatusCode = output.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
             return output;
@@ -385,6 +397,7 @@ namespace ShopService.Application.Services.Product
                     return output;
                 }
                 await _unitOfWork.BeginTransactionAsync();
+                
 
                 var product = _mapper.Map<ProductEntity>(productTransactionDto.Product);
                 product.CategoryId = categoryExist.Id;
@@ -395,9 +408,10 @@ namespace ShopService.Application.Services.Product
                 var detail = _mapper.Map<ProductDetailEntity>(productTransactionDto.ProductDetail);
                 detail.ProductId = product.Id;
                 _productDetailCommandRepository.Add(detail);
+                await _unitOfWork.SaveChangesAsync();
 
                 var price = _mapper.Map<ProductPriceEntity>(productTransactionDto.ProductPrice);
-                price.ProductId = product.Id;
+                price.ProductDetailId = detail.Id;
                 _productPriceCommandRepository.Add(price);
 
                 var inventory = new ProductInventoryEntity
@@ -493,6 +507,8 @@ namespace ShopService.Application.Services.Product
 //                    .Select(c => new ProductDetailResponseDto { Description = c.Description, Size = c.Size, Price = c.Price }).ToList(),
 //}
 
+
+// 2
 /*var searchProduct = await _productQueryRespository.GetQueryable()
                 .Where(c => c.Name.Contains(searchRequstDto.Search) || c.Description.Contains(searchRequstDto.Search))
                 .Join(_categoryQueryRepository.GetQueryable().Where(c => c.IsActive == true),
@@ -505,7 +521,25 @@ namespace ShopService.Application.Services.Product
                     productBrand = pcb.brand.Name,
                     categoryName = pcb.category.Name,
                     productDetail = d.Price
-                }).ToListAsync();*/
+                }).ToListAsync();*/ // correct one , using left join
+
+
+// 1 
+/* var searchProduct = await _productQueryRespository.GetQueryable()
+                .Where(c => c.Name.Contains(searchRequstDto.Search) || c.Description.Contains(searchRequstDto.Search))
+                .Join(_categoryQueryRepository.GetQueryable().Where(c => c.IsActive == true),
+                p => p.CategoryId, c => c.Id, (p, c) => new { product = p, category = c })
+                .Join(_productBrandQueryRepository.GetQueryable(),
+                pc => pc.product.ProductBrandId, b => b.Id, (pc, b) => new { pc.product, pc.category, brand = b })
+                .Select(s => new SearchResponseDto
+                {
+                    produtName = s.product.Name,
+                    productBrand = s.brand.Name,
+                    categoryName = s.category.Name,
+                    Price = s.product.ProductPrices.OrderByDescending(c => c.CreateDate).Select(c => c.Price).FirstOrDefault(),
+                    productDetail = s.product.ProductDetails
+                                    .Select(c => new ProductDetailResponseDto { Description = c.Description, Size = c.Size, Color = c.Color }).ToList(),
+                }).ToListAsync(); */
 #endregion
 
 

@@ -172,7 +172,7 @@ namespace ShopService.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     SetDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    ProductDetailId = table.Column<int>(type: "int", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ModifyDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreateBy = table.Column<int>(type: "int", nullable: true),
@@ -183,9 +183,9 @@ namespace ShopService.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_ProductPrices", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductPrices_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
+                        name: "FK_ProductPrices_ProductDetails_ProductDetailId",
+                        column: x => x.ProductDetailId,
+                        principalTable: "ProductDetails",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -206,9 +206,9 @@ namespace ShopService.Infrastructure.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductPrices_ProductId",
+                name: "IX_ProductPrices_ProductDetailId",
                 table: "ProductPrices",
-                column: "ProductId");
+                column: "ProductDetailId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
@@ -228,13 +228,13 @@ namespace ShopService.Infrastructure.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "ProductDetails");
-
-            migrationBuilder.DropTable(
                 name: "productInventories");
 
             migrationBuilder.DropTable(
                 name: "ProductPrices");
+
+            migrationBuilder.DropTable(
+                name: "ProductDetails");
 
             migrationBuilder.DropTable(
                 name: "Products");

@@ -23,9 +23,9 @@ namespace ShopService.Api.Controllers
         [HttpPost("OrderTransaction")]
         [Authorize(Roles = "user")]
         [Permission]
-        public async Task<BaseResponseDto<OrderTransactionDto>> OrderTransaction([FromBody] OrderTransactionDto orderTransactionDto, [FromQuery] int productId)
+        public async Task<BaseResponseDto<OrderTransactionDto>> OrderTransaction([FromBody] OrderTransactionDto orderTransactionDto, [FromQuery] int productDetailId)
         {
-            return await _orderAppService.OrderTransaction(orderTransactionDto,productId);
+            return await _orderAppService.OrderTransaction(orderTransactionDto, productDetailId);
         }
 
         [HttpGet("GetAllOrders")]

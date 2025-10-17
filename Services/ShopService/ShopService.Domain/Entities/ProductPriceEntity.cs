@@ -9,9 +9,9 @@ namespace ShopService.Domain.Entities
         public int Id { get; set; }
         public decimal Price { get; set; }
         public DateTime SetDate { get; set; } = DateTime.Now;
-
-        public int ProductId { get; set; }
-        [ForeignKey(nameof(ProductId))] 
-        public ProductEntity? Product { get; set; }
+        
+        public int ProductDetailId { get; set; }
+        [ForeignKey(nameof(ProductDetailId))]
+        public ProductDetailEntity? ProductDetail { get; set; }
     }
 }

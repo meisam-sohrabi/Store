@@ -89,7 +89,7 @@ namespace ShopService.Application.Services.Order
         #region Transaction
 
         // dto bayad taghir konad chon tranasaction hastesh
-        public async Task<BaseResponseDto<OrderTransactionDto>> OrderTransaction(OrderTransactionDto orderTransactionDto,int productId)
+        public async Task<BaseResponseDto<OrderTransactionDto>> OrderTransaction(OrderTransactionDto orderTransactionDto,int productDetailId)
         {
             var output = new BaseResponseDto<OrderTransactionDto>
             {
@@ -100,25 +100,30 @@ namespace ShopService.Application.Services.Order
 
             try
             {
-                var productExist = await _productQueryRespository.GetQueryable()
-                    .Where(c => c.Id == productId)
-                    .Join(_productPriceQueryRepository.GetQueryable(), p => p.Id, d => d.ProductId, (p, d) => new { Product = p, ProductPrice = d })
+                var productDetailExist = await _productDetailQueryRepository.GetQueryable()
+                    .Where(c=> c.Id == productDetailId)
+                    .Join(_productQueryRespository.GetQueryable(),d=> d.ProductId,p=> p.Id,(d,p)=> new { product = p, detail = d})
+                    .Select(c=> new {
+                        c.product,
+                        c.detail,
+                        price = _productPriceQueryRepository.GetQueryable().Where(pr=> pr.ProductDetailId == c.detail.Id).OrderByDescending(c=> c.SetDate).FirstOrDefault()
+                    })
                     .FirstOrDefaultAsync();
-                if (productExist == null)
+                if (productDetailExist == null)
                 {
                     output.Message = "محصول یافت نشد";
                     output.Success = false;
                     output.StatusCode = HttpStatusCode.NotFound;
                     return output;
                 }
-                if (productExist.Product.Quantity == 0)
+                if (productDetailExist.product.Quantity == 0)
                 {
                     output.Message = "عدم موجودی محصول";
                     output.Success = false;
                     output.StatusCode = HttpStatusCode.Conflict;
                     return output;
                 }
-                if (productExist.Product.Quantity < orderTransactionDto.Order.Quantity)
+                if (productDetailExist.product.Quantity < orderTransactionDto.Order.Quantity)
                 {
                     output.Message = "تعداد درخواست بیشتر از موجودی در انبار می باشد";
                     output.Success = false;
@@ -128,18 +133,18 @@ namespace ShopService.Application.Services.Order
                 await _unitOfWork.BeginTransactionAsync();
 
                 var order = _mapper.Map<OrderEntity>(orderTransactionDto.Order);
-                order.TotalPrice = productExist.ProductPrice.Price * orderTransactionDto.Order.Quantity;
+                order.TotalPrice = productDetailExist.price.Price * orderTransactionDto.Order.Quantity;
                 order.UserId = _userAppService.GetCurrentUser();
-                order.ProductId = productExist.Product.Id;
+                order.ProductDetailId = productDetailExist.detail.Id;
                 await _orderCommandRepository.Add(order);
 
-                productExist.Product.Quantity -= orderTransactionDto.Order.Quantity;
-                _productCommandRepository.Edit(productExist.Product);
+                productDetailExist.product.Quantity -= orderTransactionDto.Order.Quantity;
+                _productCommandRepository.Edit(productDetailExist.product);
 
                 var invetory = new ProductInventoryEntity
                 {
                     QuantityChange = -orderTransactionDto.Order.Quantity,
-                    ProductId = productExist.Product.Id,
+                    ProductId = productDetailExist.product.Id,
                 };
                 await _productInventoryCommandRepository.Add(invetory);
                 await _unitOfWork.SaveChangesAsync();

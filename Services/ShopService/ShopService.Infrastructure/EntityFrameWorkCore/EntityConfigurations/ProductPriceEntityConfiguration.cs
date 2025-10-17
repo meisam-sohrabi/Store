@@ -10,9 +10,9 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.EntityConfigurations
         {
             builder.HasKey(k => k.Id);
             builder.Property(p=> p.Price).HasPrecision(18,2).IsRequired();
-            builder.HasOne(p=> p.Product)
+            builder.HasOne(p=> p.ProductDetail)
                 .WithMany(p=> p.ProductPrices)
-                .HasForeignKey(p=> p.ProductId)
+                .HasForeignKey(p=> p.ProductDetailId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

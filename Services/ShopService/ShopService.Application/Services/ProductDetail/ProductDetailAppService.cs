@@ -32,33 +32,33 @@ namespace ShopService.Application.Services.ProductDetail
         }
 
         #region Create
-        //public async Task<BaseResponseDto<ProductDetailResponseDto>> CreateProductDetail(ProductDetailRequestDto ProductDetailDto)
-        //{
-        //    var output = new BaseResponseDto<ProductDetailResponseDto>
-        //    {
-        //        Message = "خطا در درج جزئیات محصول",
-        //        Success = false,
-        //        StatusCode = HttpStatusCode.BadRequest
-        //    };
-        //    var productExist = await _productQueryRespository.GetQueryable().AnyAsync(c => c.Id == ProductDetailDto.ProductId);
-        //    if (!productExist)
-        //    {
-        //        output.Message = "محصول موردنظر وجود ندارد";
-        //        output.Success = false;
-        //        output.StatusCode = HttpStatusCode.NotFound;
-        //        return output;
-        //    }
-        //    var mapped = _mapper.Map<ProductDetailEntity>(ProductDetailDto);
-        //    _productDetailCommandRepository.Add(mapped);
-        //    var affectedRows = await _unitOfWork.SaveChangesAsync();
-        //    if (affectedRows > 0)
-        //    {
-        //        output.Message = "جزئیات محصول با موفقیت درج شد";
-        //        output.Success = true;
-        //    }
-        //    output.StatusCode = output.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
-        //    return output;
-        //}
+        public async Task<BaseResponseDto<ProductDetailResponseDto>> CreateProductDetail(ProductDetailRequestDto ProductDetailDto)
+        {
+            var output = new BaseResponseDto<ProductDetailResponseDto>
+            {
+                Message = "خطا در درج جزئیات محصول",
+                Success = false,
+                StatusCode = HttpStatusCode.BadRequest
+            };
+            var productExist = await _productQueryRespository.GetQueryable().AnyAsync(c => c.Id == ProductDetailDto.ProductId);
+            if (!productExist)
+            {
+                output.Message = "محصول موردنظر وجود ندارد";
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.NotFound;
+                return output;
+            }
+            var mapped = _mapper.Map<ProductDetailEntity>(ProductDetailDto);
+            _productDetailCommandRepository.Add(mapped);
+            var affectedRows = await _unitOfWork.SaveChangesAsync();
+            if (affectedRows > 0)
+            {
+                output.Message = "جزئیات محصول با موفقیت درج شد";
+                output.Success = true;
+            }
+            output.StatusCode = output.Success ? HttpStatusCode.Created : HttpStatusCode.BadRequest;
+            return output;
+        }
         #endregion
 
 

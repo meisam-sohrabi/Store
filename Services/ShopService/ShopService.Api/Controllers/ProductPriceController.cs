@@ -17,11 +17,20 @@ namespace ShopService.Api.Controllers
             _productPriceAppService = productPriceAppService;
         }
 
-        [HttpPost("Edit/{id}")]
-        //[Authorize(Roles = "admin")]
-        public async Task<BaseResponseDto<ProductPriceResponseDto>> Edit([FromRoute] int id, [FromBody] ProductPriceRequestDto productPriceRequestDto)
+
+        [HttpPost("Create")]
+        [Authorize(Roles = "admin")]
+        public async Task<BaseResponseDto<ProductPriceResponseDto>> Create([FromBody] ProductPriceRequestDto productPriceDto)
         {
-            return await _productPriceAppService.EditProductPrice(id, productPriceRequestDto);
+            return await _productPriceAppService.CreateProductPrice(productPriceDto);
+
+        }
+
+        [HttpPost("Edit/{id}")]
+        [Authorize(Roles = "admin")]
+        public async Task<BaseResponseDto<ProductPriceResponseDto>> Edit([FromRoute] int id, [FromBody] ProductPriceRequestDto productPriceDto)
+        {
+            return await _productPriceAppService.EditProductPrice(id, productPriceDto);
         }
 
         [HttpGet("GetAll")]

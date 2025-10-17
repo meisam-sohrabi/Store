@@ -19,7 +19,6 @@ namespace ShopService.Domain.Entities
         public ProductBrandEntity ProductBrand { get; set; }
 
         public ICollection<ProductDetailEntity> ProductDetails { get; set; } = new List<ProductDetailEntity>();
-        public ICollection<ProductPriceEntity> ProductPrices { get; set; } = new List<ProductPriceEntity>();
         public ICollection<ProductInventoryEntity> ProductInventories { get; set; } = new List<ProductInventoryEntity>();
     }
 }

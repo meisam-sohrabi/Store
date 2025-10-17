@@ -1,7 +1,11 @@
 ﻿using Newtonsoft.Json;
 using SataService.ApplicationContract.DTO.Base;
+using SataService.ApplicationContract.DTO.Prescription.ClientListTajviz;
 using SataService.ApplicationContract.DTO.Prescription.DoctorsList;
+using SataService.ApplicationContract.DTO.Prescription.GetAppointment;
 using SataService.ApplicationContract.DTO.Prescription.Insurance;
+using SataService.ApplicationContract.DTO.Prescription.RegisterPrescription.Request;
+using SataService.ApplicationContract.DTO.Prescription.RegisterPrescription.Response;
 using SataService.ApplicationContract.Interfaces.Prescription;
 using System.Net;
 using System.Net.Http.Headers;
@@ -15,7 +19,7 @@ namespace SataService.Application.Services.Prescription
         public PrescriptionAppService(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("https://esakhad.esata.ir:9081/gateway/webApi-test");
+            _httpClient.BaseAddress = new Uri("https://esakhad.esata.ir:9081/gateway/webApi-test/v1");
         }
 
         #region DoctorsList
@@ -30,8 +34,7 @@ namespace SataService.Application.Services.Prescription
             try
             {
                 var request = new HttpRequestMessage(
-                   HttpMethod.Post, "/v1/centerDoctorList");
-                request.Content = new StringContent("", Encoding.UTF8, "application/json");
+                   HttpMethod.Post, "/centerDoctorList");
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 request.Headers.Add("sessionId", sessionId);
                 request.Headers.Add("requestId", requestId);
@@ -113,7 +116,7 @@ namespace SataService.Application.Services.Prescription
             try
             {
                 var request = new HttpRequestMessage(
-                   HttpMethod.Post, "/v1/eligible");
+                   HttpMethod.Post, "/eligible");
                 var content = JsonConvert.SerializeObject(eligibleRequestDto);
                 request.Content = new StringContent(content, Encoding.UTF8, "application/json");
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -181,6 +184,251 @@ namespace SataService.Application.Services.Prescription
                 return output;
             }
         }
+        #endregion
+
+        #region GetAppointment
+
+        public async Task<BaseResponseDto<GetAppointmentResponseDto>> GetAppointment(GetAppointmentRequestDto getAppointmentRequestDto, string token, string sessionId, string requestId)
+        {
+            var output = new BaseResponseDto<GetAppointmentResponseDto>
+            {
+                Message = "خطا در دریافت نوبت دهی ",
+                Success = false,
+                StatusCode = HttpStatusCode.BadRequest
+            };
+            try
+            {
+                var request = new HttpRequestMessage(
+                   HttpMethod.Post, "/getAppointment ");
+                var content = JsonConvert.SerializeObject(getAppointmentRequestDto);
+                request.Content = new StringContent(content, Encoding.UTF8, "application/json");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                request.Headers.Add("sessionId", sessionId);
+                request.Headers.Add("requestId", requestId);
+                var response = await _httpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
+                {
+                    output.Message = $"خطای سرور: {response.StatusCode}";
+                    output.StatusCode = response.StatusCode;
+                    output.Success = false;
+                    return output;
+                }
+                var result = await response.Content.ReadAsStringAsync();
+                var deserialize = JsonConvert.DeserializeObject<GetAppointmentResponseDto>(result);
+                if (deserialize == null)
+                {
+                    output.Message = "اطلاعات یافت نشد";
+                    output.StatusCode = HttpStatusCode.BadRequest;
+                    output.Success = false;
+                    return output;
+                }
+                switch (deserialize.status)
+                {
+                    case 0:
+                        output.Message = "اطلاعات دریافت شد";
+                        output.StatusCode = HttpStatusCode.OK;
+                        output.Success = true;
+                        output.Data = deserialize;
+                        break;
+
+                    case 1:
+                        output.Message = "خطا در اطلاعات دریافتی";
+                        output.StatusCode = HttpStatusCode.OK;
+                        output.Success = false;
+                        break;
+
+                    case 2:
+                        output.Message = "هشدار در اطلاعات دریافتی";
+                        output.StatusCode = HttpStatusCode.OK;
+                        output.Success = false;
+                        break;
+
+                    default:
+                        output.Message = "کد وضعیت ناشناخته";
+                        output.StatusCode = HttpStatusCode.InternalServerError;
+                        output.Success = false;
+                        break;
+                }
+                return output;
+
+            }
+            catch (HttpRequestException ex)
+            {
+                output.Message = $"خطای سرور: {ex.Message}";
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.InternalServerError;
+                return output;
+            }
+            catch (Exception ex)
+            {
+                output.Message = $"خطای سرور: {ex.Message}";
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.InternalServerError;
+                return output;
+            }
+        }
+        #endregion
+
+        #region ClientListTajviz
+
+        public async Task<BaseResponseDto<ClientListTajvizResponseDto>> ClientListTajviz(string token, string sessionId, string requestId)
+        {
+            var output = new BaseResponseDto<ClientListTajvizResponseDto>
+            {
+                Message = "خطا در دریافت لیست مراجعین ",
+                Success = false,
+                StatusCode = HttpStatusCode.BadRequest
+            };
+            try
+            {
+                var request = new HttpRequestMessage(
+                   HttpMethod.Post, "/getClientListTajviz");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                request.Headers.Add("sessionId", sessionId);
+                request.Headers.Add("requestId", requestId);
+                var response = await _httpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
+                {
+                    output.Message = $"خطای سرور: {response.StatusCode}";
+                    output.StatusCode = response.StatusCode;
+                    output.Success = false;
+                    return output;
+                }
+                var result = await response.Content.ReadAsStringAsync();
+                var deserialize = JsonConvert.DeserializeObject<ClientListTajvizResponseDto>(result);
+                if (deserialize == null)
+                {
+                    output.Message = "اطلاعات یافت نشد";
+                    output.StatusCode = HttpStatusCode.BadRequest;
+                    output.Success = false;
+                    return output;
+                }
+                switch (deserialize.status)
+                {
+                    case 0:
+                        output.Message = "اطلاعات دریافت شد";
+                        output.StatusCode = HttpStatusCode.OK;
+                        output.Success = true;
+                        output.Data = deserialize;
+                        break;
+
+                    case 1:
+                        output.Message = "خطا در اطلاعات دریافتی";
+                        output.StatusCode = HttpStatusCode.OK;
+                        output.Success = false;
+                        break;
+
+                    case 2:
+                        output.Message = "هشدار در اطلاعات دریافتی";
+                        output.StatusCode = HttpStatusCode.OK;
+                        output.Success = false;
+                        break;
+
+                    default:
+                        output.Message = "کد وضعیت ناشناخته";
+                        output.StatusCode = HttpStatusCode.InternalServerError;
+                        output.Success = false;
+                        break;
+                }
+                return output;
+
+            }
+            catch (HttpRequestException ex)
+            {
+                output.Message = $"خطای سرور: {ex.Message}";
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.InternalServerError;
+                return output;
+            }
+            catch (Exception ex)
+            {
+                output.Message = $"خطای سرور: {ex.Message}";
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.InternalServerError;
+                return output;
+            }
+        }
+        #endregion
+
+        #region RegisterPrescription
+        public async Task<BaseResponseDto<RegisterPrescriptionResponseDto>> RegisterPrescription(RegisterPrescriptionRequestDto registerPrescriptionRequestDto, string token, string sessionId, string requestId)
+        {
+            var output = new BaseResponseDto<RegisterPrescriptionResponseDto>
+            {
+                Message = "خطا در ثبت نسخه ",
+                Success = false,
+                StatusCode = HttpStatusCode.BadRequest
+            };
+            try
+            {
+                var request = new HttpRequestMessage(
+                   HttpMethod.Post, "/registerPrescription");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                request.Headers.Add("sessionId", sessionId);
+                request.Headers.Add("requestId", requestId);
+                var response = await _httpClient.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
+                {
+                    output.Message = $"خطای سرور: {response.StatusCode}";
+                    output.StatusCode = response.StatusCode;
+                    output.Success = false;
+                    return output;
+                }
+                var result = await response.Content.ReadAsStringAsync();
+                var deserialize = JsonConvert.DeserializeObject<RegisterPrescriptionResponseDto>(result);
+                if (deserialize == null)
+                {
+                    output.Message = "اطلاعات یافت نشد";
+                    output.StatusCode = HttpStatusCode.BadRequest;
+                    output.Success = false;
+                    return output;
+                }
+                switch (deserialize.status)
+                {
+                    case 0:
+                        output.Message = "اطلاعات دریافت شد";
+                        output.StatusCode = HttpStatusCode.OK;
+                        output.Success = true;
+                        output.Data = deserialize;
+                        break;
+
+                    case 1:
+                        output.Message = "خطا در اطلاعات دریافتی";
+                        output.StatusCode = HttpStatusCode.OK;
+                        output.Success = false;
+                        break;
+
+                    case 2:
+                        output.Message = "هشدار در اطلاعات دریافتی";
+                        output.StatusCode = HttpStatusCode.OK;
+                        output.Success = false;
+                        break;
+
+                    default:
+                        output.Message = "کد وضعیت ناشناخته";
+                        output.StatusCode = HttpStatusCode.InternalServerError;
+                        output.Success = false;
+                        break;
+                }
+                return output;
+
+            }
+            catch (HttpRequestException ex)
+            {
+                output.Message = $"خطای سرور: {ex.Message}";
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.InternalServerError;
+                return output;
+            }
+            catch (Exception ex)
+            {
+                output.Message = $"خطای سرور: {ex.Message}";
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.InternalServerError;
+                return output;
+            }
+        }
+
         #endregion
 
     }

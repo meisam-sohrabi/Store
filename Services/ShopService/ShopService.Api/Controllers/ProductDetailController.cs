@@ -17,13 +17,13 @@ namespace ShopService.Api.Controllers
             _productDetailAppService = productDetailAppService;
         }
 
-        //[HttpPost("Create")]
-        //[Authorize(Roles = "admin")]
-        //public async Task<BaseResponseDto<ProductDetailResponseDto>> Create([FromBody] ProductDetailRequestDto productDetailDto)
-        //{
-        //    return await _productDetailAppService.CreateProductDetail(productDetailDto);
+        [HttpPost("Create")]
+        [Authorize(Roles = "admin")]
+        public async Task<BaseResponseDto<ProductDetailResponseDto>> Create([FromBody] ProductDetailRequestDto productDetailDto)
+        {
+            return await _productDetailAppService.CreateProductDetail(productDetailDto);
 
-        //}
+        }
 
         [HttpPost("Edit/{id}")]
         [Authorize(Roles = "admin")]
