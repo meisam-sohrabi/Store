@@ -1,4 +1,4 @@
-﻿namespace SataService.ApplicationContract.DTO.Prescription.ClientListTajviz
+﻿namespace SataService.ApplicationContract.DTO.Prescription.ClientListTajviz.Response
 {
     public class ClientListTajvizDataDto
     {

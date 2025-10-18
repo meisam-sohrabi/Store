@@ -1,4 +1,4 @@
-﻿namespace SataService.ApplicationContract.DTO.Prescription.Insurance
+﻿namespace SataService.ApplicationContract.DTO.Prescription.Insurance.Response
 {
     public class EligibleDiseaseDataDto
     {

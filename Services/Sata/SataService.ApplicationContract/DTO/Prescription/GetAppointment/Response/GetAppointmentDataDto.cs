@@ -1,4 +1,4 @@
-﻿namespace SataService.ApplicationContract.DTO.Prescription.GetAppointment
+﻿namespace SataService.ApplicationContract.DTO.Prescription.GetAppointment.Response
 {
     public class GetAppointmentDataDto
     {

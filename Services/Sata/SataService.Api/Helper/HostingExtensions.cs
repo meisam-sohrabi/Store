@@ -17,7 +17,6 @@ namespace SataService.Api.Helper
             builder.Services.AddOpenApi();
             builder.Services.AddHttpClient<IAuthAppService, AuthAppService>();
             builder.Services.AddHttpClient<IPrescriptionAppService, PrescriptionAppService>();
-
             builder.Services.AddHttpContextAccessor();
             builder.Services.ConfigureIoc();
             builder.Services.AddSwaggerGen(document =>

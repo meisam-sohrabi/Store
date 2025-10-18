@@ -4,6 +4,6 @@
     {
         public int status { get; set; }
         public string message { get; set; }
-        public List<RegisterPrescriptionResponseDataDto> data { get; set; }
+        public RegisterPrescriptionDataDto data { get; set; }
     }
 }

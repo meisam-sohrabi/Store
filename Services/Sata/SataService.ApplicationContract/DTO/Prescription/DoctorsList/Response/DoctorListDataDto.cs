@@ -1,4 +1,4 @@
-﻿namespace SataService.ApplicationContract.DTO.Prescription.DoctorsList
+﻿namespace SataService.ApplicationContract.DTO.Prescription.DoctorsList.Response
 {
     public class DoctorListDataDto
     {

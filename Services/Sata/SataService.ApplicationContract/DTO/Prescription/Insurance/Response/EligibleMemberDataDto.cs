@@ -1,6 +1,6 @@
-﻿namespace SataService.ApplicationContract.DTO.Prescription.Insurance
+﻿namespace SataService.ApplicationContract.DTO.Prescription.Insurance.Response
 {
-    public class EligibleMemmberDataDto
+    public class EligibleMemberDataDto
     {
         public string nationalNumber { get; set; }
         public string name { get; set; }

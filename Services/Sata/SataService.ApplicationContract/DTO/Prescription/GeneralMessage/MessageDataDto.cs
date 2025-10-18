@@ -1,6 +1,6 @@
-﻿namespace SataService.ApplicationContract.DTO.Prescription.RegisterPrescription.Response
+﻿namespace SataService.ApplicationContract.DTO.Prescription.GeneralMessage
 {
-    public class MessagesDataDto
+    public class MessageDataDto
     {
         public string code { get; set; }
         public string message { get; set; }

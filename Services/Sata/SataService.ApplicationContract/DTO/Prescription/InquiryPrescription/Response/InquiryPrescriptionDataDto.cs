@@ -1,6 +1,6 @@
-﻿namespace SataService.ApplicationContract.DTO.Prescription.RegisterPrescription.Response
+﻿namespace SataService.ApplicationContract.DTO.Prescription.InquiryPrescription.Response
 {
-    public class RegisterPrescriptionResponseDataDto
+    public class InquiryPrescriptionDataDto
     {
         public string nationalNumber { get; set; }
         public string medicalSystemType { get; set; }
@@ -9,6 +9,6 @@
         public string trackingCode { get; set; }
         public bool reject { get; set; }
         public string referringCode { get; set; }
-        public List<PrescriptionOutputApiModelListDto> prescriptionOutputApiModelList { get; set; }
+        public List<PrescriptionOutputApiModel> PrescriptionOutputApiModel { get; set; }
     }
 }
