@@ -28,15 +28,15 @@ namespace SataService.Api.Controllers
         }
 
         [HttpPost("Verify-Otp")]
-        public async Task<BaseResponseDto<VerifyOtpResponseDto>> VerifyOTP([FromBody] VerifyOtpRequestDto verifyOtpRequestDto, [FromHeader] string requestId)
+        public async Task<BaseResponseDto<VerifyOtpResponseDto>> VerifyOTP([FromBody] VerifyOtpRequestDto verifyOtpRequestDto)
         {
-            return await _authAppService.VerifyOTP(verifyOtpRequestDto, requestId);
+            return await _authAppService.VerifyOTP(verifyOtpRequestDto);
         }
 
         [HttpPost("Verify-Captcha")]
-        public async Task<BaseResponseDto<VerifyCaptchaResponseDto>> VerifyCaptcha([FromBody] VerifyCaptchaRequestDto verifyCaptchaRequestDto, [FromHeader] string token)
+        public async Task<BaseResponseDto<VerifyCaptchaResponseDto>> VerifyCaptcha([FromBody] VerifyCaptchaRequestDto verifyCaptchaRequestDto)
         {
-            return await _authAppService.VerifyCaptcha(verifyCaptchaRequestDto, token);
+            return await _authAppService.VerifyCaptcha(verifyCaptchaRequestDto);
         }
     }
 }

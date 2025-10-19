@@ -34,6 +34,12 @@ namespace SataService.Api.Helper
                 });
             });
 
+            builder.Services.AddStackExchangeRedisCache(option =>
+            {
+                option.Configuration = "localhost:6379";
+                option.InstanceName = "";
+            });
+
             return builder.Build();
         }
 

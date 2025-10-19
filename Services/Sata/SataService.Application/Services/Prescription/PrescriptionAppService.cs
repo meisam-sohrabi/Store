@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RedisService;
 using SataService.ApplicationContract.DTO.Base;
 using SataService.ApplicationContract.DTO.Prescription.ClientListTajviz.Response;
 using SataService.ApplicationContract.DTO.Prescription.ConfrimPrescription.Request;
@@ -28,14 +29,17 @@ namespace SataService.Application.Services.Prescription
     public class PrescriptionAppService : IPrescriptionAppService
     {
         private readonly HttpClient _httpClient;
-        public PrescriptionAppService(HttpClient httpClient)
+        private readonly ICacheAdapter _cache;
+
+        public PrescriptionAppService(HttpClient httpClient,ICacheAdapter cache)
         {
             _httpClient = httpClient;
+            _cache = cache;
             _httpClient.BaseAddress = new Uri("https://esakhad.esata.ir:9081/gateway/webApi-test/v1");
         }
 
         #region DoctorsList
-        public async Task<BaseResponseDto<DoctorsListResponseDto>> CenterDoctorList(string token, string sessionId, string requestId)
+        public async Task<BaseResponseDto<DoctorsListResponseDto>> CenterDoctorList()
         {
             var output = new BaseResponseDto<DoctorsListResponseDto>
             {
@@ -47,8 +51,11 @@ namespace SataService.Application.Services.Prescription
             {
                 var request = new HttpRequestMessage(
                    HttpMethod.Post, "/centerDoctorList");
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var accessToken = _cache.Get<string>("accessToken");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                var sessionId = _cache.Get<string>("sessionId");
                 request.Headers.Add("sessionId", sessionId);
+                var requestId = _cache.Get<string>("requestId");
                 request.Headers.Add("requestId", requestId);
                 var response = await _httpClient.SendAsync(request);
                 if (!response.IsSuccessStatusCode)
@@ -116,7 +123,7 @@ namespace SataService.Application.Services.Prescription
         #endregion
 
         #region Eligible
-        public async Task<BaseResponseDto<EligibleResponseDto>> Eligible(EligibleRequestDto eligibleRequestDto, string token, string sessionId, string requestId)
+        public async Task<BaseResponseDto<EligibleResponseDto>> Eligible(EligibleRequestDto eligibleRequestDto)
         {
             var output = new BaseResponseDto<EligibleResponseDto>
             {
@@ -130,8 +137,11 @@ namespace SataService.Application.Services.Prescription
                    HttpMethod.Post, "/eligible");
                 var content = JsonConvert.SerializeObject(eligibleRequestDto);
                 request.Content = new StringContent(content, Encoding.UTF8, "application/json");
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var accessToken = _cache.Get<string>("accessToken");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                var sessionId = _cache.Get<string>("sessionId");
                 request.Headers.Add("sessionId", sessionId);
+                var requestId = _cache.Get<string>("requestId");
                 request.Headers.Add("requestId", requestId);
                 var response = await _httpClient.SendAsync(request);
                 if (!response.IsSuccessStatusCode)
@@ -199,7 +209,7 @@ namespace SataService.Application.Services.Prescription
 
         #region GetAppointment
 
-        public async Task<BaseResponseDto<GetAppointmentResponseDto>> GetAppointment(GetAppointmentRequestDto getAppointmentRequestDto, string token, string sessionId, string requestId)
+        public async Task<BaseResponseDto<GetAppointmentResponseDto>> GetAppointment(GetAppointmentRequestDto getAppointmentRequestDto)
         {
             var output = new BaseResponseDto<GetAppointmentResponseDto>
             {
@@ -213,8 +223,11 @@ namespace SataService.Application.Services.Prescription
                    HttpMethod.Post, "/getAppointment");
                 var content = JsonConvert.SerializeObject(getAppointmentRequestDto);
                 request.Content = new StringContent(content, Encoding.UTF8, "application/json");
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var accessToken = _cache.Get<string>("accessToken");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                var sessionId = _cache.Get<string>("sessionId");
                 request.Headers.Add("sessionId", sessionId);
+                var requestId = _cache.Get<string>("requestId");
                 request.Headers.Add("requestId", requestId);
                 var response = await _httpClient.SendAsync(request);
                 if (!response.IsSuccessStatusCode)
@@ -282,7 +295,7 @@ namespace SataService.Application.Services.Prescription
 
         #region ClientListTajviz
 
-        public async Task<BaseResponseDto<ClientListTajvizResponseDto>> ClientListTajviz(string token, string sessionId, string requestId)
+        public async Task<BaseResponseDto<ClientListTajvizResponseDto>> ClientListTajviz()
         {
             var output = new BaseResponseDto<ClientListTajvizResponseDto>
             {
@@ -294,8 +307,11 @@ namespace SataService.Application.Services.Prescription
             {
                 var request = new HttpRequestMessage(
                    HttpMethod.Post, "/getClientListTajviz");
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var accessToken = _cache.Get<string>("accessToken");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                var sessionId = _cache.Get<string>("sessionId");
                 request.Headers.Add("sessionId", sessionId);
+                var requestId = _cache.Get<string>("requestId");
                 request.Headers.Add("requestId", requestId);
                 var response = await _httpClient.SendAsync(request);
                 if (!response.IsSuccessStatusCode)
@@ -362,7 +378,7 @@ namespace SataService.Application.Services.Prescription
         #endregion
 
         #region RegisterPrescription
-        public async Task<BaseResponseDto<RegisterPrescriptionResponseDto>> RegisterPrescription(RegisterPrescriptionRequestDto registerPrescriptionRequestDto, string token, string sessionId, string requestId)
+        public async Task<BaseResponseDto<RegisterPrescriptionResponseDto>> RegisterPrescription(RegisterPrescriptionRequestDto registerPrescriptionRequestDto)
         {
             var output = new BaseResponseDto<RegisterPrescriptionResponseDto>
             {
@@ -374,8 +390,11 @@ namespace SataService.Application.Services.Prescription
             {
                 var request = new HttpRequestMessage(
                    HttpMethod.Post, "/registerPrescription");
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var accessToken = _cache.Get<string>("accessToken");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                var sessionId = _cache.Get<string>("sessionId");
                 request.Headers.Add("sessionId", sessionId);
+                var requestId = _cache.Get<string>("requestId");
                 request.Headers.Add("requestId", requestId);
                 var response = await _httpClient.SendAsync(request);
                 if (!response.IsSuccessStatusCode)
@@ -443,7 +462,7 @@ namespace SataService.Application.Services.Prescription
         #endregion
 
         #region PrescribeItemsList
-        public async Task<BaseResponseDto<PrescribeItemsListResponseDto>> PrescribedItemsList(PrescribeItemsListRequestDto prescribeItemsListRequestDto, string token, string sessionId, string requestId)
+        public async Task<BaseResponseDto<PrescribeItemsListResponseDto>> PrescribedItemsList(PrescribeItemsListRequestDto prescribeItemsListRequestDto)
         {
             var output = new BaseResponseDto<PrescribeItemsListResponseDto>
             {
@@ -457,8 +476,11 @@ namespace SataService.Application.Services.Prescription
                    HttpMethod.Post, "/getPrescribeItemsList");
                 var content = JsonConvert.SerializeObject(prescribeItemsListRequestDto);
                 request.Content = new StringContent(content, Encoding.UTF8, "application/json");
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var accessToken = _cache.Get<string>("accessToken");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                var sessionId = _cache.Get<string>("sessionId");
                 request.Headers.Add("sessionId", sessionId);
+                var requestId = _cache.Get<string>("requestId");
                 request.Headers.Add("requestId", requestId);
                 var response = await _httpClient.SendAsync(request);
                 if (!response.IsSuccessStatusCode)
@@ -527,7 +549,7 @@ namespace SataService.Application.Services.Prescription
 
         #region RegisterInitialPrescription
 
-        public async Task<BaseResponseDto<RegisterInitialPrescriptionResponseDto>> RegisterInitialPrescription(RegisterInitialPrescriptionRequestDto registerInitialPrescriptionRequestDto, string token, string sessionId, string requestId)
+        public async Task<BaseResponseDto<RegisterInitialPrescriptionResponseDto>> RegisterInitialPrescription(RegisterInitialPrescriptionRequestDto registerInitialPrescriptionRequestDto)
         {
             var output = new BaseResponseDto<RegisterInitialPrescriptionResponseDto>
             {
@@ -541,8 +563,11 @@ namespace SataService.Application.Services.Prescription
                    HttpMethod.Post, "/registerInitialPrescription");
                 var content = JsonConvert.SerializeObject(registerInitialPrescriptionRequestDto);
                 request.Content = new StringContent(content, Encoding.UTF8, "application/json");
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var accessToken = _cache.Get<string>("accessToken");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                var sessionId = _cache.Get<string>("sessionId");
                 request.Headers.Add("sessionId", sessionId);
+                var requestId = _cache.Get<string>("requestId");
                 request.Headers.Add("requestId", requestId);
                 var response = await _httpClient.SendAsync(request);
                 if (!response.IsSuccessStatusCode)
@@ -611,7 +636,7 @@ namespace SataService.Application.Services.Prescription
 
         #region ConfirmPrescription
 
-        public async Task<BaseResponseDto<ConfirmPrescriptionPresentationResponseDto>> ConfirmPrescriptionPresentation(ConfirmPrescriptionPresentationRequestDto confirmPrescriptionPresentationRequestDto, string token, string sessionId, string requestId)
+        public async Task<BaseResponseDto<ConfirmPrescriptionPresentationResponseDto>> ConfirmPrescriptionPresentation(ConfirmPrescriptionPresentationRequestDto confirmPrescriptionPresentationRequestDto)
         {
             var output = new BaseResponseDto<ConfirmPrescriptionPresentationResponseDto>
             {
@@ -625,8 +650,11 @@ namespace SataService.Application.Services.Prescription
                    HttpMethod.Post, "/confirmPrescriptionPresentation");
                 var content = JsonConvert.SerializeObject(confirmPrescriptionPresentationRequestDto);
                 request.Content = new StringContent(content, Encoding.UTF8, "application/json");
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var accessToken = _cache.Get<string>("accessToken");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                var sessionId = _cache.Get<string>("sessionId");
                 request.Headers.Add("sessionId", sessionId);
+                var requestId = _cache.Get<string>("requestId");
                 request.Headers.Add("requestId", requestId);
                 var response = await _httpClient.SendAsync(request);
                 if (!response.IsSuccessStatusCode)
@@ -695,7 +723,7 @@ namespace SataService.Application.Services.Prescription
 
         #region InquiryPrescription
 
-        public async Task<BaseResponseDto<InquiryPrescriptionResponseDto>> InquiryPrescription(InquiryPrescriptionRequestDto inquiryPrescriptionRequestDto, string token, string sessionId, string requestId)
+        public async Task<BaseResponseDto<InquiryPrescriptionResponseDto>> InquiryPrescription(InquiryPrescriptionRequestDto inquiryPrescriptionRequestDto)
         {
             var output = new BaseResponseDto<InquiryPrescriptionResponseDto>
             {
@@ -709,8 +737,11 @@ namespace SataService.Application.Services.Prescription
                    HttpMethod.Post, "/inquiryPrescription");
                 var content = JsonConvert.SerializeObject(inquiryPrescriptionRequestDto);
                 request.Content = new StringContent(content, Encoding.UTF8, "application/json");
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var accessToken = _cache.Get<string>("accessToken");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                var sessionId = _cache.Get<string>("sessionId");
                 request.Headers.Add("sessionId", sessionId);
+                var requestId = _cache.Get<string>("requestId");
                 request.Headers.Add("requestId", requestId);
                 var response = await _httpClient.SendAsync(request);
                 if (!response.IsSuccessStatusCode)
@@ -778,7 +809,7 @@ namespace SataService.Application.Services.Prescription
         #endregion
 
         #region PrintPresentation
-        public async Task<BaseResponseDto<PrintPresentationResponseDto>> PrintPresentation(PrintPresentationRequestDto printPresentationRequestDto, string token, string sessionId, string requestId)
+        public async Task<BaseResponseDto<PrintPresentationResponseDto>> PrintPresentation(PrintPresentationRequestDto printPresentationRequestDto)
         {
             var output = new BaseResponseDto<PrintPresentationResponseDto>
             {
@@ -792,8 +823,11 @@ namespace SataService.Application.Services.Prescription
                    HttpMethod.Post, "/printPresentation");
                 var content = JsonConvert.SerializeObject(printPresentationRequestDto);
                 request.Content = new StringContent(content, Encoding.UTF8, "application/json");
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var accessToken = _cache.Get<string>("accessToken");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+                var sessionId = _cache.Get<string>("sessionId");
                 request.Headers.Add("sessionId", sessionId);
+                var requestId = _cache.Get<string>("requestId");
                 request.Headers.Add("requestId", requestId);
                 var response = await _httpClient.SendAsync(request);
                 if (!response.IsSuccessStatusCode)

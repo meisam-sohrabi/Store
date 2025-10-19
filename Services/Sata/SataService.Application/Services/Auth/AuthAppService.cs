@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RedisService;
 using SataService.ApplicationContract.DTO.Auth.Captcha;
 using SataService.ApplicationContract.DTO.Auth.OTP.Send;
 using SataService.ApplicationContract.DTO.Auth.OTP.Verify;
@@ -13,10 +14,12 @@ namespace SataService.Application.Services.Auth
     public class AuthAppService : IAuthAppService
     {
         private readonly HttpClient _httpClient;
+        private readonly ICacheAdapter _cache;
 
-        public AuthAppService(HttpClient httpClient)
+        public AuthAppService(HttpClient httpClient, ICacheAdapter cache)
         {
             _httpClient = httpClient;
+            _cache = cache;
             _httpClient.BaseAddress = new Uri("https://esakhad.esata.ir:9081/gateway");
         }
 
@@ -55,6 +58,7 @@ namespace SataService.Application.Services.Auth
                     output.Success = false;
                     return output;
                 }
+                _cache.Set("requestId", deserialize.data.requestId);
                 switch (deserialize.status)
                 {
                     case 0:
@@ -103,7 +107,7 @@ namespace SataService.Application.Services.Auth
         #endregion
 
         #region VerifyOtp
-        public async Task<BaseResponseDto<VerifyOtpResponseDto>> VerifyOTP(VerifyOtpRequestDto otpVerifyRequestDto, string requestId)
+        public async Task<BaseResponseDto<VerifyOtpResponseDto>> VerifyOTP(VerifyOtpRequestDto otpVerifyRequestDto)
         {
             var output = new BaseResponseDto<VerifyOtpResponseDto>
             {
@@ -118,6 +122,7 @@ namespace SataService.Application.Services.Auth
                     HttpMethod.Post, "/webApi-test/auth/verify-otp");
                 var content = JsonConvert.SerializeObject(otpVerifyRequestDto);
                 request.Content = new StringContent(content, Encoding.UTF8, "application/json");
+                var requestId = _cache.Get<string>("requestId");
                 request.Headers.Add("requestId", requestId);
                 var response = await _httpClient.SendAsync(request);
                 if (!response.IsSuccessStatusCode)
@@ -136,6 +141,8 @@ namespace SataService.Application.Services.Auth
                     output.Success = false;
                     return output;
                 }
+                _cache.Set("accessToken", deserialize.data.accessToken);
+                _cache.Set("sessionId", deserialize.data.sessionId);
                 switch (deserialize.status)
                 {
                     case 0:
@@ -184,7 +191,7 @@ namespace SataService.Application.Services.Auth
         #endregion
 
         #region VerifyCaptcah
-        public async Task<BaseResponseDto<VerifyCaptchaResponseDto>> VerifyCaptcha(VerifyCaptchaRequestDto verifyCaptchaRequestDto, string token)
+        public async Task<BaseResponseDto<VerifyCaptchaResponseDto>> VerifyCaptcha(VerifyCaptchaRequestDto verifyCaptchaRequestDto)
         {
             var output = new BaseResponseDto<VerifyCaptchaResponseDto>
             {
@@ -198,7 +205,8 @@ namespace SataService.Application.Services.Auth
                          HttpMethod.Post, "/verifyCaptcha");
                 var content = JsonConvert.SerializeObject(verifyCaptchaRequestDto);
                 request.Content = new StringContent(content, Encoding.UTF8, "application/json");
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var accessToken = _cache.Get<string>("accessToken");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
                 var response = await _httpClient.SendAsync(request);
                 if (!response.IsSuccessStatusCode)
                 {

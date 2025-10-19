@@ -34,66 +34,66 @@ namespace SataService.Api.Controllers
         }
 
         [HttpPost("Eligible")]
-        public async Task<BaseResponseDto<EligibleResponseDto>> Eligible(EligibleRequestDto eligibleRequestDto, [FromHeader] string token, [FromHeader] string sessionId, [FromHeader] string requestId)
+        public async Task<BaseResponseDto<EligibleResponseDto>> Eligible(EligibleRequestDto eligibleRequestDto)
         {
-            return await _prescriptionAppService.Eligible(eligibleRequestDto, token, sessionId, requestId);
+            return await _prescriptionAppService.Eligible(eligibleRequestDto);
         }
 
         [HttpPost("DoctorsList")]
-        public async Task<BaseResponseDto<DoctorsListResponseDto>> CenterDoctorList([FromHeader] string token, [FromHeader] string sessionId, [FromHeader] string requestId)
+        public async Task<BaseResponseDto<DoctorsListResponseDto>> CenterDoctorList()
         {
-            return await _prescriptionAppService.CenterDoctorList(token, sessionId, requestId);
+            return await _prescriptionAppService.CenterDoctorList();
         }
 
 
         [HttpPost("GetAppointment")]
-        public async Task<BaseResponseDto<GetAppointmentResponseDto>> GetAppointment(GetAppointmentRequestDto getAppointmentRequestDto, [FromHeader] string token, [FromHeader] string sessionId, [FromHeader] string requestId)
+        public async Task<BaseResponseDto<GetAppointmentResponseDto>> GetAppointment(GetAppointmentRequestDto getAppointmentRequestDto)
         {
-            return await _prescriptionAppService.GetAppointment(getAppointmentRequestDto, token, sessionId, requestId);
+            return await _prescriptionAppService.GetAppointment(getAppointmentRequestDto);
         }
 
 
         [HttpPost("ClientListTajviz")]
-        public async Task<BaseResponseDto<ClientListTajvizResponseDto>> ClientListTajviz( [FromHeader] string token, [FromHeader] string sessionId, [FromHeader] string requestId)
+        public async Task<BaseResponseDto<ClientListTajvizResponseDto>> ClientListTajviz()
         {
-            return await _prescriptionAppService.ClientListTajviz(token, sessionId, requestId);
+            return await _prescriptionAppService.ClientListTajviz();
         }
 
         [HttpPost("RegisterPrescription")]
-        public async Task<BaseResponseDto<RegisterPrescriptionResponseDto>> RegisterPrescription(RegisterPrescriptionRequestDto registerPrescriptionRequestDto, [FromHeader] string token, [FromHeader] string sessionId, [FromHeader] string requestId)
+        public async Task<BaseResponseDto<RegisterPrescriptionResponseDto>> RegisterPrescription(RegisterPrescriptionRequestDto registerPrescriptionRequestDto)
         {
-            return await _prescriptionAppService.RegisterPrescription(registerPrescriptionRequestDto, token, sessionId, requestId);
+            return await _prescriptionAppService.RegisterPrescription(registerPrescriptionRequestDto);
         }
 
         [HttpPost("PrescribedItemsList")]
-        public async Task<BaseResponseDto<PrescribeItemsListResponseDto>> PrescribedItemsList(PrescribeItemsListRequestDto prescribeItemsListRequestDto, [FromHeader] string token, [FromHeader] string sessionId, [FromHeader] string requestId)
+        public async Task<BaseResponseDto<PrescribeItemsListResponseDto>> PrescribedItemsList(PrescribeItemsListRequestDto prescribeItemsListRequestDto)
         {
-            return await _prescriptionAppService.PrescribedItemsList(prescribeItemsListRequestDto, token, sessionId, requestId);
+            return await _prescriptionAppService.PrescribedItemsList(prescribeItemsListRequestDto );
         }
 
         [HttpPost("RegisterInitialPrescription")]
-        public async Task<BaseResponseDto<RegisterInitialPrescriptionResponseDto>> RegisterInitialPrescription(RegisterInitialPrescriptionRequestDto registerInitialPrescriptionRequestDto, [FromHeader] string token, [FromHeader] string sessionId, [FromHeader] string requestId)
+        public async Task<BaseResponseDto<RegisterInitialPrescriptionResponseDto>> RegisterInitialPrescription(RegisterInitialPrescriptionRequestDto registerInitialPrescriptionRequestDto)
         {
-            return await _prescriptionAppService.RegisterInitialPrescription(registerInitialPrescriptionRequestDto, token, sessionId, requestId);
+            return await _prescriptionAppService.RegisterInitialPrescription(registerInitialPrescriptionRequestDto);
         }
 
 
         [HttpPost("ConfirmPrescriptionPresentation")]
-        public async Task<BaseResponseDto<ConfirmPrescriptionPresentationResponseDto>> ConfirmPrescriptionPresentation(ConfirmPrescriptionPresentationRequestDto confirmPrescriptionPresentationRequestDto, [FromHeader] string token, [FromHeader] string sessionId, [FromHeader] string requestId)
+        public async Task<BaseResponseDto<ConfirmPrescriptionPresentationResponseDto>> ConfirmPrescriptionPresentation(ConfirmPrescriptionPresentationRequestDto confirmPrescriptionPresentationRequestDto)
         {
-            return await _prescriptionAppService.ConfirmPrescriptionPresentation(confirmPrescriptionPresentationRequestDto, token, sessionId, requestId);
+            return await _prescriptionAppService.ConfirmPrescriptionPresentation(confirmPrescriptionPresentationRequestDto);
         }
 
         [HttpPost("InquiryPrescription")]
-        public async Task<BaseResponseDto<InquiryPrescriptionResponseDto>> InquiryPrescription(InquiryPrescriptionRequestDto inquiryPrescriptionRequestDto, [FromHeader] string token, [FromHeader] string sessionId, [FromHeader] string requestId)
+        public async Task<BaseResponseDto<InquiryPrescriptionResponseDto>> InquiryPrescription(InquiryPrescriptionRequestDto inquiryPrescriptionRequestDto)
         {
-            return await _prescriptionAppService.InquiryPrescription(inquiryPrescriptionRequestDto, token, sessionId, requestId);
+            return await _prescriptionAppService.InquiryPrescription(inquiryPrescriptionRequestDto);
         }
 
         [HttpPost("PrintPresentation")]
-        public async Task<BaseResponseDto<PrintPresentationResponseDto>> PrintPresentation(PrintPresentationRequestDto printPresentationRequestDto, [FromHeader] string token, [FromHeader] string sessionId, [FromHeader] string requestId)
+        public async Task<BaseResponseDto<PrintPresentationResponseDto>> PrintPresentation(PrintPresentationRequestDto printPresentationRequestDto)
         {
-            return await _prescriptionAppService.PrintPresentation(printPresentationRequestDto, token, sessionId, requestId);
+            return await _prescriptionAppService.PrintPresentation(printPresentationRequestDto);
         }
     }
 }

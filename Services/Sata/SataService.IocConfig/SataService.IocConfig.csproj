@@ -9,6 +9,7 @@
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
 	</ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\SharedKernel\RedisService\RedisService.csproj" />
     <ProjectReference Include="..\SataService.ApplicationContract\SataService.ApplicationContract.csproj" />
     <ProjectReference Include="..\SataService.Application\SataService.Application.csproj" />
   </ItemGroup>

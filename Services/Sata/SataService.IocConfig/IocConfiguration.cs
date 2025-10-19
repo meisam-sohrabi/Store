@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using RedisService;
 using SataService.Application.Services.Auth;
 using SataService.Application.Services.Prescription;
 using SataService.ApplicationContract.Interfaces.Auth;
@@ -11,6 +12,7 @@ namespace SataService.IocConfig
         {
             services.AddScoped<IAuthAppService, AuthAppService>();
             services.AddScoped<IPrescriptionAppService,PrescriptionAppService>();
+            services.AddScoped<ICacheAdapter, DistributedCacheAdapter>();
             return services;
         }
     }

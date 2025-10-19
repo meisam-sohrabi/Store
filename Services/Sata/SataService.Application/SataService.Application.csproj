@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\SharedKernel\RedisService\RedisService.csproj" />
     <ProjectReference Include="..\SataService.ApplicationContract\SataService.ApplicationContract.csproj" />
   </ItemGroup>
 
