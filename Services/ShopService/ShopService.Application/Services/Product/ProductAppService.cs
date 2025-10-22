@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using RedisService;
 using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.Product;
-using ShopService.ApplicationContract.DTO.ProductDetail;
 using ShopService.ApplicationContract.DTO.Search;
 using ShopService.ApplicationContract.DTO.Transaction;
 using ShopService.ApplicationContract.Interfaces.Product;
@@ -37,6 +37,8 @@ namespace ShopService.Application.Services.Product
         private readonly IProductInventoryCommandRepository _productInventoryCommandRepository;
         private readonly ICacheAdapter _cacheAdapter;
         private readonly ILogger<ProductAppService> _logger;
+        private readonly IValidator<ProductRequestDto> _productValidator;
+        private readonly IValidator<ProductTransactionDto> _productTransactionValidator;
 
         public ProductAppService(IProductQueryRespository productQueryRespository,
             IProductCommandRepository productCommandRepository,
@@ -48,7 +50,9 @@ namespace ShopService.Application.Services.Product
             , IProductDetailCommandRepository productDetailCommandRepository
             , IProductInventoryCommandRepository productInventoryCommandRepository
             , ICacheAdapter cacheAdapter
-            , ILogger<ProductAppService> logger)
+            , ILogger<ProductAppService> logger
+            , IValidator<ProductRequestDto> Productvalidator
+            , IValidator<ProductTransactionDto> productTransactionValidator)
         {
             _productQueryRespository = productQueryRespository;
             _productCommandRepository = productCommandRepository;
@@ -63,6 +67,8 @@ namespace ShopService.Application.Services.Product
             _productInventoryCommandRepository = productInventoryCommandRepository;
             _cacheAdapter = cacheAdapter;
             _logger = logger;
+            _productValidator = Productvalidator;
+            _productTransactionValidator = productTransactionValidator;
         }
 
         #region Create
@@ -135,6 +141,22 @@ namespace ShopService.Application.Services.Product
             //    output.StatusCode = HttpStatusCode.NotFound;
             //    return output;
             //}
+
+
+            // در این قسمت ولیدیشن صورت میگیره
+
+            var validationResult = await _productValidator.ValidateAsync(productDto);
+
+            // در این قسمت چک میشه و یک دیکشنری که کلید اسم پراپرتی هستش و ولیو لیستی از خطا
+
+            if (!validationResult.IsValid)
+            {
+                output.Message = "خطاهای اعتبارسنجی رخ داده است.";
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.BadRequest;
+                output.ValidationErrors = validationResult.ToDictionary();
+                return output;
+            }
             var productExist = await _productQueryRespository.GetQueryable()
                 .FirstOrDefaultAsync(c => c.Id == id);
 
@@ -327,8 +349,8 @@ namespace ShopService.Application.Services.Product
                     produtName = c.product.Name,
                     productBrand = c.brand.Name,
                     categoryName = c.category.Name,
-                    Price =  _productPriceQueryRepository.GetQueryable().Where(pr=> pr.ProductDetailId == c.detail.Id).
-                    OrderByDescending(c=> c.SetDate).Select(c=> c.Price).FirstOrDefault(),
+                    Price = _productPriceQueryRepository.GetQueryable().Where(pr => pr.ProductDetailId == c.detail.Id).
+                    OrderByDescending(c => c.SetDate).Select(c => c.Price).FirstOrDefault(),
                     productColor = c.detail.Color,
                     productSize = c.detail.Size,
                 }).ToListAsync();
@@ -376,6 +398,19 @@ namespace ShopService.Application.Services.Product
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
+
+            // در این قسمت ولیدیشن صورت میگیره
+            var validationResult = await _productTransactionValidator.ValidateAsync(productTransactionDto);
+
+            // در این قسمت چک میشه و یک دیکشنری که کلید اسم پراپرتی هستش و ولیو لیستی از خطا
+            if (!validationResult.IsValid)
+            {
+                output.Message = "خطاهای اعتبارسنجی رخ داده است.";
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.BadRequest;
+                output.ValidationErrors = validationResult.ToDictionary();
+                return output;
+            }
             try
             {
                 var categoryExist = await _categoryQueryRepository.GetQueryable()
@@ -397,7 +432,7 @@ namespace ShopService.Application.Services.Product
                     return output;
                 }
                 await _unitOfWork.BeginTransactionAsync();
-                
+
 
                 var product = _mapper.Map<ProductEntity>(productTransactionDto.Product);
                 product.CategoryId = categoryExist.Id;

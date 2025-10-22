@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using LogService;
 using Microsoft.EntityFrameworkCore;
 using ShopService.ApplicationContract.DTO.Base;
@@ -19,11 +20,14 @@ namespace ShopService.Application.Services.Category
         private readonly ICategoryCommandRepository _categoryCommandRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly ILogAppService  _logAppService;
+        private readonly ILogAppService _logAppService;
         private readonly IUserAppService _userAppService;
+        private readonly IValidator<CategoryDto> _validator;
 
-        public CategoryAppService(ICategoryQueryRepository categoryQueryRepository, ICategoryCommandRepository categoryCommandRepository, IUnitOfWork unitOfWork
-            ,IMapper mapper, ILogAppService logAppService,IUserAppService userAppService)
+        public CategoryAppService(ICategoryQueryRepository categoryQueryRepository,
+            ICategoryCommandRepository categoryCommandRepository, IUnitOfWork unitOfWork
+            , IMapper mapper, ILogAppService logAppService, IUserAppService userAppService
+            , IValidator<CategoryDto> validator)
         {
             _categoryQueryRepository = categoryQueryRepository;
             _categoryCommandRepository = categoryCommandRepository;
@@ -31,20 +35,35 @@ namespace ShopService.Application.Services.Category
             _mapper = mapper;
             _logAppService = logAppService;
             _userAppService = userAppService;
+            _validator = validator;
         }
 
         #region Create
         public async Task<BaseResponseDto<CategoryDto>> CreateCategory(CategoryDto categoryDto)
         {
+
+            // در این قسمت ولیدیشن صورت میگیره
+            var validationResult = await _validator.ValidateAsync(categoryDto);
+
             var output = new BaseResponseDto<CategoryDto>
             {
                 Message = "خطا در درج دسته بندی",
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
+
+            // در این قسمت چک میشه و یک دیکشنری که کلید اسم پراپرتی هستش و ولیو لیستی از خطا
+            if (!validationResult.IsValid)
+            {
+                output.Message = "خطاهای اعتبارسنجی رخ داده است.";
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.BadRequest;
+                output.ValidationErrors = validationResult.ToDictionary();
+                return output;
+            }
             var currentUserId = _userAppService.GetCurrentUser();
-            var categoryExist = await _categoryQueryRepository.GetQueryable().AnyAsync(c=> c.Name == categoryDto.Name);
-            if(categoryExist)
+            var categoryExist = await _categoryQueryRepository.GetQueryable().AnyAsync(c => c.Name == categoryDto.Name);
+            if (categoryExist)
             {
                 output.Message = "دسته بندی از قبل ثبت شده است";
                 output.Success = false;
@@ -68,12 +87,25 @@ namespace ShopService.Application.Services.Category
         #region Edit
         public async Task<BaseResponseDto<CategoryDto>> EditCategory(int id, CategoryDto categoryDto)
         {
+            // در این قسمت ولیدیشن صورت میگیره
+            var validationResult = await _validator.ValidateAsync(categoryDto);
+
             var output = new BaseResponseDto<CategoryDto>
             {
                 Message = "خطا در به روز رسانی دسته بندی",
                 Success = false,
                 StatusCode = HttpStatusCode.BadRequest
             };
+
+            // در این قسمت چک میشه و یک دیکشنری که کلید اسم پراپرتی هستش و ولیو لیستی از خطا
+            if (!validationResult.IsValid)
+            {
+                output.Message = "خطاهای اعتبارسنجی رخ داده است.";
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.BadRequest;
+                output.ValidationErrors = validationResult.ToDictionary();
+                return output;
+            }
             var categoryExist = await _categoryQueryRepository.GetQueryable()
                 .FirstOrDefaultAsync(c => c.Id == id);
             if (categoryExist == null)
@@ -115,7 +147,7 @@ namespace ShopService.Application.Services.Category
                 output.StatusCode = HttpStatusCode.NotFound;
                 return output;
             }
-            if (await _categoryQueryRepository.GetQueryable().AnyAsync(c=> c.Id == id))
+            if (await _categoryQueryRepository.GetQueryable().AnyAsync(c => c.Id == id))
             {
                 output.Message = "دسته بندی مورد نظر دارای محصولات می باشد امکان حذف وجود ندارد";
                 output.Success = false;
@@ -154,13 +186,13 @@ namespace ShopService.Application.Services.Category
                 output.StatusCode = HttpStatusCode.NotFound;
                 return output;
             }
-       
+
             output.Message = "دسته‌بندی ها با موفقیت دریافت شد";
             output.Success = true;
             output.StatusCode = output.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
             output.Data = categories;
             return output;
-            
+
         }
         #endregion
 

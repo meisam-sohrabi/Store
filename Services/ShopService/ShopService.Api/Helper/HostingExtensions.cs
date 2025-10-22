@@ -1,15 +1,17 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using BaseConfig;
+using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Quartz;
 using Serilog;
 using Serilog.Sinks.Elasticsearch;
+using ShopService.Application.Services.Job;
 using ShopService.Application.Services.SignalR;
+using ShopService.Application.Services.Worker;
+using ShopService.ApplicationContract.Validators.Category;
 using ShopService.IocConfig;
 using System.Text;
-using BaseConfig;
-using Quartz;
-using ShopService.Application.Services.Job;
-using ShopService.Application.Services.Worker;
 namespace ShopService.Api.Helper
 {
     public static class HostingExtensions
@@ -111,6 +113,8 @@ namespace ShopService.Api.Helper
             });
 
             builder.Services.AddHostedService<ConsumerWorker>();
+
+            builder.Services.AddValidatorsFromAssemblyContaining<CategoryDtoValidator>();
 
             return builder.Build();
         }
