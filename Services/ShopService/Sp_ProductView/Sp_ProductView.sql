@@ -29,7 +29,7 @@ CREATE PROCEDURE GetProductByDateAndTextSearch
 	-- ============================================
 	--  Step 2: Parameters Declaration
 	-- ============================================
-	@startDate DATETIME = null ,
+	@startDate DATETIME2 = null ,
 	@endDate DATETIME2 = null ,
 	@textSearch NVARCHAR(100) = null
 AS

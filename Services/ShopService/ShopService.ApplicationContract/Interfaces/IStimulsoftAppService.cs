@@ -2,6 +2,6 @@
 {
     public interface IStimulsoftAppService<T>
     {
-        Task<string> ReportToHtmlAsync(T data,string reportPath);
+        Task<string> ReportToJsonAsync(T data,string reportPath);
     }
 }

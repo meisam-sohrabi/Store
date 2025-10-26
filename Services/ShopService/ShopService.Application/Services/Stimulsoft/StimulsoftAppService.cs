@@ -6,7 +6,7 @@ namespace ShopService.Application.Services.Stimulsoft
     public class StimulsoftAppService<T> : IStimulsoftAppService<T>
     {
 
-        public async Task<string> ReportToHtmlAsync(T data, string reportPath)
+        public async Task<string> ReportToJsonAsync(T data, string reportPath)
         {
 
             using (var report = StiReport.CreateNewReport())
