@@ -116,6 +116,9 @@ namespace ShopService.Api.Helper
 
             builder.Services.AddValidatorsFromAssemblyContaining<CategoryDtoValidator>();
 
+
+            //Stimulsoft.Base.StiLicense.Key = ApplicaitonConfiguration.stiLicense;
+
             return builder.Build();
         }
 
@@ -135,8 +138,8 @@ namespace ShopService.Api.Helper
 
             app.UseAuthentication();
             app.UseAuthorization();
-            app.MapControllers();
             app.MapHub<ServerConnection>("/printorder");
+            app.MapControllers();
             return app;
         }
     }

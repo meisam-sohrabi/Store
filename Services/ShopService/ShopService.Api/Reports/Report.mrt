@@ -1,0 +1,284 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<StiSerializer version="1.02" type="Net" application="StiReport">
+  <Dictionary Ref="1" type="Dictionary" isKey="true">
+    <BusinessObjects isList="true" count="0" />
+    <Databases isList="true" count="0" />
+    <DataSources isList="true" count="1">
+      <productdt Ref="2" type="DataTableSource" isKey="true">
+        <Alias>productdt</Alias>
+        <Columns isList="true" count="3">
+          <value>Name,System.String</value>
+          <value>Description,System.String</value>
+          <value>Quantity,System.Int32</value>
+        </Columns>
+        <Dictionary isRef="1" />
+        <Key>1299d19b76e949f7affa946765c2e8a8</Key>
+        <Name>productdt</Name>
+        <NameInSource>productdt</NameInSource>
+      </productdt>
+    </DataSources>
+    <Relations isList="true" count="0" />
+    <Report isRef="0" />
+    <Resources isList="true" count="0" />
+    <Variables isList="true" count="0" />
+  </Dictionary>
+  <EngineVersion>EngineV2</EngineVersion>
+  <GlobalizationStrings isList="true" count="0" />
+  <Key>9c42b153bc1b46b4904acea6d2aec1db</Key>
+  <MetaTags isList="true" count="0" />
+  <Pages isList="true" count="1">
+    <Page1 Ref="3" type="Page" isKey="true">
+      <Border>None;Black;2;Solid;False;4;Black</Border>
+      <Brush>Transparent</Brush>
+      <Components isList="true" count="1">
+        <Tableproductdt Ref="4" type="Stimulsoft.Report.Components.Table.StiTable" isKey="true">
+          <Brush>Transparent</Brush>
+          <BusinessObjectGuid isNull="true" />
+          <ClientRectangle>0,0.4,19,4.8</ClientRectangle>
+          <ColumnCount>3</ColumnCount>
+          <Components isList="true" count="9">
+            <Tableproductdt_Cell1 Ref="5" type="TableCell" isKey="true">
+              <Brush>[3:81:103]</Brush>
+              <ClientRectangle>0,0,6.4,1.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,14</Font>
+              <HorAlignment>Center</HorAlignment>
+              <ID>0</ID>
+              <JoinCells isList="true" count="0" />
+              <Margins>0,0,0,0</Margins>
+              <Name>Tableproductdt_Cell1</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Restrictions>AllowMove, AllowSelect, AllowChange</Restrictions>
+              <Text>نام محصول</Text>
+              <TextBrush>White</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Tableproductdt_Cell1>
+            <Tableproductdt_Cell2 Ref="6" type="TableCell" isKey="true">
+              <Brush>[3:81:103]</Brush>
+              <ClientRectangle>6.4,0,6.4,1.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,14</Font>
+              <HorAlignment>Center</HorAlignment>
+              <ID>1</ID>
+              <JoinCells isList="true" count="0" />
+              <Margins>0,0,0,0</Margins>
+              <Name>Tableproductdt_Cell2</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Restrictions>AllowMove, AllowSelect, AllowChange</Restrictions>
+              <Text>توضیحات محصول</Text>
+              <TextBrush>White</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Tableproductdt_Cell2>
+            <Tableproductdt_Cell3 Ref="7" type="TableCell" isKey="true">
+              <Brush>[3:81:103]</Brush>
+              <ClientRectangle>12.8,0,6.2,1.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,14</Font>
+              <HorAlignment>Center</HorAlignment>
+              <ID>2</ID>
+              <JoinCells isList="true" count="0" />
+              <Margins>0,0,0,0</Margins>
+              <Name>Tableproductdt_Cell3</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Restrictions>AllowMove, AllowSelect, AllowChange</Restrictions>
+              <Text>تعداد محصول</Text>
+              <TextBrush>White</TextBrush>
+              <Type>Expression</Type>
+              <VertAlignment>Center</VertAlignment>
+            </Tableproductdt_Cell3>
+            <Tableproductdt_Cell4 Ref="8" type="TableCell" isKey="true">
+              <Border>All;Gainsboro;1;Solid;False;4;Gainsboro</Border>
+              <Brush>[219:245:249]</Brush>
+              <ClientRectangle>0,1.6,6.4,1.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,9</Font>
+              <ID>3</ID>
+              <JoinCells isList="true" count="0" />
+              <Margins>0,0,0,0</Margins>
+              <Name>Tableproductdt_Cell4</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Restrictions>AllowMove, AllowSelect, AllowChange</Restrictions>
+              <Text>{productdt.Name}</Text>
+              <TextBrush>[0:0:0]</TextBrush>
+              <VertAlignment>Center</VertAlignment>
+            </Tableproductdt_Cell4>
+            <Tableproductdt_Cell5 Ref="9" type="TableCell" isKey="true">
+              <Border>All;Gainsboro;1;Solid;False;4;Gainsboro</Border>
+              <Brush>[219:245:249]</Brush>
+              <ClientRectangle>6.4,1.6,6.4,1.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,9</Font>
+              <ID>4</ID>
+              <JoinCells isList="true" count="0" />
+              <Margins>0,0,0,0</Margins>
+              <Name>Tableproductdt_Cell5</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Restrictions>AllowMove, AllowSelect, AllowChange</Restrictions>
+              <Text>{productdt.Description}</Text>
+              <TextBrush>[0:0:0]</TextBrush>
+              <VertAlignment>Center</VertAlignment>
+            </Tableproductdt_Cell5>
+            <Tableproductdt_Cell6 Ref="10" type="TableCell" isKey="true">
+              <Border>All;Gainsboro;1;Solid;False;4;Gainsboro</Border>
+              <Brush>[219:245:249]</Brush>
+              <ClientRectangle>12.8,1.6,6.2,1.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,9</Font>
+              <ID>5</ID>
+              <JoinCells isList="true" count="0" />
+              <Margins>0,0,0,0</Margins>
+              <Name>Tableproductdt_Cell6</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Restrictions>AllowMove, AllowSelect, AllowChange</Restrictions>
+              <Text>{productdt.Quantity}</Text>
+              <TextBrush>[0:0:0]</TextBrush>
+              <VertAlignment>Center</VertAlignment>
+            </Tableproductdt_Cell6>
+            <Tableproductdt_Cell7 Ref="11" type="TableCell" isKey="true">
+              <Brush>[219:245:249]</Brush>
+              <ClientRectangle>0,3.2,6.4,1.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,9</Font>
+              <ID>6</ID>
+              <JoinCells isList="true" count="0" />
+              <Margins>0,0,0,0</Margins>
+              <Name>Tableproductdt_Cell7</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Restrictions>AllowMove, AllowSelect, AllowChange</Restrictions>
+              <TextBrush>[0:0:0]</TextBrush>
+            </Tableproductdt_Cell7>
+            <Tableproductdt_Cell8 Ref="12" type="TableCell" isKey="true">
+              <Brush>[219:245:249]</Brush>
+              <ClientRectangle>6.4,3.2,6.4,1.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,9</Font>
+              <ID>7</ID>
+              <JoinCells isList="true" count="0" />
+              <Margins>0,0,0,0</Margins>
+              <Name>Tableproductdt_Cell8</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Restrictions>AllowMove, AllowSelect, AllowChange</Restrictions>
+              <TextBrush>[0:0:0]</TextBrush>
+            </Tableproductdt_Cell8>
+            <Tableproductdt_Cell9 Ref="13" type="TableCell" isKey="true">
+              <Brush>[219:245:249]</Brush>
+              <ClientRectangle>12.8,3.2,6.2,1.6</ClientRectangle>
+              <Conditions isList="true" count="0" />
+              <Expressions isList="true" count="0" />
+              <Font>Arial,9</Font>
+              <ID>8</ID>
+              <JoinCells isList="true" count="0" />
+              <Margins>0,0,0,0</Margins>
+              <Name>Tableproductdt_Cell9</Name>
+              <Page isRef="3" />
+              <Parent isRef="4" />
+              <Restrictions>AllowMove, AllowSelect, AllowChange</Restrictions>
+              <TextBrush>[0:0:0]</TextBrush>
+            </Tableproductdt_Cell9>
+          </Components>
+          <ComponentStyle>TableproductdtMoray</ComponentStyle>
+          <Conditions isList="true" count="0" />
+          <DataSourceName>productdt</DataSourceName>
+          <Expressions isList="true" count="0" />
+          <Filters isList="true" count="0" />
+          <FooterRowsCount>1</FooterRowsCount>
+          <HeaderRowsCount>1</HeaderRowsCount>
+          <MinHeight>0.60000000000000009</MinHeight>
+          <Name>Tableproductdt</Name>
+          <NumberID>9</NumberID>
+          <Page isRef="3" />
+          <Parent isRef="3" />
+          <RowCount>3</RowCount>
+          <Sort isList="true" count="0" />
+        </Tableproductdt>
+      </Components>
+      <Conditions isList="true" count="0" />
+      <Expressions isList="true" count="0" />
+      <Guid>55bac285d6734eaf908241b0d3c37f13</Guid>
+      <Margins>1,1,1,1</Margins>
+      <Name>Page1</Name>
+      <PageHeight>29.7</PageHeight>
+      <PageWidth>21</PageWidth>
+      <Report isRef="0" />
+    </Page1>
+  </Pages>
+  <ReferencedAssemblies isList="true" count="8">
+    <value>System.Dll</value>
+    <value>System.Drawing.Dll</value>
+    <value>System.Windows.Forms.Dll</value>
+    <value>System.Data.Dll</value>
+    <value>System.Xml.Dll</value>
+    <value>Stimulsoft.Controls.Dll</value>
+    <value>Stimulsoft.Base.Dll</value>
+    <value>Stimulsoft.Report.Dll</value>
+  </ReferencedAssemblies>
+  <ReportAlias>Report</ReportAlias>
+  <ReportChanged>10/25/2025 1:10:13 PM</ReportChanged>
+  <ReportCreated>10/25/2025 12:34:33 PM</ReportCreated>
+  <ReportFile>D:\meisam\Store\Services\ShopService\ShopService.Api\Reports\Report.mrt</ReportFile>
+  <ReportGuid>2fe3e1da59834b888a5cb7ba0c32ef26</ReportGuid>
+  <ReportName>Report</ReportName>
+  <ReportUnit>Centimeters</ReportUnit>
+  <ReportVersion>2023.1.1.0</ReportVersion>
+  <Script>using System;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Data;
+using Stimulsoft.Controls;
+using Stimulsoft.Base.Drawing;
+using Stimulsoft.Report;
+using Stimulsoft.Report.Dialogs;
+using Stimulsoft.Report.Components;
+
+namespace Reports
+{
+    public class Report : Stimulsoft.Report.StiReport
+    {
+        public Report()        {
+            this.InitializeComponent();
+        }
+
+        #region StiReport Designer generated code - do not modify
+		#endregion StiReport Designer generated code - do not modify
+    }
+}
+</Script>
+  <ScriptLanguage>CSharp</ScriptLanguage>
+  <Styles isList="true" count="1">
+    <TableproductdtMoray Ref="14" type="Stimulsoft.Report.StiTableStyle" isKey="true">
+      <AlternatingDataColor>120, 219, 230</AlternatingDataColor>
+      <AlternatingDataForeground>Black</AlternatingDataForeground>
+      <BackColor>White</BackColor>
+      <Conditions isList="true" count="0" />
+      <DataColor>219, 245, 249</DataColor>
+      <DataForeground>Black</DataForeground>
+      <FooterColor>219, 245, 249</FooterColor>
+      <FooterForeground>Black</FooterForeground>
+      <GridColor>Gainsboro</GridColor>
+      <HeaderColor>3, 81, 103</HeaderColor>
+      <HeaderForeground>White</HeaderForeground>
+      <HotHeaderColor>3, 81, 103</HotHeaderColor>
+      <Name>TableproductdtMoray</Name>
+      <SelectedDataColor>52, 152, 219</SelectedDataColor>
+      <SelectedDataForeground>White</SelectedDataForeground>
+    </TableproductdtMoray>
+  </Styles>
+</StiSerializer>

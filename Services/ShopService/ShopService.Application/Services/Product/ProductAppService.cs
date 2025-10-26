@@ -477,6 +477,22 @@ namespace ShopService.Application.Services.Product
         }
 
         #endregion
+
+        #region ProductsReport
+        public async Task<List<ProductResponseDto>> GetProductsReport()
+        {
+            var products = await _productQueryRespository.GetQueryable()
+                .Select(c => new ProductResponseDto { Name = c.Name, Description = c.Description, Quantity = c.Quantity })
+                .ToListAsync();
+            if (products.Any())
+            {
+                return products;
+            }
+
+            return new List<ProductResponseDto>();
+
+        }
+        #endregion
     }
 }
 

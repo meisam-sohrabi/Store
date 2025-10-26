@@ -10,6 +10,7 @@ using ShopService.Application.Services.ProductBrand;
 using ShopService.Application.Services.ProductDetail;
 using ShopService.Application.Services.ProductPrice;
 using ShopService.Application.Services.RabbitMq;
+using ShopService.Application.Services.Stimulsoft;
 using ShopService.Application.Services.User;
 using ShopService.ApplicationContract.Interfaces;
 using ShopService.ApplicationContract.Interfaces.Category;
@@ -87,6 +88,7 @@ namespace ShopService.IocConfig
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICacheAdapter, DistributedCacheAdapter>();
             services.AddSingleton<IRabbitMqAppService, RabbitMqAppService>();
+            services.AddScoped(typeof(IStimulsoftAppService<>), typeof(StimulsoftAppService<>));
             return services;
         }
     }
