@@ -25,7 +25,7 @@ GO
  	-- ============================================
 	--  Step 1: Prodcedure
 	-- ============================================
-CREATE PROCEDURE GetProductByDateAndTextSearch 
+ALTER PROCEDURE GetProductByDateAndTextSearch 
 	-- ============================================
 	--  Step 2: Parameters Declaration
 	-- ============================================
@@ -35,6 +35,12 @@ CREATE PROCEDURE GetProductByDateAndTextSearch
 AS
 BEGIN
 	
+
+
+	IF	@startDate IS NULL AND @endDate IS NULL AND @textSearch IS NULL
+	BEGIN
+		RETURN 
+	END
 	-- ============================================
 	--  Step 3 : Left join using the view
 	-- ============================================
@@ -61,5 +67,38 @@ BEGIN
       
     );
 END
-exec GetProductByDateAndTextSearch @startDate = '2021-01-01',@endDate = '2025-12-30' 
+exec GetProductByDateAndTextSearch 
 
+-----------------------------------------------------------------------------------------------
+
+
+GO
+CREATE FUNCTION ArabicToPersian(@Name NVARCHAR(50))
+RETURNS NVARCHAR(50)
+BEGIN
+
+	
+	SET @Name = REPLACE(@Name,N'ي',N'ی')
+	SET @Name = REPLACE(@Name,N'ك',N'ک')
+	RETURN @Name  
+
+END
+Go
+
+CREATE PROCEDURE ProductArabicRevision
+@start datetime2,
+@end   datetime2 
+AS
+BEGIN
+	
+		UPDATE P
+		SET [P].[Name] = dbo.ArabicToPersian(P.Name)
+		,[P].[Description] = dbo.ArabicToPersian(P.Description)
+		FROM Products AS P
+		WHERE CreateDate BETWEEN @start AND @end
+
+END
+GO
+
+EXEC .ProductArabicRevision '2012-01-06' , '2025-08-03'
+GO

@@ -39,6 +39,7 @@ namespace ShopService.Application.Services.Product
         private readonly ILogger<ProductAppService> _logger;
         private readonly IValidator<ProductRequestDto> _productValidator;
         private readonly IValidator<ProductTransactionDto> _productTransactionValidator;
+        private readonly IValidator<ProductArabicToPersianDto> _productArabicToPersianValidator;
 
         public ProductAppService(IProductQueryRespository productQueryRespository,
             IProductCommandRepository productCommandRepository,
@@ -52,7 +53,8 @@ namespace ShopService.Application.Services.Product
             , ICacheAdapter cacheAdapter
             , ILogger<ProductAppService> logger
             , IValidator<ProductRequestDto> Productvalidator
-            , IValidator<ProductTransactionDto> productTransactionValidator)
+            , IValidator<ProductTransactionDto> productTransactionValidator
+            ,IValidator<ProductArabicToPersianDto> productArabicToPersianValidator)
         {
             _productQueryRespository = productQueryRespository;
             _productCommandRepository = productCommandRepository;
@@ -69,7 +71,9 @@ namespace ShopService.Application.Services.Product
             _logger = logger;
             _productValidator = Productvalidator;
             _productTransactionValidator = productTransactionValidator;
+            _productArabicToPersianValidator = productArabicToPersianValidator;
         }
+
 
         #region Create
         //public async Task<BaseResponseDto<ProductResponseDto>> CreateProduct(ProductRequestDto productDto)
@@ -493,8 +497,35 @@ namespace ShopService.Application.Services.Product
 
         }
         #endregion
+
+        #region EditAToPUsingSP
+        public async Task<BaseResponseDto<ProductResponseDto>> EditArabicToPersianSP(ProductArabicToPersianDto productArabicToPersianDto)
+        {
+            var output = new BaseResponseDto<ProductResponseDto>
+            {
+                Message = "خطا در بروزرسانی محصول",
+                Success = false,
+                StatusCode = HttpStatusCode.BadRequest
+            };
+            var validationResult = await _productArabicToPersianValidator.ValidateAsync(productArabicToPersianDto);
+            if (!validationResult.IsValid)
+            {
+                output.Message = "خطاهای اعتبارسنجی رخ داده است.";
+                output.Success = false;
+                output.StatusCode = HttpStatusCode.BadRequest;
+                output.ValidationErrors = validationResult.ToDictionary();
+                return output;
+            }
+            await _productCommandRepository.EditArabicToPersianSP(productArabicToPersianDto.Start, productArabicToPersianDto.End);
+            output.Message = "محصول  با موفقیت به روزرسانی شد";
+            output.Success = true;
+            output.StatusCode = HttpStatusCode.OK;
+            return output;
+        }
     }
+    #endregion
 }
+
 
 
 

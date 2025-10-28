@@ -7,5 +7,6 @@ namespace ShopService.InfrastructureContract.Interfaces.Command.Product
         void Add(ProductEntity product);
         void Edit(ProductEntity product);
         void Delete(ProductEntity product);
+        Task EditArabicToPersianSP(DateTime start,DateTime end);
     }
 }

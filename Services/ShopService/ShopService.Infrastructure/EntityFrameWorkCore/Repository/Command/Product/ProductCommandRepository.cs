@@ -1,6 +1,8 @@
 ﻿using ShopService.Domain.Entities;
 using ShopService.InfrastructureContract.Interfaces.Command.Product;
 using ShopService.Infrastructure.EntityFrameWorkCore.AppDbContext;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 
 namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Command.Product
 {
@@ -39,6 +41,16 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Command.Prod
                     entry.Property(property.Name).IsModified = false;
                 }
             }
+        }
+
+        #endregion
+
+        #region EditAToPUsingSP
+        public async Task EditArabicToPersianSP(DateTime start,DateTime end)
+        {
+            var pStart = new SqlParameter("@start", start);
+            var pEnd = new SqlParameter("@end", end);
+            await _context.Database.ExecuteSqlRawAsync("EXEC ProductArabicRevision @start,@end",pStart,pEnd);
         }
         #endregion
 

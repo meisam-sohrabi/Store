@@ -9,6 +9,7 @@ namespace ShopService.ApplicationContract.Interfaces.Product
     {
         Task<BaseResponseDto<ProductTransactionDto>> ProductTransaction(ProductTransactionDto productTransactionDto,int categoryId,int productBrandId);
         Task<BaseResponseDto<ProductResponseDto>> EditProduct(int id, ProductRequestDto productDto);
+        Task<BaseResponseDto<ProductResponseDto>> EditArabicToPersianSP(ProductArabicToPersianDto productArabicToPersianDto);
         Task<BaseResponseDto<ProductResponseDto>> DeleteProduct(int id);
         Task<BaseResponseDto<List<ProductResponseDto>>> GetAllProduct();
         Task<BaseResponseDto<ProductResponseDto>> GetProduct(int id);

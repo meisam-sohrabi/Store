@@ -23,7 +23,7 @@ namespace ShopService.Api.Controllers
         {
             var products = await _productAppService.GetProductsReport();
             var reportPath = Path.Combine(Directory.GetCurrentDirectory(), "Reports", "Report.mrt");
-            var report = await _stimulsoftAppService.ReportToHtmlAsync(products, reportPath);
+            var report = await _stimulsoftAppService.ReportToJsonAsync(products, reportPath);
             return Ok(report);
         }
     }

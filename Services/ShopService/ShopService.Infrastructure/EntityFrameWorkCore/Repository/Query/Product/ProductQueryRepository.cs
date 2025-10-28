@@ -16,6 +16,8 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.Produc
             _context = context;
         }
 
+
+        #region GetByParametersThroughSP
         public async Task<List<ProductWithInventoryDto>> GetProductsByDateAndTextAsync(string? textSearch, DateTime? startDate, DateTime? endDate)
         {
             var procedureName = "GetProductByDateAndTextSearch";
@@ -31,6 +33,8 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Query.Produc
             }
 
         }
+        #endregion
+
 
 
         #region Get

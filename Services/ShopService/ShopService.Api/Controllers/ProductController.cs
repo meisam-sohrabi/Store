@@ -48,6 +48,11 @@ namespace ShopService.Api.Controllers
             return await _productAppService.GetProductWithInventory(search,start,end);
         }
 
+        [HttpPost("StoredProcedureEditAToP")]
+        public async Task<BaseResponseDto<ProductResponseDto>> StoreProcedureEditAToP([FromBody] ProductArabicToPersianDto productArabicToPersianDto)
+        {
+            return await _productAppService.EditArabicToPersianSP(productArabicToPersianDto);
+        }
 
         [HttpGet("GetById/{id}")]
         public async Task<BaseResponseDto<ProductResponseDto>> GetById([FromRoute] int id)
@@ -67,5 +72,6 @@ namespace ShopService.Api.Controllers
         {
             return await _productAppService.AdvanceSearchProduct(search);
         }
+
     }
 }
