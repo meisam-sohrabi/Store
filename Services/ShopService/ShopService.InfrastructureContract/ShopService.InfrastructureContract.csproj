@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ShopService.ApplicationContract\ShopService.ApplicationContract.csproj" />
-    <ProjectReference Include="..\ShopService.Domain\ShopService.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -96,7 +96,9 @@ BEGIN
 		,[P].[Description] = dbo.ArabicToPersian(P.Description)
 		FROM Products AS P
 		WHERE CreateDate BETWEEN @start AND @end
-
+			AND ([P].[Name]!= dbo.ArabicToPersian(P.Name)
+			OR [P].[Description] != dbo.ArabicToPersian(P.Description)
+				)
 END
 GO
 

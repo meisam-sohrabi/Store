@@ -71,7 +71,7 @@ namespace ShopService.Application.Services.Category
                 return output;
             }
             var mapped = _mapper.Map<CategoryEntity>(categoryDto);
-            _categoryCommandRepository.Add(mapped);
+            await _categoryCommandRepository.AddAsync(mapped);
             var affectedRows = await _unitOfWork.SaveChangesAsync();
             if (affectedRows > 0)
             {

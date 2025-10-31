@@ -16,5 +16,6 @@ namespace ShopService.Infrastructure.EntityFrameWorkCore.Repository.Command.Orde
         {
             await _context.Orders.AddAsync(order);
         }
+
     }
 }

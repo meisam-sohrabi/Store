@@ -7,9 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GatewayService.ApplicationContract\GatewayService.ApplicationContract.csproj" />
     <ProjectReference Include="..\GatewayService.Application\GatewayService.Application.csproj" />
-    <ProjectReference Include="..\GatewayService.InfrastructureContract\GatewayService.InfrastructureContract.csproj" />
     <ProjectReference Include="..\GatewayService.Infrastructure\GatewayService.Infrastructure.csproj" />
   </ItemGroup>
 

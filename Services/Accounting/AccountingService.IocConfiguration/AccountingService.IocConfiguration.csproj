@@ -7,9 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AccountingService.ApplicationContract\AccountingService.ApplicationContract.csproj" />
     <ProjectReference Include="..\AccountingService.Application\AccountingService.Application.csproj" />
-    <ProjectReference Include="..\AccountingService.InfrastructureContract\AccountingService.InfrastructureContract.csproj" />
     <ProjectReference Include="..\AccountingService.Infrastructure\AccountingService.Infrastructure.csproj" />
   </ItemGroup>
 

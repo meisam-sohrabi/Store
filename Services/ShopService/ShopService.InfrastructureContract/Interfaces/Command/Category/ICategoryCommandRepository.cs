@@ -1,11 +1,11 @@
 ﻿using ShopService.Domain.Entities;
+using ShopService.InfrastructureContract.Interfaces.Command.Generic;
 
 namespace ShopService.InfrastructureContract.Interfaces.Command.Category
 {
-    public interface ICategoryCommandRepository
+    public interface ICategoryCommandRepository : IGenericCommandRepository<CategoryEntity>
     {
-        void Add(CategoryEntity category);
-        void Edit(CategoryEntity category);
-        void Delete(CategoryEntity category);
+
+        // later implementation here but generic is enough for now.
     }
 }
