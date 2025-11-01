@@ -1,9 +1,8 @@
-﻿using Microsoft.Extensions.Hosting;
-using ShopService.ApplicationContract.DTO.Product;
-using ShopService.ApplicationContract.DTO.ProductInventory;
-using ShopService.ApplicationContract.Interfaces.RabbitMq;
+﻿using InventoryService.ApplicationContract.DTO.ProductInventory;
+using InventoryService.ApplicationContract.Interfaces.RabbitMq;
+using Microsoft.Extensions.Hosting;
 
-namespace ShopService.Application.Services.Worker
+namespace InventoryService.Application.Services.Worker
 {
     public class ConsumerWorker : BackgroundService
     {
@@ -15,7 +14,7 @@ namespace ShopService.Application.Services.Worker
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            await _rabbitMqAppService.GetMessage<ProductInventoryResponseDto>(stoppingToken);
+            await _rabbitMqAppService.GetMessage<ProductInventoryRequestDto>(stoppingToken);
         }
     }
 }

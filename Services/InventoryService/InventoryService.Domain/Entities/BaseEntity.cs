@@ -1,4 +1,4 @@
-﻿namespace ShopService.Domain.Entities
+﻿namespace InventoryService.Domain.Entities
 {
     public class BaseEntity
     {

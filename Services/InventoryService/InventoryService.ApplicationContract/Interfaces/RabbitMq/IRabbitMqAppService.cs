@@ -1,8 +1,8 @@
-﻿namespace ShopService.ApplicationContract.Interfaces.RabbitMq
+﻿namespace InventoryService.ApplicationContract.Interfaces.RabbitMq
 {
     public interface IRabbitMqAppService
     {
-        Task<bool> PublishMessage<T>(T value);
+        Task PublishMessage<T>(T value);
         Task GetMessage<T>(CancellationToken cancellationToken = default);
     }
 }

@@ -1,32 +1,20 @@
-﻿using BaseConfig;
-using FluentValidation;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Quartz;
-using Serilog;
-using Serilog.Sinks.Elasticsearch;
-//using ShopService.Application.Services.Job;
-using ShopService.Application.Services.SignalR;
-using ShopService.Application.Services.Worker;
-using ShopService.ApplicationContract.Validators.Category;
-using ShopService.IocConfig;
+using BaseConfig;
+//using InventoryService.Application.Services.Job;
+using InventoryService.Application.Services.Worker;
+//using InventoryService.ApplicationContract.Validators.Category;
+using InventoryService.IocConfig;
 using System.Text;
-namespace ShopService.Api.Helper
+namespace InventoryService.Api.Helper
 {
     public static class HostingExtensions
     {
         public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
         {
-            Log.Logger = new LoggerConfiguration()
-                .Enrich.FromLogContext()
-                .WriteTo.Console()
-                .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://localhost:9200"))
-                {
-                    AutoRegisterTemplate = true,
-                    IndexFormat = "shopservice-api-logs-{0:yyyy.MM.dd}"
-                })
-                .CreateLogger();
+
 
             builder.Services.AddControllers();
             //builder.Services.AddOpenApi();
@@ -91,12 +79,6 @@ namespace ShopService.Api.Helper
                     },
                 });
             });
-            builder.Host.UseSerilog();
-            builder.Services.AddStackExchangeRedisCache(option =>
-            {
-                option.Configuration = "localhost:6379";
-                option.InstanceName = "";
-            });
 
             //builder.Services.AddQuartz(q =>
             //{
@@ -114,10 +96,8 @@ namespace ShopService.Api.Helper
 
             builder.Services.AddHostedService<ConsumerWorker>();
 
-            builder.Services.AddValidatorsFromAssemblyContaining<CategoryDtoValidator>();
+            //builder.Services.AddValidatorsFromAssemblyContaining<CategoryDtoValidator>();
 
-
-            //Stimulsoft.Base.StiLicense.Key = ApplicaitonConfiguration.stiLicense;
 
             return builder.Build();
         }
@@ -138,7 +118,6 @@ namespace ShopService.Api.Helper
 
             app.UseAuthentication();
             app.UseAuthorization();
-            app.MapHub<ServerConnection>("/printorder");
             app.MapControllers();
             return app;
         }

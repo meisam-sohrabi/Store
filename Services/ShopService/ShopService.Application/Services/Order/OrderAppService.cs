@@ -4,9 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using ShopService.Application.Services.SignalR;
 using ShopService.ApplicationContract.DTO.Base;
 using ShopService.ApplicationContract.DTO.Order;
+using ShopService.ApplicationContract.DTO.ProductInventory;
 using ShopService.ApplicationContract.DTO.Transaction;
 using ShopService.ApplicationContract.Interfaces;
 using ShopService.ApplicationContract.Interfaces.Order;
+using ShopService.ApplicationContract.Interfaces.RabbitMq;
 using ShopService.Domain.Entities;
 using ShopService.InfrastructureContract.Interfaces;
 using ShopService.InfrastructureContract.Interfaces.Command.Order;
@@ -33,16 +35,18 @@ namespace ShopService.Application.Services.Order
         private readonly IHubContext<ServerConnection> _hubContext;
         private readonly IProductCommandRepository _productCommandRepository;
         private readonly IProductInventoryCommandRepository _productInventoryCommandRepository;
+        private readonly IRabbitMqAppService _rabbitMqAppService;
 
         public OrderAppService(IProductQueryRespository productQueryRespository
-            ,IMapper mapper, IUserAppService userAppService
-            ,IOrderCommandRepository orderCommandRepository, IOrderQueryRepository orderQueryRepository,
+            , IMapper mapper, IUserAppService userAppService
+            , IOrderCommandRepository orderCommandRepository, IOrderQueryRepository orderQueryRepository,
             IProductDetailQueryRepository productDetailQueryRepository,
             IProductPriceQueryRepository productPriceQueryRepository,
             IUnitOfWork unitOfWork
-            ,IHubContext<ServerConnection> hubContext
-            ,IProductCommandRepository productCommandRepository
-            ,IProductInventoryCommandRepository productInventoryCommandRepository)
+            , IHubContext<ServerConnection> hubContext
+            , IProductCommandRepository productCommandRepository
+            , IProductInventoryCommandRepository productInventoryCommandRepository
+            , IRabbitMqAppService rabbitMqAppService)
         {
             _productQueryRespository = productQueryRespository;
             _mapper = mapper;
@@ -55,6 +59,7 @@ namespace ShopService.Application.Services.Order
             _hubContext = hubContext;
             _productCommandRepository = productCommandRepository;
             _productInventoryCommandRepository = productInventoryCommandRepository;
+            _rabbitMqAppService = rabbitMqAppService;
         }
 
         #region GetUserOrder
@@ -89,7 +94,7 @@ namespace ShopService.Application.Services.Order
         #region Transaction
 
         // dto bayad taghir konad chon tranasaction hastesh
-        public async Task<BaseResponseDto<OrderTransactionDto>> OrderTransaction(OrderTransactionDto orderTransactionDto,int productDetailId)
+        public async Task<BaseResponseDto<OrderTransactionDto>> OrderTransaction(OrderTransactionDto orderTransactionDto, int productDetailId)
         {
             var output = new BaseResponseDto<OrderTransactionDto>
             {
@@ -101,12 +106,13 @@ namespace ShopService.Application.Services.Order
             try
             {
                 var productDetailExist = await _productDetailQueryRepository.GetQueryable()
-                    .Where(c=> c.Id == productDetailId)
-                    .Join(_productQueryRespository.GetQueryable(),d=> d.ProductId,p=> p.Id,(d,p)=> new { product = p, detail = d})
-                    .Select(c=> new {
+                    .Where(c => c.Id == productDetailId)
+                    .Join(_productQueryRespository.GetQueryable(), d => d.ProductId, p => p.Id, (d, p) => new { product = p, detail = d })
+                    .Select(c => new
+                    {
                         c.product,
                         c.detail,
-                        price = _productPriceQueryRepository.GetQueryable().Where(pr=> pr.ProductDetailId == c.detail.Id).OrderByDescending(c=> c.SetDate).FirstOrDefault()
+                        price = _productPriceQueryRepository.GetQueryable().Where(pr => pr.ProductDetailId == c.detail.Id).OrderByDescending(c => c.SetDate).FirstOrDefault()
                     })
                     .FirstOrDefaultAsync();
                 if (productDetailExist == null)
@@ -134,19 +140,37 @@ namespace ShopService.Application.Services.Order
 
                 var order = _mapper.Map<OrderEntity>(orderTransactionDto.Order);
                 order.TotalPrice = productDetailExist.price.Price * orderTransactionDto.Order.Quantity;
-                order.UserId = _userAppService.GetCurrentUser();
+                order.UserId = "e681b47e-4c97-4a00-93fa-11c64fb93c41";
+                //_userAppService.GetCurrentUser();
                 order.ProductDetailId = productDetailExist.detail.Id;
                 await _orderCommandRepository.Add(order);
 
                 productDetailExist.product.Quantity -= orderTransactionDto.Order.Quantity;
                 _productCommandRepository.Edit(productDetailExist.product);
 
-                var invetory = new ProductInventoryEntity
+                //var invetory = new ProductInventoryEntity
+                //{
+                //    QuantityChange = -orderTransactionDto.Order.Quantity,
+                //    ProductId = productDetailExist.product.Id,
+                //};
+                //await _productInventoryCommandRepository.Add(invetory);
+
+
+                // ارسال پیام به صف
+                var sent = await _rabbitMqAppService.PublishMessage(new ProductInventoryRequestDto
                 {
-                    QuantityChange = -orderTransactionDto.Order.Quantity,
                     ProductId = productDetailExist.product.Id,
-                };
-                await _productInventoryCommandRepository.Add(invetory);
+                    QuantityChange = -orderTransactionDto.Order.Quantity
+                });
+
+
+                // کنترل ارسال پیام
+                if (!sent)
+                {
+                    throw new Exception("خطا در بروزرسانی انبار");
+                }
+
+
                 await _unitOfWork.SaveChangesAsync();
                 await _unitOfWork.CommitTransactionAsync();
                 await _hubContext.Clients.All.SendAsync("NewOrder", order.Id, order.UserId);
